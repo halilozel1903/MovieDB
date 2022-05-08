@@ -15,7 +15,9 @@
         <activity android:name=".ui.detail.MovieDetailActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".ui.splash.SplashActivity">
+        <activity
+            android:exported="true"
+            android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
