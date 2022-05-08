@@ -1,4 +1,4 @@
-# MovieDB 🎥
+# MovieDB 🎥 📽 📹
 
 ![TheMovieDB](https://www.themoviedb.org/assets/2/v4/marketing/deadpool-06f2a06d7a418ec887300397b6861383bf1e3b72f604ddd5f75bce170e81dce9.png)
 
@@ -9,6 +9,10 @@ The Movie Database (TMDB) is a community built movie and TV database. Every piec
 - We're international. While we officially support 39 languages we also have extensive regional data. Every single day TMDB is used in over 180 countries.
 - Our community is second to none. Between our staff and community moderators, we're always here to help. We're passionate about making sure your experience on TMDB is nothing short of amazing.
 - Trusted platform. Every single day our service is used by millions of people while we process over 3 billion requests. We've proven for years that this is a service that can be trusted and relied on.
+
+## Screenshots 📸
+
+<img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_1.png" width="300" /> <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_2.png" width="300" />  <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_3.png" width="300" />
 
 ## License ℹ️
 ```
