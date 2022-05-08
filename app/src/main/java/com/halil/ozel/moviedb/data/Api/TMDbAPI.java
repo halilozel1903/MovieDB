@@ -13,8 +13,8 @@ import rx.Observable;
 
 public interface TMDbAPI {
 
-     String IMAGE_BASE_URL_500 = "https://image.tmdb.org/t/p/w500";
-     String IMAGE_BASE_URL_1280 = "https://image.tmdb.org/t/p/w1280";
+    String IMAGE_BASE_URL_500 = "https://image.tmdb.org/t/p/w500";
+    String IMAGE_BASE_URL_1280 = "https://image.tmdb.org/t/p/w1280";
 
     String TMDb_API_KEY = "45dfdbd49fa1f1da1f5b75fd60217433";
 
@@ -31,19 +31,19 @@ public interface TMDbAPI {
     );
 
 
-    @GET(HttpClientModule.MOVIE_DETAILS+"{movie_id}")
+    @GET(HttpClientModule.MOVIE_DETAILS + "{movie_id}")
     Observable<ResponseMovieDetail> getMovieDetail(
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key
     );
 
-    @GET(HttpClientModule.MOVIE_DETAILS+"{movie_id}/credits")
+    @GET(HttpClientModule.MOVIE_DETAILS + "{movie_id}/credits")
     Observable<ResponseCreditDetail> getCreditDetail(
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key
     );
 
-    @GET(HttpClientModule.MOVIE_DETAILS+"{movie_id}/recommendations")
+    @GET(HttpClientModule.MOVIE_DETAILS + "{movie_id}/recommendations")
     Observable<ResponseNowPlaying> getRecommendDetail(
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key

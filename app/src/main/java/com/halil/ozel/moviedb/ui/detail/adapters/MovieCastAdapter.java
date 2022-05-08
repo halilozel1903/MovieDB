@@ -22,12 +22,9 @@ import javax.inject.Inject;
 
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_500;
 
-public class MovieCastAdapter  extends RecyclerView.Adapter<MovieCastAdapter.MovieCastHolder> {
-
-
-    private List<Cast> castList;
-    private Context context;
-
+public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.MovieCastHolder> {
+    private final List<Cast> castList;
+    private final Context context;
 
     @Inject
     TMDbAPI tmDbAPI;
@@ -35,44 +32,34 @@ public class MovieCastAdapter  extends RecyclerView.Adapter<MovieCastAdapter.Mov
     public MovieCastAdapter(List<Cast> castList, Context context) {
         this.castList = castList;
         this.context = context;
-
-
     }
 
 
     @NonNull
     @Override
     public MovieCastHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         App.instance().appComponent().inject(this);
-
         return new MovieCastHolder(LayoutInflater.from(context).inflate(R.layout.row_cast, parent, false));
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull final MovieCastHolder holder, final int position) {
-
-
         Cast cast = castList.get(position);
 
         holder.tvCastTitle.setText(cast.getName());
 
-        if (cast.getProfile_path() != null){
+        if (cast.getProfile_path() != null) {
             Picasso.get().
                     load(IMAGE_BASE_URL_500 + cast.getProfile_path())
                     .into(holder.ivCastPoster);
 
-        }else{
+        } else {
 
             Picasso.get().
                     load("https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png")
                     .into(holder.ivCastPoster);
         }
-
-
-
-
     }
 
 
@@ -84,19 +71,15 @@ public class MovieCastAdapter  extends RecyclerView.Adapter<MovieCastAdapter.Mov
     }
 
 
-    public class MovieCastHolder extends RecyclerView.ViewHolder {
+    public static class MovieCastHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvCastTitle;
-        private ImageView ivCastPoster;
-
+        private final TextView tvCastTitle;
+        private final ImageView ivCastPoster;
 
         public MovieCastHolder(View itemView) {
             super(itemView);
             tvCastTitle = itemView.findViewById(R.id.tvCastTitle);
             ivCastPoster = itemView.findViewById(R.id.ivCastPoster);
-
         }
-
     }
-
 }

@@ -66,7 +66,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
 
         holder.tvPopularMovieTitle.setText(results.getTitle());
 
-        Picasso.get().load(IMAGE_BASE_URL_500+results.getPoster_path()).into(holder.ivPopularPoster);
+        Picasso.get().load(IMAGE_BASE_URL_500 + results.getPoster_path()).into(holder.ivPopularPoster);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -79,27 +79,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
                         .subscribe(response -> {
 
                             Intent intent = new Intent(view.getContext(), MovieDetailActivity.class);
-                            intent.putExtra("id",results.getId());
-                            intent.putExtra("title",results.getTitle());
-                            intent.putExtra("backdrop",results.getBackdrop_path());
-                            intent.putExtra("poster",results.getPoster_path());
-                            intent.putExtra("overview",results.getOverview());
-                            intent.putExtra("popularity",results.getPopularity());
-                            intent.putExtra("release_date",results.getRelease_date());
+                            intent.putExtra("id", results.getId());
+                            intent.putExtra("title", results.getTitle());
+                            intent.putExtra("backdrop", results.getBackdrop_path());
+                            intent.putExtra("poster", results.getPoster_path());
+                            intent.putExtra("overview", results.getOverview());
+                            intent.putExtra("popularity", results.getPopularity());
+                            intent.putExtra("release_date", results.getRelease_date());
                             intent.putExtra("genres", (Serializable) response.getGenres());
                             view.getContext().startActivity(intent);
 
                         }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
 
 
-
-
             }
         });
-
-
-
-
 
 
     }
@@ -113,10 +107,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
     }
 
 
-    public class PopularMovieHolder extends RecyclerView.ViewHolder {
+    public static class PopularMovieHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvPopularMovieTitle;
-        private ImageView ivPopularPoster;
+        private final TextView tvPopularMovieTitle;
+        private final ImageView ivPopularPoster;
 
 
         public PopularMovieHolder(View itemView) {

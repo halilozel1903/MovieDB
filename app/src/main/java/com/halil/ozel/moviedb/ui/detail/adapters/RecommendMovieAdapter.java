@@ -30,7 +30,7 @@ import timber.log.Timber;
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_500;
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
 
-public class RecommendMovieAdapter extends RecyclerView.Adapter<RecommendMovieAdapter. RecommendMovieHolder> {
+public class RecommendMovieAdapter extends RecyclerView.Adapter<RecommendMovieAdapter.RecommendMovieHolder> {
 
 
     private List<Results> popularMovieList;
@@ -43,17 +43,13 @@ public class RecommendMovieAdapter extends RecyclerView.Adapter<RecommendMovieAd
     public RecommendMovieAdapter(List<Results> popularMovieList, Context context) {
         this.popularMovieList = popularMovieList;
         this.context = context;
-
-
     }
 
 
     @NonNull
     @Override
     public RecommendMovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         App.instance().appComponent().inject(this);
-
         return new RecommendMovieHolder(LayoutInflater.from(context).inflate(R.layout.row_recommend_movie, parent, false));
     }
 
@@ -66,40 +62,26 @@ public class RecommendMovieAdapter extends RecyclerView.Adapter<RecommendMovieAd
 
         holder.tvRecommendMovieTitle.setText(results.getTitle());
 
-        Picasso.get().load(IMAGE_BASE_URL_500+results.getPoster_path()).into(holder.ivRecommendMoviePoster);
+        Picasso.get().load(IMAGE_BASE_URL_500 + results.getPoster_path()).into(holder.ivRecommendMoviePoster);
 
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.itemView.setOnClickListener(view -> tmDbAPI.getMovieDetail(results.getId(), TMDb_API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
 
-                tmDbAPI.getMovieDetail(results.getId(), TMDb_API_KEY)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
+                    Intent intent = new Intent(view.getContext(), MovieDetailActivity.class);
+                    intent.putExtra("id", results.getId());
+                    intent.putExtra("title", results.getTitle());
+                    intent.putExtra("backdrop", results.getBackdrop_path());
+                    intent.putExtra("poster", results.getPoster_path());
+                    intent.putExtra("overview", results.getOverview());
+                    intent.putExtra("popularity", results.getPopularity());
+                    intent.putExtra("release_date", results.getRelease_date());
+                    intent.putExtra("genres", (Serializable) response.getGenres());
+                    view.getContext().startActivity(intent);
 
-                            Intent intent = new Intent(view.getContext(), MovieDetailActivity.class);
-                            intent.putExtra("id",results.getId());
-                            intent.putExtra("title",results.getTitle());
-                            intent.putExtra("backdrop",results.getBackdrop_path());
-                            intent.putExtra("poster",results.getPoster_path());
-                            intent.putExtra("overview",results.getOverview());
-                            intent.putExtra("popularity",results.getPopularity());
-                            intent.putExtra("release_date",results.getRelease_date());
-                            intent.putExtra("genres", (Serializable) response.getGenres());
-                            view.getContext().startActivity(intent);
-
-                        }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
-
-
-
-
-            }
-        });
-
-
-
-
+                }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage())));
 
 
     }
@@ -113,17 +95,15 @@ public class RecommendMovieAdapter extends RecyclerView.Adapter<RecommendMovieAd
     }
 
 
-    public class RecommendMovieHolder extends RecyclerView.ViewHolder {
+    public static class RecommendMovieHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvRecommendMovieTitle;
-        private ImageView ivRecommendMoviePoster;
-
+        private final TextView tvRecommendMovieTitle;
+        private final ImageView ivRecommendMoviePoster;
 
         public RecommendMovieHolder(View itemView) {
             super(itemView);
             tvRecommendMovieTitle = itemView.findViewById(R.id.tvRecommendMovieTitle);
             ivRecommendMoviePoster = itemView.findViewById(R.id.ivRecommendMoviePoster);
-
         }
 
     }

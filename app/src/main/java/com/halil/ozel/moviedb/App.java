@@ -20,7 +20,7 @@ public class App extends Application {
         instance = this;
 
         if (BuildConfig.DEBUG) {
-          Timber.plant(new Timber.DebugTree());
+            Timber.plant(new Timber.DebugTree());
         }
 
         // Creates Dagger Graph

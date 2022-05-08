@@ -3,6 +3,7 @@ package com.halil.ozel.moviedb.ui.detail;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,27 +41,26 @@ public class MovieDetailActivity extends Activity {
     String title;
     int id;
     ImageView ivHorizontalPoster, ivVerticalPoster;
-    TextView tvTitle,tvGenres,tvPopularity,tvReleaseDate;
+    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate;
     ExpandableTextView etvOverview;
     Button btnToggle;
-
 
 
     @Inject
     TMDbAPI tmDbAPI;
 
     public RecyclerView rvCast, rvRecommendContents;
-    public  RecyclerView.Adapter castAdapter, recommendAdapter;
+    public RecyclerView.Adapter castAdapter, recommendAdapter;
     public RecyclerView.LayoutManager castLayoutManager, recommendLayoutManager;
-    public  List<Cast> castDataList;
-    public  List<Results> recommendDataList;
+    public List<Cast> castDataList;
+    public List<Results> recommendDataList;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.instance().appComponent().inject(this);
         setContentView(R.layout.activity_movie_detail);
-
 
 
         ivVerticalPoster = findViewById(R.id.ivVerticalPoster);
@@ -71,10 +71,6 @@ public class MovieDetailActivity extends Activity {
         tvReleaseDate = findViewById(R.id.tvReleaseDate);
         etvOverview = findViewById(R.id.etvOverview);
         btnToggle = findViewById(R.id.btnToggle);
-
-       /* Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
-        getSupportActionBar().setTitle(title);*/
 
         castDataList = new ArrayList<>();
         castAdapter = new MovieCastAdapter(castDataList, this);
@@ -87,7 +83,6 @@ public class MovieDetailActivity extends Activity {
         rvCast.setAdapter(castAdapter);
 
 
-
         recommendDataList = new ArrayList<>();
         recommendAdapter = new MovieAdapter(recommendDataList, this);
         recommendLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -97,7 +92,6 @@ public class MovieDetailActivity extends Activity {
         rvRecommendContents.setHasFixedSize(true);
         rvRecommendContents.setLayoutManager(recommendLayoutManager);
         rvRecommendContents.setAdapter(recommendAdapter);
-
 
 
         etvOverview.setAnimationDuration(750L);
@@ -138,15 +132,15 @@ public class MovieDetailActivity extends Activity {
 
         title = getIntent().getStringExtra("title");
 
-        id = getIntent().getIntExtra("id",0);
+        id = getIntent().getIntExtra("id", 0);
 
         tvTitle.setText(title);
 
-        tvPopularity.setText("Popularity : "+ getIntent().getDoubleExtra("popularity",0));
-        tvReleaseDate.setText("Release Date : "+ getIntent().getStringExtra("release_date"));
+        tvPopularity.setText("Popularity : " + getIntent().getDoubleExtra("popularity", 0));
+        tvReleaseDate.setText("Release Date : " + getIntent().getStringExtra("release_date"));
 
-        Picasso.get().load(IMAGE_BASE_URL_1280+getIntent().getStringExtra("backdrop")).into(ivHorizontalPoster);
-        Picasso.get().load(IMAGE_BASE_URL_500+getIntent().getStringExtra("poster")).into(ivVerticalPoster);
+        Picasso.get().load(IMAGE_BASE_URL_1280 + getIntent().getStringExtra("backdrop")).into(ivHorizontalPoster);
+        Picasso.get().load(IMAGE_BASE_URL_500 + getIntent().getStringExtra("poster")).into(ivVerticalPoster);
 
 
         List<Genres> labelPS = (List<Genres>) getIntent().getSerializableExtra("genres");
@@ -176,17 +170,15 @@ public class MovieDetailActivity extends Activity {
 
     }
 
-    public void getCastInfo(){
+    @SuppressLint("NotifyDataSetChanged")
+    public void getCastInfo() {
 
         tmDbAPI.getCreditDetail(id, TMDb_API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
 
-                    for (Cast cast : response.getCast()){
-
-                        castDataList.add(cast);
-                    }
+                    castDataList.addAll(response.getCast());
 
                     castAdapter.notifyDataSetChanged();
 
@@ -194,25 +186,20 @@ public class MovieDetailActivity extends Activity {
     }
 
 
-    public void getRecommendMovie(){
+    @SuppressLint("NotifyDataSetChanged")
+    public void getRecommendMovie() {
 
         tmDbAPI.getRecommendDetail(id, TMDb_API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
 
-                    for (Results results : response.getResults()){
-
-                        recommendDataList.add(results);
-                    }
+                    recommendDataList.addAll(response.getResults());
 
                     recommendAdapter.notifyDataSetChanged();
 
                 }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
-
-
-
 
 
 }

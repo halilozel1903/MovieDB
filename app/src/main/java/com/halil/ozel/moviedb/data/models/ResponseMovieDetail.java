@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ResponseMovieDetail implements Serializable {
 
-    private List <Genres> genres;
+    private List<Genres> genres;
     private Integer id;
     private String popularity;
     private String release_date;
