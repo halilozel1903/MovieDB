@@ -12,7 +12,7 @@ The Movie Database (TMDB) is a community built movie and TV database. Every piec
 
 ## Screenshots 📸
 
-<img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_1.png" width="300" /> <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_2.png" width="300" />  <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_3.png" width="300" />
+<img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_1.png" width="250" /> <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_2.png" width="250" />  <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_3.png" width="250" />
 
 ## License ℹ️
 ```
