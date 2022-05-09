@@ -52,9 +52,4 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.android.material:material:1.7.0-alpha01'
     implementation 'at.blogc:expandabletextview:1.0.5'
-
-
-
-
-
 }
