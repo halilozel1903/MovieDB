@@ -48,6 +48,4 @@ public interface TMDbAPI {
             @Path("movie_id") int movie_id,
             @Query("api_key") String api_key
     );
-
-
 }

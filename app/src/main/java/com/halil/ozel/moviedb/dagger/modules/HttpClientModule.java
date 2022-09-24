@@ -69,8 +69,7 @@ public class HttpClientModule {
     public MoshiConverterFactory provideMoshiConverterFactory() {
 
         Moshi moshi = new Moshi.Builder().build();
-        MoshiConverterFactory factory = MoshiConverterFactory.create(moshi);
 
-        return factory;
+        return MoshiConverterFactory.create(moshi);
     }
 }
