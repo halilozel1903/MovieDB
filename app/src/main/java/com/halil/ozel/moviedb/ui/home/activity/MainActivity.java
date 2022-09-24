@@ -50,17 +50,14 @@ public class MainActivity extends AppCompatActivity {
         popularMovieAdapter = new MovieAdapter(popularMovieDataList, this);
         popularMovieLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-
         rvPopularMovie = findViewById(R.id.rvPopularMovie);
         rvPopularMovie.setHasFixedSize(true);
         rvPopularMovie.setLayoutManager(popularMovieLayoutManager);
         rvPopularMovie.setAdapter(popularMovieAdapter);
 
-
         nowPlayingDataList = new ArrayList<>();
         nowPlayingMovieAdapter = new MovieAdapter(nowPlayingDataList, this);
         nowPlayingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
 
         rvNowPlaying = findViewById(R.id.rvNowPlaying);
         rvNowPlaying.setHasFixedSize(true);
@@ -75,32 +72,24 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     public void getNowPlaying() {
+        tmDbAPI.getNowPlaying(TMDb_API_KEY, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
 
-        tmDbAPI.getNowPlaying(TMDb_API_KEY, 1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
+            popularMovieDataList.addAll(response.getResults());
 
-                    popularMovieDataList.addAll(response.getResults());
+            popularMovieAdapter.notifyDataSetChanged();
 
-                    popularMovieAdapter.notifyDataSetChanged();
-
-                }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
+        }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void getPopularMovies() {
+        tmDbAPI.getPopularMovie(TMDb_API_KEY, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
 
-        tmDbAPI.getPopularMovie(TMDb_API_KEY, 1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
+            nowPlayingDataList.addAll(response.getResults());
 
-                    nowPlayingDataList.addAll(response.getResults());
+            nowPlayingMovieAdapter.notifyDataSetChanged();
 
-                    nowPlayingMovieAdapter.notifyDataSetChanged();
-
-                }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
+        }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
 
 }
