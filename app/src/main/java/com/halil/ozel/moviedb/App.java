@@ -19,9 +19,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
 
         // Creates Dagger Graph
         mApplicationComponent = DaggerApplicationComponent.builder()
@@ -39,5 +37,4 @@ public class App extends Application {
     public ApplicationComponent appComponent() {
         return mApplicationComponent;
     }
-
 }
