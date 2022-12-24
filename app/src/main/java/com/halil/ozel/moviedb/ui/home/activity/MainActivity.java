@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         rvNowPlaying.setLayoutManager(nowPlayingLayoutManager);
         rvNowPlaying.setAdapter(nowPlayingMovieAdapter);
 
-
         getPopularMovies();
         getNowPlaying();
     }
@@ -91,5 +90,4 @@ public class MainActivity extends AppCompatActivity {
 
         }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
-
 }
