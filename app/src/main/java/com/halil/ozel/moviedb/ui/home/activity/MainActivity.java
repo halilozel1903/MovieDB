@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         tmDbAPI.getNowPlaying(TMDb_API_KEY, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
 
             popularMovieDataList.addAll(response.getResults());
-
             popularMovieAdapter.notifyDataSetChanged();
 
         }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
@@ -85,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         tmDbAPI.getPopularMovie(TMDb_API_KEY, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
 
             nowPlayingDataList.addAll(response.getResults());
-
             nowPlayingMovieAdapter.notifyDataSetChanged();
 
         }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
