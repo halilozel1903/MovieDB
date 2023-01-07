@@ -72,20 +72,16 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     public void getNowPlaying() {
         tmDbAPI.getNowPlaying(TMDb_API_KEY, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
-
             popularMovieDataList.addAll(response.getResults());
             popularMovieAdapter.notifyDataSetChanged();
-
         }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void getPopularMovies() {
         tmDbAPI.getPopularMovie(TMDb_API_KEY, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
-
             nowPlayingDataList.addAll(response.getResults());
             nowPlayingMovieAdapter.notifyDataSetChanged();
-
         }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
 }
