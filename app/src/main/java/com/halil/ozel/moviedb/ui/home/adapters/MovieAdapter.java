@@ -54,11 +54,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
     @Override
     public void onBindViewHolder(@NonNull final PopularMovieHolder holder, final int position) {
         Results results = popularMovieList.get(position);
-
         holder.tvPopularMovieTitle.setText(results.getTitle());
-
         Picasso.get().load(IMAGE_BASE_URL_500 + results.getPoster_path()).into(holder.ivPopularPoster);
-
 
         holder.itemView.setOnClickListener(view -> tmDbAPI.getMovieDetail(results.getId(), TMDb_API_KEY)
                 .subscribeOn(Schedulers.io())

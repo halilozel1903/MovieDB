@@ -1,25 +1,28 @@
 package com.halil.ozel.moviedb.ui.detail;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_1280;
+import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_500;
+import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.halil.ozel.moviedb.App;
-import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
-import com.halil.ozel.moviedb.ui.home.adapters.MovieAdapter;
 import com.halil.ozel.moviedb.R;
 import com.halil.ozel.moviedb.data.Api.TMDbAPI;
 import com.halil.ozel.moviedb.data.models.Cast;
 import com.halil.ozel.moviedb.data.models.Genres;
 import com.halil.ozel.moviedb.data.models.Results;
+import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
+import com.halil.ozel.moviedb.ui.home.adapters.MovieAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,10 +35,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_1280;
-import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_500;
-import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
-
 public class MovieDetailActivity extends Activity {
 
     String title;
@@ -44,7 +43,6 @@ public class MovieDetailActivity extends Activity {
     TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate;
     ExpandableTextView etvOverview;
     Button btnToggle;
-
 
     @Inject
     TMDbAPI tmDbAPI;
@@ -62,7 +60,6 @@ public class MovieDetailActivity extends Activity {
         App.instance().appComponent().inject(this);
         setContentView(R.layout.activity_movie_detail);
 
-
         ivVerticalPoster = findViewById(R.id.ivVerticalPoster);
         ivHorizontalPoster = findViewById(R.id.ivHorizontalPoster);
         tvTitle = findViewById(R.id.tvTitle);
@@ -76,75 +73,52 @@ public class MovieDetailActivity extends Activity {
         castAdapter = new MovieCastAdapter(castDataList, this);
         castLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-
         rvCast = findViewById(R.id.rvCast);
         rvCast.setHasFixedSize(true);
         rvCast.setLayoutManager(castLayoutManager);
         rvCast.setAdapter(castAdapter);
 
-
         recommendDataList = new ArrayList<>();
         recommendAdapter = new MovieAdapter(recommendDataList, this);
         recommendLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
 
         rvRecommendContents = findViewById(R.id.rvRecommendContents);
         rvRecommendContents.setHasFixedSize(true);
         rvRecommendContents.setLayoutManager(recommendLayoutManager);
         rvRecommendContents.setAdapter(recommendAdapter);
 
-
         etvOverview.setAnimationDuration(750L);
-
-
         etvOverview.setInterpolator(new OvershootInterpolator());
-
         etvOverview.setExpandInterpolator(new OvershootInterpolator());
         etvOverview.setCollapseInterpolator(new OvershootInterpolator());
 
-
-        btnToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                btnToggle.setBackgroundResource(etvOverview.isExpanded()
-                        ? R.drawable.ic_expand_more : R.drawable.ic_expand_less);
-                etvOverview.toggle();
-            }
+        btnToggle.setOnClickListener(v -> {
+            btnToggle.setBackgroundResource(etvOverview.isExpanded() ? R.drawable.ic_expand_more : R.drawable.ic_expand_less);
+            etvOverview.toggle();
         });
 
-        btnToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (etvOverview.isExpanded()) {
-                    etvOverview.collapse();
-                    btnToggle.setBackgroundResource(R.drawable.ic_expand_more);
+        btnToggle.setOnClickListener(v -> {
+            if (etvOverview.isExpanded()) {
+                etvOverview.collapse();
+                btnToggle.setBackgroundResource(R.drawable.ic_expand_more);
 
-                } else {
-                    etvOverview.expand();
-                    btnToggle.setBackgroundResource(R.drawable.ic_expand_less);
-
-                }
+            } else {
+                etvOverview.expand();
+                btnToggle.setBackgroundResource(R.drawable.ic_expand_less);
             }
         });
-
 
         etvOverview.setText(getIntent().getStringExtra("overview"));
-
         title = getIntent().getStringExtra("title");
-
         id = getIntent().getIntExtra("id", 0);
-
         tvTitle.setText(title);
-
         tvPopularity.setText("Popularity : " + getIntent().getDoubleExtra("popularity", 0));
         tvReleaseDate.setText("Release Date : " + getIntent().getStringExtra("release_date"));
 
         Picasso.get().load(IMAGE_BASE_URL_1280 + getIntent().getStringExtra("backdrop")).into(ivHorizontalPoster);
         Picasso.get().load(IMAGE_BASE_URL_500 + getIntent().getStringExtra("poster")).into(ivVerticalPoster);
 
-
         List<Genres> labelPS = (List<Genres>) getIntent().getSerializableExtra("genres");
-
 
         if (labelPS != null) {
             String genres = "";
@@ -156,50 +130,30 @@ public class MovieDetailActivity extends Activity {
                     genres = genres.concat(labelPS.get(i).getName() + " | ");
                 }
             }
-
-
             tvGenres.setText(genres);
-
-
         } else if (labelPS.size() == 0) {
             tvGenres.setText("");
         }
-
         getCastInfo();
         getRecommendMovie();
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void getCastInfo() {
+        tmDbAPI.getCreditDetail(id, TMDb_API_KEY).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
+            castDataList.addAll(response.getCast());
+            castAdapter.notifyDataSetChanged();
 
-        tmDbAPI.getCreditDetail(id, TMDb_API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-
-                    castDataList.addAll(response.getCast());
-
-                    castAdapter.notifyDataSetChanged();
-
-                }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
+        }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
 
 
     @SuppressLint("NotifyDataSetChanged")
     public void getRecommendMovie() {
+        tmDbAPI.getRecommendDetail(id, TMDb_API_KEY).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
+            recommendDataList.addAll(response.getResults());
+            recommendAdapter.notifyDataSetChanged();
 
-        tmDbAPI.getRecommendDetail(id, TMDb_API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-
-                    recommendDataList.addAll(response.getResults());
-
-                    recommendAdapter.notifyDataSetChanged();
-
-                }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
+        }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
-
-
 }
