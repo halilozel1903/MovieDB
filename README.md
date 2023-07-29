@@ -14,6 +14,12 @@ The Movie Database (TMDb) is a community built movie and TV database. Every piec
 
 <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_1.png" width="250" /> <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_2.png" width="250" />  <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_3.png" width="250" />
 
+## Donation 💸
+
+If this project help 💁 you to develop, you can give me a cup of coffee. ☕
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/halilozel1903)
+
 ## License ℹ️
 ```
 MIT License
