@@ -6,34 +6,80 @@ MovieDB is an Android showcase app built around **The Movie Database (TMDb)** AP
 
 ## Features 📊
 
-- 🔗 **Retrofit** with **RxJava3**, Moshi and OkHttp
-- 💻 **Dagger 2** dependency injection
-- 📺 **RecyclerView** lists for movies and TV
+MovieDB demonstrates a typical **MVVM** Android application. Below are some of
+the libraries and components used in the project.
+
+- 🔗 **Retrofit** with **RxJava3**, Moshi and OkHttp for networking
+- 💻 **Dagger 2** for dependency injection
+- 📺 **RecyclerView** based screens for movies and TV shows
 - 🎬 **Search** and detailed pages with cast, seasons and episodes
 - ❤️ **Favorites** stored locally
-- 🌗 **Dark mode** and **language** settings
+- 🌗 **Dark mode** and multiple **language** support
 - 💡 **ExpandableTextView** for long descriptions
 - 📷 **Picasso** and **Glide** for image loading
 - 💥 Material Components
 
+## Technologies Used 🛠
+
+This project is written in **Kotlin** and uses **AndroidX** libraries. Core
+dependencies include Dagger 2 for dependency injection, Retrofit with OkHttp and
+Moshi for network requests, and RxJava3 for reactive operations. Images are
+loaded with Picasso and Glide while Timber is used for logging.
+
 ## Screenshots 📸
 
-Home & Detail examples:
+Below are sample screens from the application. Each image is scaled to 300&nbsp;px
+wide for readability.
 
 ### Home Screen
-Shows trending movies and series.
+Shows trending movies and TV series.
 
-![Home Screen](screen_1.png)
+<img src="screen_1.jpg" width="300" alt="Home Screen" />
 
-### Detail Page
+### Movie Detail
 Detailed view with cast and overview information.
 
-![Detail Page](screen_2.png)
+<img src="screen_2.jpg" width="300" alt="Movie Detail" />
 
-### Search Screen
-Find movies and TV shows quickly.
+### Search Results
+Quickly find movies and shows.
 
-![Search Screen](screen_3.png)
+<img src="screen_3.jpg" width="300" alt="Search" />
+
+### TV Series Listing
+Browse popular and top rated series.
+
+<img src="screen_4.jpg" width="300" alt="TV Series" />
+
+### TV Series Detail
+Episode and season information.
+
+<img src="screen_5.jpg" width="300" alt="TV Detail" />
+
+### Cast Details
+See actor biography and credits.
+
+<img src="screen_6.jpg" width="300" alt="Cast Detail" />
+
+### Favorites
+Your saved movies and series.
+
+<img src="screen_7.jpg" width="300" alt="Favorites" />
+
+### Settings
+Dark mode and language options.
+
+<img src="screen_8.jpg" width="300" alt="Settings" />
+
+### Episode Listing
+Season episodes and air dates.
+
+<img src="screen_9.jpg" width="300" alt="Episodes" />
+
+### Splash Screen
+Startup animation.
+
+<img src="screen_10.jpg" width="300" alt="Splash" />
 
 ## Donation 💰
 
