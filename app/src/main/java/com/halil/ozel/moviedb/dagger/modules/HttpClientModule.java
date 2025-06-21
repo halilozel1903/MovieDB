@@ -14,7 +14,7 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module
@@ -53,7 +53,7 @@ public class HttpClientModule {
         return new Retrofit.Builder()
                 .baseUrl(TMDb_API_URL)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(moshiConverterFactory)
                 .build();
     }
