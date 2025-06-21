@@ -10,6 +10,11 @@ import com.halil.ozel.moviedb.ui.detail.MovieDetailActivity;
 import com.halil.ozel.moviedb.ui.detail.CastDetailActivity;
 import com.halil.ozel.moviedb.ui.detail.adapters.RecommendMovieAdapter;
 import com.halil.ozel.moviedb.ui.home.activity.MainActivity;
+import com.halil.ozel.moviedb.ui.home.fragments.MoviesFragment;
+import com.halil.ozel.moviedb.ui.home.fragments.TvSeriesFragment;
+import com.halil.ozel.moviedb.ui.home.fragments.FavoriteFragment;
+import com.halil.ozel.moviedb.ui.home.fragments.SettingsFragment;
+import com.halil.ozel.moviedb.ui.home.adapters.TvSeriesAdapter;
 
 import javax.inject.Singleton;
 
@@ -37,6 +42,12 @@ public interface ApplicationComponent {
     void inject(RecommendMovieAdapter recommendMovieAdapter);
 
     void inject(MovieCastAdapter movieCastAdapter);
+
+    void inject(MoviesFragment moviesFragment);
+    void inject(TvSeriesFragment tvSeriesFragment);
+    void inject(FavoriteFragment favoriteFragment);
+    void inject(SettingsFragment settingsFragment);
+    void inject(TvSeriesAdapter tvSeriesAdapter);
 
 
 }

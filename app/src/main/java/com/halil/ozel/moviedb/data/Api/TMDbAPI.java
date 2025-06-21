@@ -6,6 +6,7 @@ import com.halil.ozel.moviedb.data.models.ResponseCreditDetail;
 import com.halil.ozel.moviedb.data.models.ResponseMovieDetail;
 import com.halil.ozel.moviedb.data.models.ResponseNowPlaying;
 import com.halil.ozel.moviedb.data.models.PersonDetail;
+import com.halil.ozel.moviedb.data.models.ResponseTvSeries;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -39,6 +40,30 @@ public interface TMDbAPI {
 
     @GET(HttpClientModule.UPCOMING)
     Observable<ResponseNowPlaying> getUpcomingMovie(
+            @Query("api_key") String api_key,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.TV_POPULAR)
+    Observable<ResponseTvSeries> getTvPopular(
+            @Query("api_key") String api_key,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.TV_TOP_RATED)
+    Observable<ResponseTvSeries> getTvTopRated(
+            @Query("api_key") String api_key,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.TV_AIRING_TODAY)
+    Observable<ResponseTvSeries> getTvAiringToday(
+            @Query("api_key") String api_key,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.TV_ON_THE_AIR)
+    Observable<ResponseTvSeries> getTvOnTheAir(
             @Query("api_key") String api_key,
             @Query("page") int page
     );
