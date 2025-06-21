@@ -77,16 +77,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
         }
 
         boolean fav = FavoritesManager.isFavorite(context, results.getId());
-        holder.btnFavorite.setImageResource(fav ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);
+        holder.btnFavorite.setImageResource(fav ? R.drawable.ic_star_filled_24 : R.drawable.ic_star_border_24);
 
         holder.btnFavorite.setOnClickListener(v -> {
             if (FavoritesManager.isFavorite(context, results.getId())) {
                 FavoritesManager.remove(context, results.getId());
-                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+                holder.btnFavorite.setImageResource(R.drawable.ic_star_border_24);
                 if (favoriteChangeListener != null) favoriteChangeListener.onChange();
             } else {
                 FavoritesManager.add(context, results);
-                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+                holder.btnFavorite.setImageResource(R.drawable.ic_star_filled_24);
                 if (favoriteChangeListener != null) favoriteChangeListener.onChange();
             }
         });
