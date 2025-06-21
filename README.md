@@ -20,7 +20,20 @@ MovieDB is an Android showcase app built around **The Movie Database (TMDb)** AP
 
 Home & Detail examples:
 
-<img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_1.png" width="250" /> <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_2.png" width="250" />  <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_3.png" width="250" />
+### Home Screen
+Shows trending movies and series.
+
+![Home Screen](screen_1.png)
+
+### Detail Page
+Detailed view with cast and overview information.
+
+![Detail Page](screen_2.png)
+
+### Search Screen
+Find movies and TV shows quickly.
+
+![Search Screen](screen_3.png)
 
 ## Donation 💰
 
