@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.halil.ozel.moviedb.R;
 import com.halil.ozel.moviedb.data.Api.TMDbAPI;
 import com.halil.ozel.moviedb.data.models.Results;
 import com.halil.ozel.moviedb.ui.detail.MovieDetailActivity;
+import com.halil.ozel.moviedb.data.FavoritesManager;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -57,6 +59,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
         holder.tvPopularMovieTitle.setText(results.getTitle());
         Picasso.get().load(IMAGE_BASE_URL_500 + results.getPoster_path()).into(holder.ivPopularPoster);
 
+        boolean fav = FavoritesManager.isFavorite(context, results.getId());
+        holder.btnFavorite.setImageResource(fav ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);
+
+        holder.btnFavorite.setOnClickListener(v -> {
+            if (FavoritesManager.isFavorite(context, results.getId())) {
+                FavoritesManager.remove(context, results.getId());
+                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+            } else {
+                FavoritesManager.add(context, results);
+                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+            }
+        });
+
         holder.itemView.setOnClickListener(view -> tmDbAPI.getMovieDetail(results.getId(), TMDb_API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -84,11 +99,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
     public static class PopularMovieHolder extends RecyclerView.ViewHolder {
         private final TextView tvPopularMovieTitle;
         private final ImageView ivPopularPoster;
+        private final ImageButton btnFavorite;
 
         public PopularMovieHolder(View itemView) {
             super(itemView);
             tvPopularMovieTitle = itemView.findViewById(R.id.tvPopularMovieTitle);
             ivPopularPoster = itemView.findViewById(R.id.ivPopularPoster);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
 
         }
     }

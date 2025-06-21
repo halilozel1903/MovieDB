@@ -57,4 +57,12 @@ public class FavoritesManager {
         }
         save(context, newList);
     }
+
+    public static boolean isFavorite(Context context, int id) {
+        List<Results> list = load(context);
+        for (Results r : list) {
+            if (r.getId().equals(id)) return true;
+        }
+        return false;
+    }
 }
