@@ -2,6 +2,8 @@ package com.halil.ozel.moviedb;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import java.util.Locale;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.halil.ozel.moviedb.dagger.components.ApplicationComponent;
@@ -25,6 +27,9 @@ public class App extends Application {
         boolean dark = prefs.getBoolean("dark", false);
         AppCompatDelegate.setDefaultNightMode(dark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
+        String lang = prefs.getString("language", "en");
+        applyLocale(lang);
+
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
 
         // Creates Dagger Graph
@@ -42,5 +47,13 @@ public class App extends Application {
 
     public ApplicationComponent appComponent() {
         return mApplicationComponent;
+    }
+
+    public void applyLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = getResources().getConfiguration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
 }

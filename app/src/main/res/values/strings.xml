@@ -12,4 +12,12 @@
     <string name="see_all">See All</string>
     <string name="movies">Movies</string>
     <string name="tv_series">TV Series</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="select_language">Select Language</string>
+    <string name="english">English</string>
+    <string name="turkish">Turkish</string>
+    <string-array name="language_entries">
+        <item>@string/english</item>
+        <item>@string/turkish</item>
+    </string-array>
 </resources>
