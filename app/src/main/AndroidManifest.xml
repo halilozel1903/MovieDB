@@ -16,6 +16,8 @@
             />
         <activity android:name=".ui.detail.CastDetailActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.detail.TvSeriesDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:exported="true"
             android:name=".ui.splash.SplashActivity">
