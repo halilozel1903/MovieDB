@@ -18,8 +18,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(response -> {
                     nowPlayingDataList.addAll(response.getResults());
                     nowPlayingMovieAdapter.notifyDataSetChanged();
-                }, e -> Timber.e(e, "Error fetching now playing movies: %s", e.getMessage()));
+                }, e -> Timber.e(e, "Error fetching now playing movies: %s", e.getMessage()));     
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -14,7 +14,7 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module
@@ -22,7 +22,7 @@ public class HttpClientModule {
 
     private static final long DISK_CACHE_SIZE = 50 * 1024 * 1024;
     public static final String TMDb_API_URL = "https://api.themoviedb.org/3/";
-    public static final String NOW_ON_PLAYING = "movie/now_playing";
+    public static final String NOW_PLAYING = "movie/now_playing";
     public static final String POPULAR = "movie/popular";
     public static final String MOVIE_DETAILS = "movie/";
 
@@ -53,7 +53,7 @@ public class HttpClientModule {
         return new Retrofit.Builder()
                 .baseUrl(TMDb_API_URL)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(moshiConverterFactory)
                 .build();
     }
