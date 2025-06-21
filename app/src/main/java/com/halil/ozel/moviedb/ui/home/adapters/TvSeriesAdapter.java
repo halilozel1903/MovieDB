@@ -50,7 +50,7 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
     @Override
     public TvSeriesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         App.instance().appComponent().inject(this);
-        return new TvSeriesHolder(LayoutInflater.from(context).inflate(R.layout.row_nowplaying_movie, parent, false));
+        return new TvSeriesHolder(LayoutInflater.from(context).inflate(R.layout.row_tvseries, parent, false));
     }
 
     @Override
