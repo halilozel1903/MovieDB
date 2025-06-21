@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
             android:visibility="gone">
 
             <ImageView
@@ -41,7 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="/10"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 
@@ -50,8 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
             android:ellipsize="end"
             android:maxLines="7" />
 
@@ -60,9 +61,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:focusable="true"
             android:text=""
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#2196F3"
             android:visibility="gone" />
 
         <LinearLayout
@@ -92,9 +94,9 @@
             android:id="@+id/text_view_trailer_movie_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:text=""
             android:textColor="@android:color/black"
             android:textSize="20sp"
@@ -118,9 +120,9 @@
             android:id="@+id/text_view_cast_movie_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:text=""
             android:textColor="@android:color/black"
             android:textSize="20sp"
@@ -136,9 +138,9 @@
             android:id="@+id/text_view_similar_movie_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:text=""
             android:textColor="@android:color/black"
             android:textSize="20sp"
