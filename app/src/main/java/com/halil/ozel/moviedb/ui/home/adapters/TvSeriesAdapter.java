@@ -68,15 +68,15 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
         }
 
         boolean fav = FavoritesManager.isFavorite(context, tv.getId());
-        holder.btnFavorite.setImageResource(fav ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);
+        holder.btnFavorite.setImageResource(fav ? R.drawable.ic_star_filled_24 : R.drawable.ic_star_border_24);
 
         holder.btnFavorite.setOnClickListener(v -> {
             if (FavoritesManager.isFavorite(context, tv.getId())) {
                 FavoritesManager.remove(context, tv.getId());
-                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+                holder.btnFavorite.setImageResource(R.drawable.ic_star_border_24);
             } else {
                 FavoritesManager.add(context, convert(tv));
-                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+                holder.btnFavorite.setImageResource(R.drawable.ic_star_filled_24);
             }
         });
 

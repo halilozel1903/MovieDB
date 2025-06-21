@@ -183,7 +183,7 @@ public class TvSeriesDetailActivity extends AppCompatActivity {
         fabFavorite.setOnClickListener(v -> {
             if (FavoritesManager.isFavorite(this, id)) {
                 FavoritesManager.remove(this, id);
-                fabFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+                fabFavorite.setImageResource(R.drawable.ic_star_border_24);
                 Toast.makeText(this, R.string.favorite_removed, Toast.LENGTH_SHORT).show();
             } else {
                 TvResults r = new TvResults();
@@ -191,7 +191,7 @@ public class TvSeriesDetailActivity extends AppCompatActivity {
                 r.setName(title);
                 r.setPoster_path(getIntent().getStringExtra("poster"));
                 FavoritesManager.add(this, convert(r));
-                fabFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+                fabFavorite.setImageResource(R.drawable.ic_star_filled_24);
                 Toast.makeText(this, R.string.favorite_added, Toast.LENGTH_SHORT).show();
             }
         });
@@ -298,9 +298,9 @@ public class TvSeriesDetailActivity extends AppCompatActivity {
 
     private void updateFab() {
         if (FavoritesManager.isFavorite(this, id)) {
-            fabFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+            fabFavorite.setImageResource(R.drawable.ic_star_filled_24);
         } else {
-            fabFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+            fabFavorite.setImageResource(R.drawable.ic_star_border_24);
         }
     }
 }

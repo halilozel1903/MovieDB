@@ -28,7 +28,8 @@
                 android:layout_height="24dp"
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
-                android:src="@android:drawable/btn_star_big_off" />
+                android:src="@drawable/ic_star_border_24"
+                app:srcCompat="@drawable/ic_star_border_24" />
 
         </FrameLayout>
 
