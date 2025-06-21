@@ -1,5 +1,9 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar" />
+    <!-- Customize Material3 theme colors to match the dark palette -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+    </style>
 
 </resources>
