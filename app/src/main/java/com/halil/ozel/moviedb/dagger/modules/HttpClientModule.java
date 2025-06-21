@@ -22,7 +22,7 @@ public class HttpClientModule {
 
     private static final long DISK_CACHE_SIZE = 50 * 1024 * 1024;
     public static final String TMDb_API_URL = "https://api.themoviedb.org/3/";
-    public static final String NOW_ON_PLAYING = "movie/now_playing";
+    public static final String NOW_PLAYING = "movie/now_playing";
     public static final String POPULAR = "movie/popular";
     public static final String MOVIE_DETAILS = "movie/";
 
