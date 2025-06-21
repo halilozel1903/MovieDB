@@ -8,6 +8,7 @@
     <string name="first_air_date_format">📅 İlk Yayın Tarihi : %1$s</string>
     <string name="seasons_format">📺 Sezon : %1$d</string>
     <string name="episodes_format">🎞 Bölüm : %1$d</string>
+    <string name="see_all">Tümünü Gör</string>
     <string name="favorite_added">Favorilere eklendi</string>
     <string name="favorite_removed">Favorilerden çıkarıldı</string>
     <string name="movies">Filmler</string>
