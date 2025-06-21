@@ -42,7 +42,7 @@ public class TvSeriesDetailActivity extends Activity {
     String title;
     int id;
     ImageView ivHorizontalPoster, ivVerticalPoster;
-    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate;
+    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvStatus;
     ExpandableTextView etvOverview;
     Button btnToggle;
     com.google.android.material.floatingactionbutton.FloatingActionButton fabFavorite;
@@ -69,6 +69,7 @@ public class TvSeriesDetailActivity extends Activity {
         tvGenres = findViewById(R.id.tvGenres);
         tvPopularity = findViewById(R.id.tvPopularity);
         tvReleaseDate = findViewById(R.id.tvReleaseDate);
+        tvStatus = findViewById(R.id.tvStatus);
         etvOverview = findViewById(R.id.etvOverview);
         btnToggle = findViewById(R.id.btnToggle);
         fabFavorite = findViewById(R.id.fabFavorite);
@@ -112,6 +113,7 @@ public class TvSeriesDetailActivity extends Activity {
         etvOverview.setText(getIntent().getStringExtra("overview"));
         tvPopularity.setText("Popularity : " + getIntent().getDoubleExtra("popularity", 0));
         tvReleaseDate.setText("First Air Date : " + getIntent().getStringExtra("release_date"));
+        tvStatus.setText("Status : " + getIntent().getStringExtra("status"));
 
         Picasso.get().load(IMAGE_BASE_URL_1280 + getIntent().getStringExtra("backdrop")).into(ivHorizontalPoster);
         Picasso.get().load(IMAGE_BASE_URL_500 + getIntent().getStringExtra("poster")).into(ivVerticalPoster);

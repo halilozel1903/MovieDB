@@ -65,11 +65,10 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
         holder.btnFavorite.setOnClickListener(v -> {
             if (FavoritesManager.isFavorite(context, tv.getId())) {
                 FavoritesManager.remove(context, tv.getId());
-                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_off);
             } else {
                 FavoritesManager.add(context, convert(tv));
-                holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_on);
             }
+            notifyItemChanged(holder.getAdapterPosition());
         });
 
         holder.itemView.setOnClickListener(view -> tmDbAPI.getTvSeriesDetail(tv.getId(), TMDb_API_KEY)
@@ -79,11 +78,12 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
                     Intent intent = new Intent(view.getContext(), TvSeriesDetailActivity.class);
                     intent.putExtra("id", tv.getId());
                     intent.putExtra("title", tv.getName());
-                    intent.putExtra("backdrop", "");
+                    intent.putExtra("backdrop", response.getBackdrop_path());
                     intent.putExtra("poster", tv.getPoster_path());
-                    intent.putExtra("overview", response instanceof ResponseTvSeriesDetail ? ((ResponseTvSeriesDetail) response).getOverview() : "");
+                    intent.putExtra("overview", response.getOverview());
                     intent.putExtra("popularity", response.getPopularity());
                     intent.putExtra("release_date", response.getFirst_air_date());
+                    intent.putExtra("status", response.getStatus());
                     intent.putExtra("genres", (java.io.Serializable) response.getGenres());
                     view.getContext().startActivity(intent);
                 }, e -> Timber.e(e, "Error fetching tv detail: %s", e.getMessage())));

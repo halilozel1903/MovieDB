@@ -10,6 +10,7 @@ public class ResponseTvSeriesDetail implements Serializable {
     private String popularity;
     private String overview;
     private String backdrop_path;
+    private String status;
 
     public List<Genres> getGenres() {
         return genres;
@@ -57,5 +58,13 @@ public class ResponseTvSeriesDetail implements Serializable {
 
     public void setBackdrop_path(String backdrop_path) {
         this.backdrop_path = backdrop_path;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
