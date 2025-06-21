@@ -28,6 +28,7 @@ import com.halil.ozel.moviedb.data.models.TvResults;
 import com.halil.ozel.moviedb.data.models.Results;
 import com.halil.ozel.moviedb.data.models.Season;
 import com.halil.ozel.moviedb.data.models.Episode;
+import com.halil.ozel.moviedb.data.models.ResponseSeasonDetail;
 import com.halil.ozel.moviedb.data.FavoritesManager;
 import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
 import com.halil.ozel.moviedb.ui.home.adapters.TvSeriesAdapter;
@@ -65,6 +66,8 @@ public class TvSeriesDetailActivity extends AppCompatActivity {
     public List<TvResults> recommendDataList;
     public List<Season> seasonList;
     public List<Episode> episodeList;
+    private int currentSeasonNumber;
+    private ResponseSeasonDetail currentSeasonDetail;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -167,9 +170,9 @@ public class TvSeriesDetailActivity extends AppCompatActivity {
             spSeason.setAdapter(sAdapter);
             spSeason.setOnItemClickListener((parent, view1, position, id1) -> {
                 Season season = seasonList.get(position);
-                loadEpisodes(season.getSeason_number());
+                loadEpisodes(season.getSeason_number(), true);
             });
-            loadEpisodes(seasonList.get(0).getSeason_number());
+            loadEpisodes(seasonList.get(0).getSeason_number(), false);
         }
 
         getCastInfo();
@@ -226,11 +229,13 @@ public class TvSeriesDetailActivity extends AppCompatActivity {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void loadEpisodes(int seasonNumber) {
+    private void loadEpisodes(int seasonNumber, boolean showDialog) {
+        currentSeasonNumber = seasonNumber;
         tmDbAPI.getSeasonDetail(id, seasonNumber, TMDb_API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
+                    currentSeasonDetail = response;
                     episodeList = response.getEpisodes();
                     if (episodeList != null) {
                         List<String> eNames = new ArrayList<>();
@@ -239,8 +244,55 @@ public class TvSeriesDetailActivity extends AppCompatActivity {
                         }
                         android.widget.ArrayAdapter<String> eAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eNames);
                         spEpisode.setAdapter(eAdapter);
+                        spEpisode.setOnItemClickListener((p, v, pos, id2) -> {
+                            Episode ep = episodeList.get(pos);
+                            loadEpisodeDetail(ep.getEpisode_number());
+                        });
+                    }
+                    if (showDialog) {
+                        showSeasonDetail(response);
                     }
                 }, e -> Timber.e(e, "Error fetching season detail: %s", e.getMessage()));
+    }
+
+    private void loadEpisodeDetail(int episodeNumber) {
+        tmDbAPI.getEpisodeDetail(id, currentSeasonNumber, episodeNumber, TMDb_API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::showEpisodeDetail,
+                        e -> Timber.e(e, "Error fetching episode detail: %s", e.getMessage()));
+    }
+
+    private void showSeasonDetail(ResponseSeasonDetail detail) {
+        android.view.View view = getLayoutInflater().inflate(R.layout.dialog_season_detail, null);
+        ImageView poster = view.findViewById(R.id.ivSeasonPoster);
+        TextView name = view.findViewById(R.id.tvSeasonName);
+        TextView overview = view.findViewById(R.id.tvSeasonOverview);
+        name.setText(detail.getName());
+        overview.setText(detail.getOverview());
+        if (detail.getPoster_path() != null) {
+            Picasso.get().load(IMAGE_BASE_URL_500 + detail.getPoster_path()).into(poster);
+        }
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+    }
+
+    private void showEpisodeDetail(Episode episode) {
+        android.view.View view = getLayoutInflater().inflate(R.layout.dialog_episode_detail, null);
+        ImageView poster = view.findViewById(R.id.ivEpisodeStill);
+        TextView name = view.findViewById(R.id.tvEpisodeName);
+        TextView overview = view.findViewById(R.id.tvEpisodeOverview);
+        name.setText(episode.getName());
+        overview.setText(episode.getOverview());
+        if (episode.getStill_path() != null) {
+            Picasso.get().load(IMAGE_BASE_URL_500 + episode.getStill_path()).into(poster);
+        }
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     private void updateFab() {

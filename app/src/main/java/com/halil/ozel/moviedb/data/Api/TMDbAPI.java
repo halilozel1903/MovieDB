@@ -100,6 +100,14 @@ public interface TMDbAPI {
             @Query("api_key") String api_key
     );
 
+    @GET(HttpClientModule.TV_DETAILS + "{tv_id}/season/{season_number}/episode/{episode_number}")
+    Observable<Episode> getEpisodeDetail(
+            @Path("tv_id") int tvId,
+            @Path("season_number") int seasonNumber,
+            @Path("episode_number") int episodeNumber,
+            @Query("api_key") String api_key
+    );
+
     @GET(HttpClientModule.GENRE_MOVIE)
     Observable<ResponseGenreList> getMovieGenres(
             @Query("api_key") String api_key
