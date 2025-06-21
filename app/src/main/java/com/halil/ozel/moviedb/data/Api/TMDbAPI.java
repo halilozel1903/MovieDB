@@ -13,6 +13,7 @@ import com.halil.ozel.moviedb.data.models.ResponseKeyword;
 import com.halil.ozel.moviedb.data.models.ResponseTvSeriesDetail;
 import com.halil.ozel.moviedb.data.models.ResponsePersonMovieCredits;
 import com.halil.ozel.moviedb.data.models.ResponsePersonTvCredits;
+import com.halil.ozel.moviedb.data.models.ResponseSeasonDetail;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -89,6 +90,13 @@ public interface TMDbAPI {
     @GET(HttpClientModule.TV_DETAILS + "{tv_id}/recommendations")
     Observable<ResponseTvSeries> getTvRecommendations(
             @Path("tv_id") int tvId,
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.TV_DETAILS + "{tv_id}/season/{season_number}")
+    Observable<ResponseSeasonDetail> getSeasonDetail(
+            @Path("tv_id") int tvId,
+            @Path("season_number") int seasonNumber,
             @Query("api_key") String api_key
     );
 
