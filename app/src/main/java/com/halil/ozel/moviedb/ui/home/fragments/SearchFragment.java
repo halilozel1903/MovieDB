@@ -43,6 +43,7 @@ public class SearchFragment extends Fragment {
     @Inject
     TMDbAPI tmDbAPI;
 
+    private EditText etQuery;
     private MovieAdapter movieAdapter;
     private final List<Results> movieList = new ArrayList<>();
     private TvSeriesAdapter tvAdapter;
@@ -57,7 +58,7 @@ public class SearchFragment extends Fragment {
         App.instance().appComponent().inject(this);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        EditText etQuery = view.findViewById(R.id.etQuery);
+        etQuery = view.findViewById(R.id.etQuery);
         tvMoviesTitle = view.findViewById(R.id.tvMoviesTitle);
         tvTvTitle = view.findViewById(R.id.tvTvTitle);
         tvPersonsTitle = view.findViewById(R.id.tvPersonsTitle);
@@ -66,11 +67,7 @@ public class SearchFragment extends Fragment {
         tvTvTitle.setVisibility(View.GONE);
         tvPersonsTitle.setVisibility(View.GONE);
 
-        etQuery.post(() -> {
-            etQuery.requestFocus();
-            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.showSoftInput(etQuery, InputMethodManager.SHOW_IMPLICIT);
-        });
+        etQuery.requestFocus();
 
         RecyclerView rvMovies = view.findViewById(R.id.rvSearchMovies);
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -156,5 +153,17 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (etQuery != null) {
+            etQuery.requestFocus();
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(etQuery, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }
     }
 }
