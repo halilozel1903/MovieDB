@@ -2,9 +2,9 @@ package com.halil.ozel.moviedb;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import java.util.Locale;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 
 import com.halil.ozel.moviedb.dagger.components.ApplicationComponent;
 import com.halil.ozel.moviedb.dagger.components.DaggerApplicationComponent;
@@ -52,8 +52,7 @@ public class App extends Application {
     public void applyLocale(String lang) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
-        Configuration config = getResources().getConfiguration();
-        config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        LocaleListCompat locales = LocaleListCompat.create(locale);
+        AppCompatDelegate.setApplicationLocales(locales);
     }
 }
