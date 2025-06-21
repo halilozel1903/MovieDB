@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:titleTextColor="@android:color/white"
-        android:title="@string/app_name" />
+        android:title="@string/app_name"
+        app:navigationIconTint="@android:color/white" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/svDetail"

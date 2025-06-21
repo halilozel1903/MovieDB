@@ -81,6 +81,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         detailToolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material);
         detailToolbar.setNavigationOnClickListener(v -> onBackPressed());
         detailToolbar.setTitle("");
+        detailToolbar.setNavigationIconTint(getResources().getColor(android.R.color.white));
 
         castDataList = new ArrayList<>();
         castAdapter = new MovieCastAdapter(castDataList, this);

@@ -5,6 +5,8 @@ import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.android.material.appbar.MaterialToolbar;
+import androidx.core.content.ContextCompat;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,8 @@ public class CastDetailActivity extends AppCompatActivity {
     private final java.util.List<Results> movieList = new java.util.ArrayList<>();
     private final java.util.List<TvResults> tvList = new java.util.ArrayList<>();
 
+    private MaterialToolbar detailToolbar;
+
     private int personId;
 
     @Override
@@ -54,6 +58,12 @@ public class CastDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         App.instance().appComponent().inject(this);
         setContentView(R.layout.activity_cast_detail);
+
+        detailToolbar = findViewById(R.id.detailToolbar);
+        detailToolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material);
+        detailToolbar.setNavigationOnClickListener(v -> onBackPressed());
+        detailToolbar.setTitle("");
+        detailToolbar.setNavigationIconTint(ContextCompat.getColor(this, android.R.color.white));
 
         ivProfile = findViewById(R.id.ivProfile);
         tvName = findViewById(R.id.tvName);
