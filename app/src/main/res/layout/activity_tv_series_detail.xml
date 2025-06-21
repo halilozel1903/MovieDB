@@ -136,7 +136,8 @@
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="6dp"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
                     android:id="@+id/tvPopularity"
@@ -145,7 +146,8 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="6dp"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
                     android:id="@+id/tvReleaseDate"
@@ -154,7 +156,8 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="4dp"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
                     android:id="@+id/tvSeasons"
@@ -163,7 +166,8 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="4dp"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:textColor="?android:textColorPrimary" />
 
                 <TextView
                     android:id="@+id/tvEpisodes"
@@ -172,7 +176,8 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="4dp"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:textColor="?android:textColorPrimary" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -223,7 +228,8 @@
                     android:layout_marginTop="15dp"
                     android:paddingStart="15dp"
                     android:text="Full Casts"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="?android:textColorPrimary" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvCast"
@@ -246,7 +252,8 @@
                     android:layout_marginTop="15dp"
                     android:paddingStart="15dp"
                     android:text="Recommend Contents"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textColor="?android:textColorPrimary" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvRecommendContents"
