@@ -6,6 +6,7 @@ import com.halil.ozel.moviedb.data.models.ResponseCreditDetail;
 import com.halil.ozel.moviedb.data.models.ResponseMovieDetail;
 import com.halil.ozel.moviedb.data.models.ResponseNowPlaying;
 import com.halil.ozel.moviedb.data.models.PersonDetail;
+import com.halil.ozel.moviedb.data.models.ResponsePerson;
 import com.halil.ozel.moviedb.data.models.ResponseTvSeries;
 import com.halil.ozel.moviedb.data.models.ResponseGenreList;
 import com.halil.ozel.moviedb.data.models.ResponseKeyword;
