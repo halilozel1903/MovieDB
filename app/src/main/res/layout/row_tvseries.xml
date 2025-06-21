@@ -26,7 +26,8 @@
                 android:id="@+id/btnFavorite"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_gravity="end"
+                android:layout_gravity="end|top"
+                android:layout_margin="4dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_star_border_24"
                 app:srcCompat="@drawable/ic_star_border_24" />
