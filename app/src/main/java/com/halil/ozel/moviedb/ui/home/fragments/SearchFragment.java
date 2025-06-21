@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -16,8 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.halil.ozel.moviedb.App;
 import com.halil.ozel.moviedb.R;
 import com.halil.ozel.moviedb.data.Api.TMDbAPI;
-import com.halil.ozel.moviedb.data.models.Keyword;
-import com.halil.ozel.moviedb.ui.home.adapters.KeywordAdapter;
+import com.halil.ozel.moviedb.data.models.Results;
+import com.halil.ozel.moviedb.data.models.TvResults;
+import com.halil.ozel.moviedb.data.models.Cast;
+import com.halil.ozel.moviedb.ui.home.adapters.MovieAdapter;
+import com.halil.ozel.moviedb.ui.home.adapters.TvSeriesAdapter;
+import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +40,12 @@ public class SearchFragment extends Fragment {
     @Inject
     TMDbAPI tmDbAPI;
 
-    private KeywordAdapter adapter;
-    private final List<Keyword> data = new ArrayList<>();
+    private MovieAdapter movieAdapter;
+    private final List<Results> movieList = new ArrayList<>();
+    private TvSeriesAdapter tvAdapter;
+    private final List<TvResults> tvList = new ArrayList<>();
+    private MovieCastAdapter personAdapter;
+    private final List<Cast> personList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -45,25 +54,76 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         EditText etQuery = view.findViewById(R.id.etQuery);
-        Button btnSearch = view.findViewById(R.id.btnSearch);
-        RecyclerView rvKeywords = view.findViewById(R.id.rvKeywords);
-        rvKeywords.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new KeywordAdapter(data);
-        rvKeywords.setAdapter(adapter);
 
-        btnSearch.setOnClickListener(v -> {
-            String query = etQuery.getText().toString().trim();
-            if (query.isEmpty()) return;
-            data.clear();
-            tmDbAPI.searchKeyword(TMDb_API_KEY, query, 1)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(response -> {
-                        if (response.getResults() != null) {
-                            data.addAll(response.getResults());
-                            adapter.notifyDataSetChanged();
-                        }
-                    }, e -> Timber.e(e, "Error searching keyword: %s", e.getMessage()));
+        RecyclerView rvMovies = view.findViewById(R.id.rvSearchMovies);
+        rvMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        movieAdapter = new MovieAdapter(movieList, getContext());
+        rvMovies.setAdapter(movieAdapter);
+
+        RecyclerView rvTv = view.findViewById(R.id.rvSearchTv);
+        rvTv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        tvAdapter = new TvSeriesAdapter(tvList, getContext());
+        rvTv.setAdapter(tvAdapter);
+
+        RecyclerView rvPersons = view.findViewById(R.id.rvSearchPersons);
+        rvPersons.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        personAdapter = new MovieCastAdapter(personList, getContext());
+        rvPersons.setAdapter(personAdapter);
+
+        etQuery.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString().trim();
+                if (query.isEmpty()) {
+                    movieList.clear();
+                    tvList.clear();
+                    personList.clear();
+                    movieAdapter.notifyDataSetChanged();
+                    tvAdapter.notifyDataSetChanged();
+                    personAdapter.notifyDataSetChanged();
+                    return;
+                }
+
+                movieList.clear();
+                tvList.clear();
+                personList.clear();
+
+                tmDbAPI.searchMovie(TMDb_API_KEY, query, 1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (response.getResults() != null) {
+                                movieList.addAll(response.getResults());
+                                movieAdapter.notifyDataSetChanged();
+                            }
+                        }, e -> Timber.e(e, "Error searching movie: %s", e.getMessage()));
+
+                tmDbAPI.searchTv(TMDb_API_KEY, query, 1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (response.getResults() != null) {
+                                tvList.addAll(response.getResults());
+                                tvAdapter.notifyDataSetChanged();
+                            }
+                        }, e -> Timber.e(e, "Error searching tv: %s", e.getMessage()));
+
+                tmDbAPI.searchPerson(TMDb_API_KEY, query, 1)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (response.getResults() != null) {
+                                personList.addAll(response.getResults());
+                                personAdapter.notifyDataSetChanged();
+                            }
+                        }, e -> Timber.e(e, "Error searching person: %s", e.getMessage()));
+            }
         });
 
         return view;

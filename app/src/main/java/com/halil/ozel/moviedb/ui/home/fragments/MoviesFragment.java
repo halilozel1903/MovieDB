@@ -147,4 +147,13 @@ public class MoviesFragment extends Fragment {
                     upcomingMovieAdapter.notifyDataSetChanged();
                 }, e -> Timber.e(e, "Error fetching upcoming movies: %s", e.getMessage()));
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        popularMovieAdapter.notifyDataSetChanged();
+        nowPlayingMovieAdapter.notifyDataSetChanged();
+        topRatedMovieAdapter.notifyDataSetChanged();
+        upcomingMovieAdapter.notifyDataSetChanged();
+    }
 }

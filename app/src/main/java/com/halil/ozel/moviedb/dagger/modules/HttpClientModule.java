@@ -34,6 +34,9 @@ public class HttpClientModule {
     public static final String GENRE_MOVIE = "genre/movie/list";
     public static final String GENRE_TV = "genre/tv/list";
     public static final String SEARCH_KEYWORD = "search/keyword";
+    public static final String SEARCH_MOVIE = "search/movie";
+    public static final String SEARCH_TV = "search/tv";
+    public static final String SEARCH_PERSON = "search/person";
     public static final String MOVIE_DETAILS = "movie/";
     public static final String PERSON_DETAILS = "person/";
 
