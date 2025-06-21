@@ -9,6 +9,7 @@ import com.halil.ozel.moviedb.data.models.PersonDetail;
 import com.halil.ozel.moviedb.data.models.ResponseTvSeries;
 import com.halil.ozel.moviedb.data.models.ResponseGenreList;
 import com.halil.ozel.moviedb.data.models.ResponseKeyword;
+import com.halil.ozel.moviedb.data.models.ResponseTvSeriesDetail;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
