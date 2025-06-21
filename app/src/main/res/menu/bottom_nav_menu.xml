@@ -13,6 +13,10 @@
         android:icon="@android:drawable/btn_star_big_on"
         android:title="Favorites" />
     <item
+        android:id="@+id/navigation_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search" />
+    <item
         android:id="@+id/navigation_settings"
         android:icon="@android:drawable/ic_menu_manage"
         android:title="Settings" />

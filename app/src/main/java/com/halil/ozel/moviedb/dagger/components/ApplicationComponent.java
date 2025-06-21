@@ -16,6 +16,7 @@ import com.halil.ozel.moviedb.ui.home.fragments.TvSeriesFragment;
 import com.halil.ozel.moviedb.ui.home.fragments.FavoriteFragment;
 import com.halil.ozel.moviedb.ui.home.fragments.SettingsFragment;
 import com.halil.ozel.moviedb.ui.home.adapters.TvSeriesAdapter;
+import com.halil.ozel.moviedb.ui.home.fragments.SearchFragment;
 
 import javax.inject.Singleton;
 
@@ -50,6 +51,7 @@ public interface ApplicationComponent {
     void inject(FavoriteFragment favoriteFragment);
     void inject(SettingsFragment settingsFragment);
     void inject(TvSeriesAdapter tvSeriesAdapter);
+    void inject(SearchFragment searchFragment);
 
 
 }
