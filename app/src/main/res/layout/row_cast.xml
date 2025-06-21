@@ -12,8 +12,10 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="2dp">
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="4dp"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -21,7 +23,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:id="@+id/ivCastPoster"
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
