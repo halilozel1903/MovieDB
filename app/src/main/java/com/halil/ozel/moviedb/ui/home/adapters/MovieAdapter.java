@@ -57,7 +57,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
     public void onBindViewHolder(@NonNull final PopularMovieHolder holder, final int position) {
         Results results = popularMovieList.get(position);
         holder.tvPopularMovieTitle.setText(results.getTitle());
-        Picasso.get().load(IMAGE_BASE_URL_500 + results.getPoster_path()).into(holder.ivPopularPoster);
+        if (results.getPoster_path() != null) {
+            Picasso.get()
+                    .load(IMAGE_BASE_URL_500 + results.getPoster_path())
+                    .into(holder.ivPopularPoster);
+        } else {
+            Picasso.get()
+                    .load("https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png")
+                    .into(holder.ivPopularPoster);
+        }
 
         boolean fav = FavoritesManager.isFavorite(context, results.getId());
         holder.btnFavorite.setImageResource(fav ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);

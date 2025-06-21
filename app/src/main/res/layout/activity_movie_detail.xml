@@ -222,11 +222,12 @@
 
 
     </androidx.core.widget.NestedScrollView>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fabFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
         android:layout_margin="16dp"
         android:src="@android:drawable/btn_star_big_off" />
 
