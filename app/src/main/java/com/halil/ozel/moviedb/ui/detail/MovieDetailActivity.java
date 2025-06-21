@@ -120,7 +120,7 @@ public class MovieDetailActivity extends Activity {
 
         List<Genres> labelPS = (List<Genres>) getIntent().getSerializableExtra("genres");
 
-        if (labelPS != null) {
+        if (labelPS != null && !labelPS.isEmpty()) {
             String genres = "";
             for (int i = 0; i < labelPS.size(); i++) {
                 if (labelPS.get(i) == null) continue;
@@ -131,7 +131,7 @@ public class MovieDetailActivity extends Activity {
                 }
             }
             tvGenres.setText(genres);
-        } else if (labelPS.size() == 0) {
+        } else {
             tvGenres.setText("");
         }
         getCastInfo();

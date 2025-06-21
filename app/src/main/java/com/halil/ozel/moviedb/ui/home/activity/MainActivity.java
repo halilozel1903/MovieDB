@@ -77,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(response -> {
                     nowPlayingDataList.addAll(response.getResults());
                     nowPlayingMovieAdapter.notifyDataSetChanged();
-                },
-                        e -> Timber.e(e, "Error fetching now playing movies: %s", e.getMessage()));
+                }, e -> Timber.e(e, "Error fetching now playing movies: %s", e.getMessage()));     
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(response -> {
                     popularMovieDataList.addAll(response.getResults());
                     popularMovieAdapter.notifyDataSetChanged();
-                },
-                        e -> Timber.e(e, "Error fetching popular movies: %s", e.getMessage()));
+                }, e -> Timber.e(e, "Error fetching popular movies: %s", e.getMessage()));
     }
 }
