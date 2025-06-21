@@ -14,7 +14,8 @@
             android:id="@+id/etQuery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search" />
+            android:hint="Search"
+            android:inputType="text" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvMoviesTitle"
