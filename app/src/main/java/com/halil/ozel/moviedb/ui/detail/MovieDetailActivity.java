@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -117,8 +118,10 @@ public class MovieDetailActivity extends Activity {
         title = getIntent().getStringExtra("title");
         id = getIntent().getIntExtra("id", 0);
         tvTitle.setText(title);
-        tvPopularity.setText("Popularity : " + getIntent().getDoubleExtra("popularity", 0));
-        tvReleaseDate.setText("Release Date : " + getIntent().getStringExtra("release_date"));
+        tvPopularity.setText(getString(R.string.popularity_format,
+                getIntent().getDoubleExtra("popularity", 0)));
+        tvReleaseDate.setText(getString(R.string.release_date_format,
+                getIntent().getStringExtra("release_date")));
 
         Picasso.get().load(IMAGE_BASE_URL_1280 + getIntent().getStringExtra("backdrop")).into(ivHorizontalPoster);
         Picasso.get().load(IMAGE_BASE_URL_500 + getIntent().getStringExtra("poster")).into(ivVerticalPoster);
@@ -135,7 +138,7 @@ public class MovieDetailActivity extends Activity {
                     genres = genres.concat(labelPS.get(i).getName() + " | ");
                 }
             }
-            tvGenres.setText(genres);
+            tvGenres.setText("\uD83C\uDFAD " + genres);
         } else {
             tvGenres.setText("");
         }
@@ -147,6 +150,7 @@ public class MovieDetailActivity extends Activity {
             if (FavoritesManager.isFavorite(this, id)) {
                 FavoritesManager.remove(this, id);
                 fabFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+                Toast.makeText(this, R.string.favorite_removed, Toast.LENGTH_SHORT).show();
             } else {
                 Results r = new Results();
                 r.setId(id);
@@ -158,7 +162,9 @@ public class MovieDetailActivity extends Activity {
                 r.setRelease_date(getIntent().getStringExtra("release_date"));
                 FavoritesManager.add(this, r);
                 fabFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+                Toast.makeText(this, R.string.favorite_added, Toast.LENGTH_SHORT).show();
             }
+            updateFab();
         });
     }
 
