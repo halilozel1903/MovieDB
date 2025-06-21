@@ -57,5 +57,14 @@
             android:id="@+id/rvSearchPersons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvNoResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/no_results" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

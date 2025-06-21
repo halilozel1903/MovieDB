@@ -20,4 +20,6 @@
         <item>@string/english</item>
         <item>@string/turkish</item>
     </string-array>
+    <string name="no_results">İçerik bulunamadı</string>
+    <string name="favorites_title">Favorilerim</string>
 </resources>

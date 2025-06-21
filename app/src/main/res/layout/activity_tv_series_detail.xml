@@ -174,15 +174,26 @@
                     android:layout_marginEnd="4dp"
                     android:maxLines="3" />
 
-                <Spinner
-                    android:id="@+id/spSeason"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content">
 
-                <Spinner
-                    android:id="@+id/spEpisode"
+                    <AutoCompleteTextView
+                        android:id="@+id/spSeason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spEpisode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
