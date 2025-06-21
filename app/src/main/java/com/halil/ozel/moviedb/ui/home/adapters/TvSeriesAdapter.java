@@ -87,7 +87,7 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
                     Intent intent = new Intent(view.getContext(), TvSeriesDetailActivity.class);
                     intent.putExtra("id", tv.getId());
                     intent.putExtra("title", tv.getName());
-                    intent.putExtra("backdrop", "");
+                    intent.putExtra("backdrop", response.getBackdrop_path());
                     intent.putExtra("poster", tv.getPoster_path());
                     intent.putExtra("overview", response instanceof ResponseTvSeriesDetail ? ((ResponseTvSeriesDetail) response).getOverview() : "");
                     intent.putExtra("popularity", response.getPopularity());

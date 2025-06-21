@@ -44,6 +44,7 @@ public class FavoriteFragment extends Fragment {
     private void loadData() {
         List<Results> list = FavoritesManager.load(requireContext());
         adapter = new MovieAdapter(list, getContext());
+        adapter.setOnFavoriteChangeListener(this::loadData);
         recyclerView.setAdapter(adapter);
     }
 }

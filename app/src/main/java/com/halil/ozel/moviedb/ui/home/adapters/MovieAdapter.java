@@ -36,6 +36,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
 
     private final List<Results> popularMovieList;
     private final Context context;
+    private OnFavoriteChangeListener favoriteChangeListener;
 
     @Inject
     TMDbAPI tmDbAPI;
@@ -43,6 +44,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
     public MovieAdapter(List<Results> popularMovieList, Context context) {
         this.popularMovieList = popularMovieList;
         this.context = context;
+    }
+
+    public interface OnFavoriteChangeListener {
+        void onChange();
+    }
+
+    public void setOnFavoriteChangeListener(OnFavoriteChangeListener listener) {
+        this.favoriteChangeListener = listener;
     }
 
     @NonNull
@@ -74,9 +83,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.PopularMovie
             if (FavoritesManager.isFavorite(context, results.getId())) {
                 FavoritesManager.remove(context, results.getId());
                 holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+                if (favoriteChangeListener != null) favoriteChangeListener.onChange();
             } else {
                 FavoritesManager.add(context, results);
                 holder.btnFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+                if (favoriteChangeListener != null) favoriteChangeListener.onChange();
             }
         });
 

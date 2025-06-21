@@ -79,6 +79,9 @@ public class TvSeriesDetailActivity extends Activity {
         btnToggle = findViewById(R.id.btnToggle);
         fabFavorite = findViewById(R.id.fabFavorite);
         detailToolbar = findViewById(R.id.detailToolbar);
+        detailToolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material);
+        detailToolbar.setNavigationOnClickListener(v -> onBackPressed());
+        detailToolbar.setTitle("");
 
         castDataList = new ArrayList<>();
         castAdapter = new MovieCastAdapter(castDataList, this);
@@ -116,7 +119,6 @@ public class TvSeriesDetailActivity extends Activity {
         title = getIntent().getStringExtra("title");
         id = getIntent().getIntExtra("id", 0);
         tvTitle.setText(title);
-        detailToolbar.setTitle(title);
         etvOverview.setText(getIntent().getStringExtra("overview"));
         tvPopularity.setText(getString(R.string.popularity_format,
                 getIntent().getDoubleExtra("popularity", 0)));
