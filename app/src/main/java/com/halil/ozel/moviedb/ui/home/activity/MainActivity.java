@@ -13,6 +13,7 @@ import com.halil.ozel.moviedb.ui.home.fragments.FavoriteFragment;
 import com.halil.ozel.moviedb.ui.home.fragments.MoviesFragment;
 import com.halil.ozel.moviedb.ui.home.fragments.SettingsFragment;
 import com.halil.ozel.moviedb.ui.home.fragments.TvSeriesFragment;
+import com.halil.ozel.moviedb.ui.home.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new TvSeriesFragment();
             } else if (id == R.id.navigation_favorites) {
                 fragment = new FavoriteFragment();
+            } else if (id == R.id.navigation_search) {
+                fragment = new SearchFragment();
             } else if (id == R.id.navigation_settings) {
                 fragment = new SettingsFragment();
             } else {

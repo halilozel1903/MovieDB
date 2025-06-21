@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.animation.OvershootInterpolator;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class MovieDetailActivity extends Activity {
     String title;
     int id;
     ImageView ivHorizontalPoster, ivVerticalPoster;
-    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate;
+    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvRelated;
     ExpandableTextView etvOverview;
     Button btnToggle;
     com.google.android.material.floatingactionbutton.FloatingActionButton fabFavorite;
@@ -68,6 +69,7 @@ public class MovieDetailActivity extends Activity {
         tvGenres = findViewById(R.id.tvGenres);
         tvPopularity = findViewById(R.id.tvPopularity);
         tvReleaseDate = findViewById(R.id.tvReleaseDate);
+        tvRelated = findViewById(R.id.tvRelated);
         etvOverview = findViewById(R.id.etvOverview);
         btnToggle = findViewById(R.id.btnToggle);
         fabFavorite = findViewById(R.id.fabFavorite);
@@ -144,6 +146,7 @@ public class MovieDetailActivity extends Activity {
         fabFavorite.setOnClickListener(v -> {
             if (FavoritesManager.isFavorite(this, id)) {
                 FavoritesManager.remove(this, id);
+                fabFavorite.setImageResource(android.R.drawable.btn_star_big_off);
             } else {
                 Results r = new Results();
                 r.setId(id);
@@ -154,8 +157,8 @@ public class MovieDetailActivity extends Activity {
                 r.setPopularity(getIntent().getDoubleExtra("popularity", 0));
                 r.setRelease_date(getIntent().getStringExtra("release_date"));
                 FavoritesManager.add(this, r);
+                fabFavorite.setImageResource(android.R.drawable.btn_star_big_on);
             }
-            updateFab();
         });
     }
 
@@ -171,11 +174,17 @@ public class MovieDetailActivity extends Activity {
 
     @SuppressLint("NotifyDataSetChanged")
     public void getRecommendMovie() {
-        tmDbAPI.getRecommendDetail(id, TMDb_API_KEY).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(response -> {
-            recommendDataList.addAll(response.getResults());
-            recommendAdapter.notifyDataSetChanged();
+        tmDbAPI.getRecommendDetail(id, TMDb_API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    recommendDataList.addAll(response.getResults());
+                    recommendAdapter.notifyDataSetChanged();
+                    if (recommendDataList.isEmpty()) {
+                        tvRelated.setVisibility(View.GONE);
+                    }
 
-        }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
+                }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
     }
 
     private void updateFab() {

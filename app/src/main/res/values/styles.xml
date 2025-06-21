@@ -1,9 +1,5 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">#05151b</item>
-        <item name="colorPrimaryDark">#05151b</item>
-        <item name="colorSecondary">#03DAC6</item>
-    </style>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar" />
 
 </resources>
