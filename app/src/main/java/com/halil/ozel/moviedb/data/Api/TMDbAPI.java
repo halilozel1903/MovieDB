@@ -2,6 +2,7 @@ package com.halil.ozel.moviedb.data.Api;
 
 
 import com.halil.ozel.moviedb.dagger.modules.HttpClientModule;
+import com.halil.ozel.moviedb.data.models.Episode;
 import com.halil.ozel.moviedb.data.models.ResponseCreditDetail;
 import com.halil.ozel.moviedb.data.models.ResponseMovieDetail;
 import com.halil.ozel.moviedb.data.models.ResponseNowPlaying;
