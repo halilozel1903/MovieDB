@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Movie DB</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="birthday_format">Birthday : %1$s</string>
 </resources>
