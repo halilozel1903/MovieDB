@@ -23,4 +23,23 @@
     </string-array>
     <string name="no_results">İçerik bulunamadı</string>
     <string name="favorites_title">Favorilerim</string>
+    <string name="now_playing">Şimdi Gösterimde</string>
+    <string name="popular">Popüler</string>
+    <string name="top_rated">En Beğenilen</string>
+    <string name="upcoming">Yakında</string>
+    <string name="tv_popular">Popüler Diziler</string>
+    <string name="airing_today">Bugün Yayında</string>
+    <string name="on_the_air">Yayında</string>
+    <string name="full_casts">Tüm Kadro</string>
+    <string name="recommend_contents">Önerilen İçerikler</string>
+    <string name="search_hint">Ara</string>
+    <string name="persons">Kişiler</string>
+    <string name="search">Ara</string>
+    <string name="settings">Ayarlar</string>
+    <string name="season">Sezon</string>
+    <string name="episode">Bölüm</string>
+    <string name="keyword">Anahtar Kelime</string>
+    <string name="movie_name">Film Adı</string>
+    <string name="series_name">Dizi Adı</string>
+    <string name="rating_suffix">/10</string>
 </resources>

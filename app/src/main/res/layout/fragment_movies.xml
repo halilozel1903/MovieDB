@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:text="Now Playing" />
+                android:text="@string/now_playing" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvNowPlayingSeeAll"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:text="Popular" />
+                android:text="@string/popular" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvPopularSeeAll"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:text="Top Rated" />
+                android:text="@string/top_rated" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvTopRatedSeeAll"
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:text="Upcoming" />
+                android:text="@string/upcoming" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvUpcomingSeeAll"
