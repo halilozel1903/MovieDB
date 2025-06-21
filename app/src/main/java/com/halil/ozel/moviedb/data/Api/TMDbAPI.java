@@ -11,6 +11,8 @@ import com.halil.ozel.moviedb.data.models.ResponseTvSeries;
 import com.halil.ozel.moviedb.data.models.ResponseGenreList;
 import com.halil.ozel.moviedb.data.models.ResponseKeyword;
 import com.halil.ozel.moviedb.data.models.ResponseTvSeriesDetail;
+import com.halil.ozel.moviedb.data.models.ResponsePersonMovieCredits;
+import com.halil.ozel.moviedb.data.models.ResponsePersonTvCredits;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -149,6 +151,18 @@ public interface TMDbAPI {
 
     @GET(HttpClientModule.PERSON_DETAILS + "{person_id}")
     Observable<PersonDetail> getPersonDetail(
+            @Path("person_id") int person_id,
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.PERSON_DETAILS + "{person_id}/movie_credits")
+    Observable<ResponsePersonMovieCredits> getPersonMovieCredits(
+            @Path("person_id") int person_id,
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.PERSON_DETAILS + "{person_id}/tv_credits")
+    Observable<ResponsePersonTvCredits> getPersonTvCredits(
             @Path("person_id") int person_id,
             @Query("api_key") String api_key
     );

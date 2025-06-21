@@ -7,4 +7,6 @@
     <string name="first_air_date_format">📅 First Air Date : %1$s</string>
     <string name="favorite_added">Added to favorites</string>
     <string name="favorite_removed">Removed from favorites</string>
+    <string name="movies">Movies</string>
+    <string name="tv_series">TV Series</string>
 </resources>
