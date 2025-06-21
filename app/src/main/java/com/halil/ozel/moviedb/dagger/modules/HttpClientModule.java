@@ -24,6 +24,8 @@ public class HttpClientModule {
     public static final String TMDb_API_URL = "https://api.themoviedb.org/3/";
     public static final String NOW_PLAYING = "movie/now_playing";
     public static final String POPULAR = "movie/popular";
+    public static final String TOP_RATED = "movie/top_rated";
+    public static final String UPCOMING = "movie/upcoming";
     public static final String MOVIE_DETAILS = "movie/";
 
 

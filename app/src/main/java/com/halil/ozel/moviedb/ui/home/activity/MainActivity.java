@@ -40,6 +40,16 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView.LayoutManager nowPlayingLayoutManager;
     public List<Results> nowPlayingDataList;
 
+    public RecyclerView rvTopRated;
+    public RecyclerView.Adapter topRatedMovieAdapter;
+    public RecyclerView.LayoutManager topRatedLayoutManager;
+    public List<Results> topRatedDataList;
+
+    public RecyclerView rvUpcoming;
+    public RecyclerView.Adapter upcomingMovieAdapter;
+    public RecyclerView.LayoutManager upcomingLayoutManager;
+    public List<Results> upcomingDataList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +74,28 @@ public class MainActivity extends AppCompatActivity {
         rvNowPlaying.setLayoutManager(nowPlayingLayoutManager);
         rvNowPlaying.setAdapter(nowPlayingMovieAdapter);
 
+        topRatedDataList = new ArrayList<>();
+        topRatedMovieAdapter = new MovieAdapter(topRatedDataList, this);
+        topRatedLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        rvTopRated = findViewById(R.id.rvTopRated);
+        rvTopRated.setHasFixedSize(true);
+        rvTopRated.setLayoutManager(topRatedLayoutManager);
+        rvTopRated.setAdapter(topRatedMovieAdapter);
+
+        upcomingDataList = new ArrayList<>();
+        upcomingMovieAdapter = new MovieAdapter(upcomingDataList, this);
+        upcomingLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        rvUpcoming = findViewById(R.id.rvUpcoming);
+        rvUpcoming.setHasFixedSize(true);
+        rvUpcoming.setLayoutManager(upcomingLayoutManager);
+        rvUpcoming.setAdapter(upcomingMovieAdapter);
+
         getPopularMovies();
         getNowPlaying();
+        getTopRatedMovies();
+        getUpcomingMovies();
     }
 
 
@@ -89,5 +119,27 @@ public class MainActivity extends AppCompatActivity {
                     popularMovieDataList.addAll(response.getResults());
                     popularMovieAdapter.notifyDataSetChanged();
                 }, e -> Timber.e(e, "Error fetching popular movies: %s", e.getMessage()));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void getTopRatedMovies() {
+        tmDbAPI.getTopRatedMovie(TMDb_API_KEY, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    topRatedDataList.addAll(response.getResults());
+                    topRatedMovieAdapter.notifyDataSetChanged();
+                }, e -> Timber.e(e, "Error fetching top rated movies: %s", e.getMessage()));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void getUpcomingMovies() {
+        tmDbAPI.getUpcomingMovie(TMDb_API_KEY, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    upcomingDataList.addAll(response.getResults());
+                    upcomingMovieAdapter.notifyDataSetChanged();
+                }, e -> Timber.e(e, "Error fetching upcoming movies: %s", e.getMessage()));
     }
 }

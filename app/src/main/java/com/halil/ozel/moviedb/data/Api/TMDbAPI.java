@@ -30,6 +30,18 @@ public interface TMDbAPI {
             @Query("page") int page
     );
 
+    @GET(HttpClientModule.TOP_RATED)
+    Observable<ResponseNowPlaying> getTopRatedMovie(
+            @Query("api_key") String api_key,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.UPCOMING)
+    Observable<ResponseNowPlaying> getUpcomingMovie(
+            @Query("api_key") String api_key,
+            @Query("page") int page
+    );
+
 
     @GET(HttpClientModule.MOVIE_DETAILS + "{movie_id}")
     Observable<ResponseMovieDetail> getMovieDetail(
