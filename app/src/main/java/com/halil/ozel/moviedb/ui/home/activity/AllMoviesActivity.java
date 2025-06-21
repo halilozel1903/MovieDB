@@ -3,8 +3,10 @@ package com.halil.ozel.moviedb.ui.home.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.halil.ozel.moviedb.App;
@@ -35,6 +37,9 @@ public class AllMoviesActivity extends Activity {
 
     private final List<Results> movieList = new ArrayList<>();
     private MovieAdapter adapter;
+    private int currentPage = 1;
+    private int totalPages = Integer.MAX_VALUE;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,20 @@ public class AllMoviesActivity extends Activity {
 
         RecyclerView rv = findViewById(R.id.rvAllMovies);
         adapter = new MovieAdapter(movieList, this);
-        rv.setLayoutManager(new GridLayoutManager(this, 3));
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
+        rv.setLayoutManager(manager);
         rv.setAdapter(adapter);
+
+        rv.addOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastVisible = manager.findLastVisibleItemPosition();
+                if (!isLoading && currentPage <= totalPages && lastVisible >= movieList.size() - 4) {
+                    loadMovies();
+                }
+            }
+        });
 
         loadMovies();
     }
@@ -59,19 +76,26 @@ public class AllMoviesActivity extends Activity {
         String category = getIntent().getStringExtra(EXTRA_CATEGORY);
         Observable<? extends com.halil.ozel.moviedb.data.models.ResponseNowPlaying> call;
         if ("now_playing".equals(category)) {
-            call = tmDbAPI.getNowPlaying(TMDb_API_KEY, 1);
+            call = tmDbAPI.getNowPlaying(TMDb_API_KEY, currentPage);
         } else if ("top_rated".equals(category)) {
-            call = tmDbAPI.getTopRatedMovie(TMDb_API_KEY, 1);
+            call = tmDbAPI.getTopRatedMovie(TMDb_API_KEY, currentPage);
         } else if ("upcoming".equals(category)) {
-            call = tmDbAPI.getUpcomingMovie(TMDb_API_KEY, 1);
+            call = tmDbAPI.getUpcomingMovie(TMDb_API_KEY, currentPage);
         } else {
-            call = tmDbAPI.getPopularMovie(TMDb_API_KEY, 1);
+            call = tmDbAPI.getPopularMovie(TMDb_API_KEY, currentPage);
         }
+        isLoading = true;
         call.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
+                    totalPages = response.getTotal_pages();
                     movieList.addAll(response.getResults());
                     adapter.notifyDataSetChanged();
-                }, e -> Timber.e(e, "Error fetching movies: %s", e.getMessage()));
+                    currentPage++;
+                    isLoading = false;
+                }, e -> {
+                    Timber.e(e, "Error fetching movies: %s", e.getMessage());
+                    isLoading = false;
+                });
     }
 }

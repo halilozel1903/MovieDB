@@ -3,8 +3,10 @@ package com.halil.ozel.moviedb.ui.home.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.halil.ozel.moviedb.App;
@@ -35,6 +37,9 @@ public class AllTvActivity extends Activity {
 
     private final List<TvResults> tvList = new ArrayList<>();
     private TvSeriesAdapter adapter;
+    private int currentPage = 1;
+    private int totalPages = Integer.MAX_VALUE;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,20 @@ public class AllTvActivity extends Activity {
 
         RecyclerView rv = findViewById(R.id.rvAllTv);
         adapter = new TvSeriesAdapter(tvList, this);
-        rv.setLayoutManager(new GridLayoutManager(this, 3));
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
+        rv.setLayoutManager(manager);
         rv.setAdapter(adapter);
+
+        rv.addOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastVisible = manager.findLastVisibleItemPosition();
+                if (!isLoading && currentPage <= totalPages && lastVisible >= tvList.size() - 4) {
+                    loadTv();
+                }
+            }
+        });
 
         loadTv();
     }
@@ -59,19 +76,26 @@ public class AllTvActivity extends Activity {
         String category = getIntent().getStringExtra(EXTRA_CATEGORY);
         Observable<? extends com.halil.ozel.moviedb.data.models.ResponseTvSeries> call;
         if ("top_rated".equals(category)) {
-            call = tmDbAPI.getTvTopRated(TMDb_API_KEY, 1);
+            call = tmDbAPI.getTvTopRated(TMDb_API_KEY, currentPage);
         } else if ("airing_today".equals(category)) {
-            call = tmDbAPI.getTvAiringToday(TMDb_API_KEY, 1);
+            call = tmDbAPI.getTvAiringToday(TMDb_API_KEY, currentPage);
         } else if ("on_the_air".equals(category)) {
-            call = tmDbAPI.getTvOnTheAir(TMDb_API_KEY, 1);
+            call = tmDbAPI.getTvOnTheAir(TMDb_API_KEY, currentPage);
         } else {
-            call = tmDbAPI.getTvPopular(TMDb_API_KEY, 1);
+            call = tmDbAPI.getTvPopular(TMDb_API_KEY, currentPage);
         }
+        isLoading = true;
         call.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
+                    totalPages = response.getTotal_pages();
                     tvList.addAll(response.getResults());
                     adapter.notifyDataSetChanged();
-                }, e -> Timber.e(e, "Error fetching tv: %s", e.getMessage()));
+                    currentPage++;
+                    isLoading = false;
+                }, e -> {
+                    Timber.e(e, "Error fetching tv: %s", e.getMessage());
+                    isLoading = false;
+                });
     }
 }
