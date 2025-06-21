@@ -70,6 +70,24 @@ public interface TMDbAPI {
             @Query("page") int page
     );
 
+    @GET(HttpClientModule.TV_DETAILS + "{tv_id}")
+    Observable<ResponseTvSeriesDetail> getTvSeriesDetail(
+            @Path("tv_id") int tvId,
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.TV_DETAILS + "{tv_id}/credits")
+    Observable<ResponseCreditDetail> getTvCastDetail(
+            @Path("tv_id") int tvId,
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.TV_DETAILS + "{tv_id}/recommendations")
+    Observable<ResponseTvSeries> getTvRecommendations(
+            @Path("tv_id") int tvId,
+            @Query("api_key") String api_key
+    );
+
     @GET(HttpClientModule.GENRE_MOVIE)
     Observable<ResponseGenreList> getMovieGenres(
             @Query("api_key") String api_key
