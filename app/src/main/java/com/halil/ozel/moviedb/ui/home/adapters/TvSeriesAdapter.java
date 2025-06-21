@@ -92,6 +92,9 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
                     intent.putExtra("overview", response instanceof ResponseTvSeriesDetail ? ((ResponseTvSeriesDetail) response).getOverview() : "");
                     intent.putExtra("popularity", response.getPopularity());
                     intent.putExtra("release_date", response.getFirst_air_date());
+                    intent.putExtra("seasons", response.getNumber_of_seasons());
+                    intent.putExtra("episodes", response.getNumber_of_episodes());
+                    intent.putExtra("season_list", (java.io.Serializable) response.getSeasons());
                     intent.putExtra("genres", (java.io.Serializable) response.getGenres());
                     view.getContext().startActivity(intent);
                 }, e -> Timber.e(e, "Error fetching tv detail: %s", e.getMessage())));

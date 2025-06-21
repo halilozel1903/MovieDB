@@ -10,6 +10,9 @@ public class ResponseTvSeriesDetail implements Serializable {
     private String popularity;
     private String overview;
     private String backdrop_path;
+    private Integer number_of_seasons;
+    private Integer number_of_episodes;
+    private List<Season> seasons;
 
     public List<Genres> getGenres() {
         return genres;
@@ -57,5 +60,29 @@ public class ResponseTvSeriesDetail implements Serializable {
 
     public void setBackdrop_path(String backdrop_path) {
         this.backdrop_path = backdrop_path;
+    }
+
+    public Integer getNumber_of_seasons() {
+        return number_of_seasons;
+    }
+
+    public void setNumber_of_seasons(Integer number_of_seasons) {
+        this.number_of_seasons = number_of_seasons;
+    }
+
+    public Integer getNumber_of_episodes() {
+        return number_of_episodes;
+    }
+
+    public void setNumber_of_episodes(Integer number_of_episodes) {
+        this.number_of_episodes = number_of_episodes;
+    }
+
+    public List<Season> getSeasons() {
+        return seasons;
+    }
+
+    public void setSeasons(List<Season> seasons) {
+        this.seasons = seasons;
     }
 }
