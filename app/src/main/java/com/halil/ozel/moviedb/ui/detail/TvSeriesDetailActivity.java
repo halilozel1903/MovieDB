@@ -26,6 +26,8 @@ import com.halil.ozel.moviedb.data.models.Cast;
 import com.halil.ozel.moviedb.data.models.Genres;
 import com.halil.ozel.moviedb.data.models.TvResults;
 import com.halil.ozel.moviedb.data.models.Results;
+import com.halil.ozel.moviedb.data.models.Season;
+import com.halil.ozel.moviedb.data.models.Episode;
 import com.halil.ozel.moviedb.data.FavoritesManager;
 import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
 import com.halil.ozel.moviedb.ui.home.adapters.TvSeriesAdapter;
@@ -46,7 +48,8 @@ public class TvSeriesDetailActivity extends Activity {
     String title;
     int id;
     ImageView ivHorizontalPoster, ivVerticalPoster;
-    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvRelated;
+    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvSeasons, tvEpisodes, tvRelated;
+    android.widget.Spinner spSeason, spEpisode;
     ExpandableTextView etvOverview;
     Button btnToggle;
     ImageButton fabFavorite;
@@ -60,6 +63,8 @@ public class TvSeriesDetailActivity extends Activity {
     public RecyclerView.LayoutManager castLayoutManager, recommendLayoutManager;
     public List<Cast> castDataList;
     public List<TvResults> recommendDataList;
+    public List<Season> seasonList;
+    public List<Episode> episodeList;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -74,6 +79,10 @@ public class TvSeriesDetailActivity extends Activity {
         tvGenres = findViewById(R.id.tvGenres);
         tvPopularity = findViewById(R.id.tvPopularity);
         tvReleaseDate = findViewById(R.id.tvReleaseDate);
+        tvSeasons = findViewById(R.id.tvSeasons);
+        tvEpisodes = findViewById(R.id.tvEpisodes);
+        spSeason = findViewById(R.id.spSeason);
+        spEpisode = findViewById(R.id.spEpisode);
         tvRelated = findViewById(R.id.tvRelated);
         etvOverview = findViewById(R.id.etvOverview);
         btnToggle = findViewById(R.id.btnToggle);
@@ -124,6 +133,11 @@ public class TvSeriesDetailActivity extends Activity {
                 getIntent().getDoubleExtra("popularity", 0)));
         tvReleaseDate.setText(getString(R.string.first_air_date_format,
                 getIntent().getStringExtra("release_date")));
+        int seasons = getIntent().getIntExtra("seasons", 0);
+        int episodes = getIntent().getIntExtra("episodes", 0);
+        tvSeasons.setText(getString(R.string.seasons_format, seasons));
+        tvEpisodes.setText(getString(R.string.episodes_format, episodes));
+        seasonList = (List<Season>) getIntent().getSerializableExtra("season_list");
 
         Picasso.get().load(IMAGE_BASE_URL_1280 + getIntent().getStringExtra("backdrop")).into(ivHorizontalPoster);
         Picasso.get().load(IMAGE_BASE_URL_500 + getIntent().getStringExtra("poster")).into(ivVerticalPoster);
@@ -142,6 +156,29 @@ public class TvSeriesDetailActivity extends Activity {
             tvGenres.setText("\uD83C\uDFAD " + genres.toString());
         } else {
             tvGenres.setText("");
+        }
+
+        if (seasonList != null && !seasonList.isEmpty()) {
+            List<String> sNames = new ArrayList<>();
+            for (Season s : seasonList) {
+                sNames.add(s.getName());
+            }
+            android.widget.ArrayAdapter<String> sAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sNames);
+            sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spSeason.setAdapter(sAdapter);
+            spSeason.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                    Season season = seasonList.get(position);
+                    loadEpisodes(season.getSeason_number());
+                }
+
+                @Override
+                public void onNothingSelected(android.widget.AdapterView<?> parent) {
+
+                }
+            });
+            loadEpisodes(seasonList.get(0).getSeason_number());
         }
 
         getCastInfo();
@@ -195,6 +232,25 @@ public class TvSeriesDetailActivity extends Activity {
                     }
 
                 }, e -> Timber.e(e, "Error fetching tv recommendations: %s", e.getMessage()));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadEpisodes(int seasonNumber) {
+        tmDbAPI.getSeasonDetail(id, seasonNumber, TMDb_API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    episodeList = response.getEpisodes();
+                    if (episodeList != null) {
+                        List<String> eNames = new ArrayList<>();
+                        for (Episode e : episodeList) {
+                            eNames.add(e.getName());
+                        }
+                        android.widget.ArrayAdapter<String> eAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eNames);
+                        eAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spEpisode.setAdapter(eAdapter);
+                    }
+                }, e -> Timber.e(e, "Error fetching season detail: %s", e.getMessage()));
     }
 
     private void updateFab() {
