@@ -1,24 +1,29 @@
-# MovieDB 🎥 📽 📹
+# MovieDB 🎬 🌺
+
+MovieDB is an Android showcase app built with modern libraries around **The Movie Database (TMDb)** API. It displays popular and now playing movies on the home screen and provides rich detail pages.
 
 ![TheMovieDB](https://www.themoviedb.org/assets/2/v4/marketing/deadpool-06f2a06d7a418ec887300397b6861383bf1e3b72f604ddd5f75bce170e81dce9.png)
 
-The Movie Database (TMDb) is a community built movie and TV database. Every piece of data has been added by our amazing community dating back to 2008. TMDb's strong international focus and breadth of data is largely unmatched and something we're incredibly proud of. Put simply, we live and breathe community and that's precisely what makes us different.
+## Features 📊
 
-- Every year since 2008, the number of contributions to our database has increased. With over 400,000 developers and companies using our platform, TMDb has become a premiere source for metadata.
-- Along with extensive metadata for movies, TV shows and people, we also offer one of the best selections of high resolution posters and fan art. On average, over 1,000 images are added every single day.
-- We're international. While we officially support 39 languages we also have extensive regional data. Every single day TMDb is used in over 180 countries.
-- Our community is second to none. Between our staff and community moderators, we're always here to help. We're passionate about making sure your experience on TMDb is nothing short of amazing.
-- Trusted platform. Every single day our service is used by millions of people while we process over 3 billion requests. We've proven for years that this is a service that can be trusted and relied on.
+- 🔗 **Retrofit** with RxJava and Moshi for network calls
+- 💻 **Dagger 2** dependency injection
+- 📺 **RecyclerView** lists for movie carousels
+- 💡 **ExpandableTextView** for overview descriptions
+- 📷 **Picasso** and **Glide** for image loading
+- 💥 Material Components
 
 ## Screenshots 📸
 
+Home & Detail examples:
+
 <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_1.png" width="250" /> <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_2.png" width="250" />  <img src="https://github.com/halilozel1903/MovieDB/blob/master/screen_3.png" width="250" />
 
-## Donation 💸
+## Donation 💰
 
-If this project help 💁 you to develop, you can give me a cup of coffee. ☕
+If this project helps you, feel free to buy me a coffee!
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/halilozel1903)
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/halilozel1903)
 
 ## License ℹ️
 ```
