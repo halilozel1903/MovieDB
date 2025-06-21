@@ -167,6 +167,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="4dp"
+                    android:paddingStart="16dp"
                     android:maxLines="3"
                     android:textColor="?android:textColorPrimary" />
 
@@ -177,6 +178,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="4dp"
+                    android:paddingStart="16dp"
                     android:maxLines="3"
                     android:textColor="?android:textColorPrimary" />
 
@@ -190,7 +192,8 @@
                         android:id="@+id/spSeason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none" />
+                        android:inputType="none"
+                        android:paddingStart="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -204,7 +207,8 @@
                         android:id="@+id/spEpisode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none" />
+                        android:inputType="none"
+                        android:paddingStart="16dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
