@@ -39,6 +39,34 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:text="Top Rated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTopRated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:text="Upcoming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUpcoming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
     </LinearLayout>
 
 
