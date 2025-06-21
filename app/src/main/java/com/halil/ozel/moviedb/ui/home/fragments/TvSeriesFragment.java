@@ -97,6 +97,11 @@ public class TvSeriesFragment extends Fragment {
         rvTvOnTheAir.setAdapter(tvOnTheAirAdapter);
         rvTvOnTheAir.setNestedScrollingEnabled(false);
 
+        view.findViewById(R.id.tvTvPopularSeeAll).setOnClickListener(v -> startAllTv("popular", "TV Popular"));
+        view.findViewById(R.id.tvTvTopRatedSeeAll).setOnClickListener(v -> startAllTv("top_rated", "Top Rated"));
+        view.findViewById(R.id.tvTvAiringTodaySeeAll).setOnClickListener(v -> startAllTv("airing_today", "Airing Today"));
+        view.findViewById(R.id.tvTvOnTheAirSeeAll).setOnClickListener(v -> startAllTv("on_the_air", "On The Air"));
+
         getPopularTv();
         getTopRatedTv();
         getAiringTodayTv();
@@ -155,5 +160,12 @@ public class TvSeriesFragment extends Fragment {
         tvTopRatedAdapter.notifyDataSetChanged();
         tvAiringTodayAdapter.notifyDataSetChanged();
         tvOnTheAirAdapter.notifyDataSetChanged();
+    }
+
+    private void startAllTv(String category, String title) {
+        android.content.Intent intent = new android.content.Intent(getContext(), com.halil.ozel.moviedb.ui.home.activity.AllTvActivity.class);
+        intent.putExtra(com.halil.ozel.moviedb.ui.home.activity.AllTvActivity.EXTRA_CATEGORY, category);
+        intent.putExtra(com.halil.ozel.moviedb.ui.home.activity.AllTvActivity.EXTRA_TITLE, title);
+        startActivity(intent);
     }
 }
