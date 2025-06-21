@@ -106,6 +106,27 @@ public interface TMDbAPI {
             @Query("page") int page
     );
 
+    @GET(HttpClientModule.SEARCH_MOVIE)
+    Observable<ResponseNowPlaying> searchMovie(
+            @Query("api_key") String api_key,
+            @Query("query") String query,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.SEARCH_TV)
+    Observable<ResponseTvSeries> searchTv(
+            @Query("api_key") String api_key,
+            @Query("query") String query,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.SEARCH_PERSON)
+    Observable<ResponsePerson> searchPerson(
+            @Query("api_key") String api_key,
+            @Query("query") String query,
+            @Query("page") int page
+    );
+
 
     @GET(HttpClientModule.MOVIE_DETAILS + "{movie_id}")
     Observable<ResponseMovieDetail> getMovieDetail(

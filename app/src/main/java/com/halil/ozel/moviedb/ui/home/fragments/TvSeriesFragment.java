@@ -147,4 +147,13 @@ public class TvSeriesFragment extends Fragment {
                     tvOnTheAirAdapter.notifyDataSetChanged();
                 }, e -> Timber.e(e, "Error fetching on the air tv series: %s", e.getMessage()));
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvPopularAdapter.notifyDataSetChanged();
+        tvTopRatedAdapter.notifyDataSetChanged();
+        tvAiringTodayAdapter.notifyDataSetChanged();
+        tvOnTheAirAdapter.notifyDataSetChanged();
+    }
 }

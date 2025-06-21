@@ -1,6 +1,8 @@
 package com.halil.ozel.moviedb;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.halil.ozel.moviedb.dagger.components.ApplicationComponent;
 import com.halil.ozel.moviedb.dagger.components.DaggerApplicationComponent;
@@ -18,6 +20,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean dark = prefs.getBoolean("dark", false);
+        AppCompatDelegate.setDefaultNightMode(dark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
 
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
 
