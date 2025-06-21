@@ -96,6 +96,11 @@ public class MoviesFragment extends Fragment {
         rvUpcoming.setAdapter(upcomingMovieAdapter);
         rvUpcoming.setNestedScrollingEnabled(false);
 
+        view.findViewById(R.id.tvNowPlayingSeeAll).setOnClickListener(v -> startAll("now_playing", "Now Playing"));
+        view.findViewById(R.id.tvPopularSeeAll).setOnClickListener(v -> startAll("popular", "Popular"));
+        view.findViewById(R.id.tvTopRatedSeeAll).setOnClickListener(v -> startAll("top_rated", "Top Rated"));
+        view.findViewById(R.id.tvUpcomingSeeAll).setOnClickListener(v -> startAll("upcoming", "Upcoming"));
+
         getPopularMovies();
         getNowPlaying();
         getTopRatedMovies();
@@ -155,5 +160,12 @@ public class MoviesFragment extends Fragment {
         nowPlayingMovieAdapter.notifyDataSetChanged();
         topRatedMovieAdapter.notifyDataSetChanged();
         upcomingMovieAdapter.notifyDataSetChanged();
+    }
+
+    private void startAll(String category, String title) {
+        android.content.Intent intent = new android.content.Intent(getContext(), com.halil.ozel.moviedb.ui.home.activity.AllMoviesActivity.class);
+        intent.putExtra(com.halil.ozel.moviedb.ui.home.activity.AllMoviesActivity.EXTRA_CATEGORY, category);
+        intent.putExtra(com.halil.ozel.moviedb.ui.home.activity.AllMoviesActivity.EXTRA_TITLE, title);
+        startActivity(intent);
     }
 }
