@@ -9,4 +9,6 @@
     <string name="episodes_format">🎞 Episodes : %1$d</string>
     <string name="favorite_added">Added to favorites</string>
     <string name="favorite_removed">Removed from favorites</string>
+    <string name="movies">Movies</string>
+    <string name="tv_series">TV Series</string>
 </resources>

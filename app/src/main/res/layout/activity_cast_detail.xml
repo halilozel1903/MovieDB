@@ -36,5 +36,33 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp" />
 
+        <TextView
+            android:id="@+id/tvMoviesTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:text="@string/movies" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMovieCredits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvTvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:text="@string/tv_series" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTvCredits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </ScrollView>
