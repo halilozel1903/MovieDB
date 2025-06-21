@@ -167,7 +167,6 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="4dp"
-                    android:paddingStart="16dp"
                     android:maxLines="3"
                     android:textColor="?android:textColorPrimary" />
 
@@ -178,7 +177,6 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="4dp"
-                    android:paddingStart="16dp"
                     android:maxLines="3"
                     android:textColor="?android:textColorPrimary" />
 
