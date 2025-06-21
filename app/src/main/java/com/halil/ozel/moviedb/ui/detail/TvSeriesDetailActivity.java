@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -30,6 +31,7 @@ import com.halil.ozel.moviedb.data.models.Season;
 import com.halil.ozel.moviedb.data.models.Episode;
 import com.halil.ozel.moviedb.data.FavoritesManager;
 import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
+import com.halil.ozel.moviedb.ui.detail.AllCastActivity;
 import com.halil.ozel.moviedb.ui.home.adapters.TvSeriesAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +50,7 @@ public class TvSeriesDetailActivity extends Activity {
     String title;
     int id;
     ImageView ivHorizontalPoster, ivVerticalPoster;
-    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvSeasons, tvEpisodes, tvRelated;
+    TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvSeasons, tvEpisodes, tvRelated, tvCast;
     android.widget.AutoCompleteTextView spSeason, spEpisode;
     ExpandableTextView etvOverview;
     Button btnToggle;
@@ -91,15 +93,24 @@ public class TvSeriesDetailActivity extends Activity {
         detailToolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material);
         detailToolbar.setNavigationOnClickListener(v -> onBackPressed());
         detailToolbar.setTitle("");
+        tvCast = findViewById(R.id.tvCast);
 
         castDataList = new ArrayList<>();
         castAdapter = new MovieCastAdapter(castDataList, this);
-        castLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        castLayoutManager = new GridLayoutManager(this, 3);
 
         rvCast = findViewById(R.id.rvCast);
         rvCast.setHasFixedSize(true);
         rvCast.setLayoutManager(castLayoutManager);
         rvCast.setAdapter(castAdapter);
+
+        tvCast.setOnClickListener(v -> {
+            android.content.Intent i = new android.content.Intent(this, AllCastActivity.class);
+            i.putExtra(AllCastActivity.EXTRA_ID, id);
+            i.putExtra(AllCastActivity.EXTRA_IS_TV, true);
+            i.putExtra(AllCastActivity.EXTRA_TITLE, tvCast.getText());
+            startActivity(i);
+        });
 
         recommendDataList = new ArrayList<>();
         recommendAdapter = new TvSeriesAdapter(recommendDataList, this);
