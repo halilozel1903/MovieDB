@@ -1,15 +1,18 @@
 # MovieDB 🎬 🌺
 
-MovieDB is an Android showcase app built with modern libraries around **The Movie Database (TMDb)** API. It displays popular and now playing movies on the home screen and provides rich detail pages.
+MovieDB is an Android showcase app built around **The Movie Database (TMDb)** API. Browse movies and TV series, search, and view detailed pages.
 
 ![TheMovieDB](https://www.themoviedb.org/assets/2/v4/marketing/deadpool-06f2a06d7a418ec887300397b6861383bf1e3b72f604ddd5f75bce170e81dce9.png)
 
 ## Features 📊
 
-- 🔗 **Retrofit** with RxJava and Moshi for network calls
+- 🔗 **Retrofit** with **RxJava3**, Moshi and OkHttp
 - 💻 **Dagger 2** dependency injection
-- 📺 **RecyclerView** lists for movie carousels
-- 💡 **ExpandableTextView** for overview descriptions
+- 📺 **RecyclerView** lists for movies and TV
+- 🎬 **Search** and detailed pages with cast, seasons and episodes
+- ❤️ **Favorites** stored locally
+- 🌗 **Dark mode** and **language** settings
+- 💡 **ExpandableTextView** for long descriptions
 - 📷 **Picasso** and **Glide** for image loading
 - 💥 Material Components
 
