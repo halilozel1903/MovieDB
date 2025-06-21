@@ -13,7 +13,8 @@
             android:id="@+id/ivProfile"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true" />
 
         <TextView
             android:id="@+id/tvName"

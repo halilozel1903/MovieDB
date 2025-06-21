@@ -43,6 +43,7 @@ public class MovieDetailActivity extends Activity {
     TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate;
     ExpandableTextView etvOverview;
     Button btnToggle;
+    com.google.android.material.floatingactionbutton.FloatingActionButton fabFavorite;
 
     @Inject
     TMDbAPI tmDbAPI;
@@ -68,6 +69,7 @@ public class MovieDetailActivity extends Activity {
         tvReleaseDate = findViewById(R.id.tvReleaseDate);
         etvOverview = findViewById(R.id.etvOverview);
         btnToggle = findViewById(R.id.btnToggle);
+        fabFavorite = findViewById(R.id.fabFavorite);
 
         castDataList = new ArrayList<>();
         castAdapter = new MovieCastAdapter(castDataList, this);
@@ -136,6 +138,18 @@ public class MovieDetailActivity extends Activity {
         }
         getCastInfo();
         getRecommendMovie();
+
+        fabFavorite.setOnClickListener(v -> {
+            Results r = new Results();
+            r.setId(id);
+            r.setTitle(title);
+            r.setPoster_path(getIntent().getStringExtra("poster"));
+            r.setBackdrop_path(getIntent().getStringExtra("backdrop"));
+            r.setOverview(getIntent().getStringExtra("overview"));
+            r.setPopularity(getIntent().getDoubleExtra("popularity", 0));
+            r.setRelease_date(getIntent().getStringExtra("release_date"));
+            com.halil.ozel.moviedb.data.FavoritesManager.add(this, r);
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")

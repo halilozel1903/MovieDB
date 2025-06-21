@@ -26,6 +26,10 @@ public class HttpClientModule {
     public static final String POPULAR = "movie/popular";
     public static final String TOP_RATED = "movie/top_rated";
     public static final String UPCOMING = "movie/upcoming";
+    public static final String TV_TOP_RATED = "tv/top_rated";
+    public static final String TV_AIRING_TODAY = "tv/airing_today";
+    public static final String TV_ON_THE_AIR = "tv/on_the_air";
+    public static final String TV_POPULAR = "tv/popular";
     public static final String MOVIE_DETAILS = "movie/";
     public static final String PERSON_DETAILS = "person/";
 
