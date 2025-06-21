@@ -3,7 +3,7 @@ package com.halil.ozel.moviedb.ui.detail;
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_500;
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +29,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class CastDetailActivity extends Activity {
+public class CastDetailActivity extends AppCompatActivity {
 
     @Inject
     TMDbAPI tmDbAPI;

@@ -5,7 +5,7 @@ import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_500;
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.OvershootInterpolator;
 import android.view.View;
@@ -40,7 +40,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class MovieDetailActivity extends Activity {
+public class MovieDetailActivity extends AppCompatActivity {
 
     String title;
     int id;
@@ -104,11 +104,6 @@ public class MovieDetailActivity extends Activity {
         etvOverview.setInterpolator(new OvershootInterpolator());
         etvOverview.setExpandInterpolator(new OvershootInterpolator());
         etvOverview.setCollapseInterpolator(new OvershootInterpolator());
-
-        btnToggle.setOnClickListener(v -> {
-            btnToggle.setBackgroundResource(etvOverview.isExpanded() ? R.drawable.ic_expand_more : R.drawable.ic_expand_less);
-            etvOverview.toggle();
-        });
 
         btnToggle.setOnClickListener(v -> {
             if (etvOverview.isExpanded()) {
