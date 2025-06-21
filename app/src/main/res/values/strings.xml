@@ -5,6 +5,8 @@
     <string name="popularity_format">🔥 Popularity : %1$.1f</string>
     <string name="release_date_format">📅 Release Date : %1$s</string>
     <string name="first_air_date_format">📅 First Air Date : %1$s</string>
+    <string name="seasons_format">📺 Seasons : %1$d</string>
+    <string name="episodes_format">🎞 Episodes : %1$d</string>
     <string name="favorite_added">Added to favorites</string>
     <string name="favorite_removed">Removed from favorites</string>
 </resources>
