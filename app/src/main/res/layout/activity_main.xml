@@ -12,13 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:padding="5dp"
             android:text="Now Playing"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
+            android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNowPlaying"
@@ -27,14 +25,12 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_marginTop="10dp"
             android:padding="5dp"
             android:text="Popular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </TextView>
+            android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPopularMovie"

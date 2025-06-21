@@ -68,7 +68,7 @@
 
 
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
@@ -87,7 +87,7 @@
                     android:scaleType="fitXY" />
 
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
 
             <LinearLayout

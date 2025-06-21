@@ -31,8 +31,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import at.blogc.android.views.ExpandableTextView;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class MovieDetailActivity extends Activity {
