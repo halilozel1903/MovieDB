@@ -7,6 +7,7 @@ import com.halil.ozel.moviedb.dagger.modules.ApplicationModule;
 import com.halil.ozel.moviedb.dagger.modules.HttpClientModule;
 import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
 import com.halil.ozel.moviedb.ui.detail.MovieDetailActivity;
+import com.halil.ozel.moviedb.ui.detail.CastDetailActivity;
 import com.halil.ozel.moviedb.ui.detail.adapters.RecommendMovieAdapter;
 import com.halil.ozel.moviedb.ui.home.activity.MainActivity;
 
@@ -28,6 +29,8 @@ public interface ApplicationComponent {
     void inject(MainActivity mainActivity);
 
     void inject(MovieDetailActivity movieDetailActivity);
+
+    void inject(CastDetailActivity castDetailActivity);
 
     void inject(MovieAdapter movieAdapter);
 

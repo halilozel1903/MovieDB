@@ -27,6 +27,7 @@ public class HttpClientModule {
     public static final String TOP_RATED = "movie/top_rated";
     public static final String UPCOMING = "movie/upcoming";
     public static final String MOVIE_DETAILS = "movie/";
+    public static final String PERSON_DETAILS = "person/";
 
 
     @Provides

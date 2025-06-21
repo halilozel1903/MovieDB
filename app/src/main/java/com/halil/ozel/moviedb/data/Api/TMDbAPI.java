@@ -5,6 +5,7 @@ import com.halil.ozel.moviedb.dagger.modules.HttpClientModule;
 import com.halil.ozel.moviedb.data.models.ResponseCreditDetail;
 import com.halil.ozel.moviedb.data.models.ResponseMovieDetail;
 import com.halil.ozel.moviedb.data.models.ResponseNowPlaying;
+import com.halil.ozel.moviedb.data.models.PersonDetail;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -58,6 +59,12 @@ public interface TMDbAPI {
     @GET(HttpClientModule.MOVIE_DETAILS + "{movie_id}/recommendations")
     Observable<ResponseNowPlaying> getRecommendDetail(
             @Path("movie_id") int movie_id,
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.PERSON_DETAILS + "{person_id}")
+    Observable<PersonDetail> getPersonDetail(
+            @Path("person_id") int person_id,
             @Query("api_key") String api_key
     );
 }

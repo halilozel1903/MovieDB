@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.halil.ozel.moviedb.App;
 import com.halil.ozel.moviedb.R;
 import com.halil.ozel.moviedb.data.Api.TMDbAPI;
 import com.halil.ozel.moviedb.data.models.Cast;
+import com.halil.ozel.moviedb.ui.detail.CastDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -60,6 +62,12 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Movi
                     load("https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png")
                     .into(holder.ivCastPoster);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CastDetailActivity.class);
+            intent.putExtra("person_id", cast.getId());
+            context.startActivity(intent);
+        });
     }
 
 

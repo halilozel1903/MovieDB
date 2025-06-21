@@ -9,10 +9,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/detailToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:titleTextColor="@android:color/white"
+        android:title="@string/app_name" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/svDetail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/detailToolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
