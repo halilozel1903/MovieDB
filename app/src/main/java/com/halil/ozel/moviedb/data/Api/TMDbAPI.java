@@ -18,7 +18,7 @@ public interface TMDbAPI {
 
     String TMDb_API_KEY = "45dfdbd49fa1f1da1f5b75fd60217433";
 
-    @GET(HttpClientModule.NOW_ON_PLAYING)
+    @GET(HttpClientModule.NOW_PLAYING)
     Observable<ResponseNowPlaying> getNowPlaying(
             @Query("api_key") String api_key,
             @Query("page") int page
