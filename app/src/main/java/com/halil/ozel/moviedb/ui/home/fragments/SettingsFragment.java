@@ -52,8 +52,14 @@ public class SettingsFragment extends Fragment {
         boolean dark = requireContext().getSharedPreferences(PREFS, 0).getBoolean(KEY_DARK, false);
         themeSwitch.setChecked(dark);
         themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            requireContext().getSharedPreferences(PREFS, 0).edit().putBoolean(KEY_DARK, isChecked).apply();
-            AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+            requireContext().getSharedPreferences(PREFS, 0)
+                    .edit()
+                    .putBoolean(KEY_DARK, isChecked)
+                    .apply();
+            AppCompatDelegate.setDefaultNightMode(isChecked
+                    ? AppCompatDelegate.MODE_NIGHT_YES
+                    : AppCompatDelegate.MODE_NIGHT_NO);
+            requireActivity().recreate();
         });
 
         return view;
