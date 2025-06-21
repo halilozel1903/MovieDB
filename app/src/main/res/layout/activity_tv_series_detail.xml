@@ -122,7 +122,7 @@
                         android:layout_marginRight="6dp"
                         android:layout_marginBottom="5dp"
                         android:paddingStart="3dp"
-                        android:text="TextView"
+                        android:text="@string/series_name"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -184,7 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:endIconMode="dropdown_menu"
-                    android:hint="Season">
+                    android:hint="@string/season">
 
                     <AutoCompleteTextView
                         android:id="@+id/spSeason"
@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:endIconMode="dropdown_menu"
-                    android:hint="Episode">
+                    android:hint="@string/episode">
 
                     <AutoCompleteTextView
                         android:id="@+id/spEpisode"
@@ -230,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:paddingStart="15dp"
-                    android:text="Full Casts"
+                    android:text="@string/full_casts"
                     android:textSize="16sp"
                     android:textColor="?android:textColorPrimary" />
 
@@ -254,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:paddingStart="15dp"
-                    android:text="Recommend Contents"
+                    android:text="@string/recommend_contents"
                     android:textSize="16sp"
                     android:textColor="?android:textColorPrimary" />
 

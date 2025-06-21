@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="/10"
+                android:text="@string/rating_suffix"
                 android:textSize="14sp"
                 tools:ignore="HardcodedText" />
 

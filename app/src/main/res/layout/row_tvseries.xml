@@ -40,6 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="Series Name" />
+        android:text="@string/series_name" />
 
 </LinearLayout>
