@@ -50,7 +50,7 @@ public class SearchFragment extends Fragment {
     private final List<TvResults> tvList = new ArrayList<>();
     private MovieCastAdapter personAdapter;
     private final List<Cast> personList = new ArrayList<>();
-    private TextView tvMoviesTitle, tvTvTitle, tvPersonsTitle;
+    private TextView tvMoviesTitle, tvTvTitle, tvPersonsTitle, tvNoResults;
 
     @Nullable
     @Override
@@ -62,10 +62,12 @@ public class SearchFragment extends Fragment {
         tvMoviesTitle = view.findViewById(R.id.tvMoviesTitle);
         tvTvTitle = view.findViewById(R.id.tvTvTitle);
         tvPersonsTitle = view.findViewById(R.id.tvPersonsTitle);
+        tvNoResults = view.findViewById(R.id.tvNoResults);
 
         tvMoviesTitle.setVisibility(View.GONE);
         tvTvTitle.setVisibility(View.GONE);
         tvPersonsTitle.setVisibility(View.GONE);
+        tvNoResults.setVisibility(View.GONE);
 
         etQuery.requestFocus();
 
@@ -104,6 +106,7 @@ public class SearchFragment extends Fragment {
                     tvMoviesTitle.setVisibility(View.GONE);
                     tvTvTitle.setVisibility(View.GONE);
                     tvPersonsTitle.setVisibility(View.GONE);
+                    tvNoResults.setVisibility(View.GONE);
                     return;
                 }
 
@@ -122,6 +125,7 @@ public class SearchFragment extends Fragment {
                             } else {
                                 tvMoviesTitle.setVisibility(View.GONE);
                             }
+                            updateNoResultsMessage();
                         }, e -> Timber.e(e, "Error searching movie: %s", e.getMessage()));
 
                 tmDbAPI.searchTv(TMDb_API_KEY, query, 1)
@@ -135,6 +139,7 @@ public class SearchFragment extends Fragment {
                             } else {
                                 tvTvTitle.setVisibility(View.GONE);
                             }
+                            updateNoResultsMessage();
                         }, e -> Timber.e(e, "Error searching tv: %s", e.getMessage()));
 
                 tmDbAPI.searchPerson(TMDb_API_KEY, query, 1)
@@ -148,6 +153,7 @@ public class SearchFragment extends Fragment {
                             } else {
                                 tvPersonsTitle.setVisibility(View.GONE);
                             }
+                            updateNoResultsMessage();
                         }, e -> Timber.e(e, "Error searching person: %s", e.getMessage()));
             }
         });
@@ -164,6 +170,13 @@ public class SearchFragment extends Fragment {
             if (imm != null) {
                 imm.showSoftInput(etQuery, InputMethodManager.SHOW_IMPLICIT);
             }
+        }
+    }
+
+    private void updateNoResultsMessage() {
+        if (tvNoResults != null) {
+            boolean empty = movieList.isEmpty() && tvList.isEmpty() && personList.isEmpty();
+            tvNoResults.setVisibility(empty ? View.VISIBLE : View.GONE);
         }
     }
 }

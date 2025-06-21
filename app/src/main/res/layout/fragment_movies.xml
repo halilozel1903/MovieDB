@@ -11,15 +11,6 @@
         android:layout_height="wrap_content"
         tools:context=".ui.home.activity.MainActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:titleTextColor="@android:color/white"
-        android:title="@string/app_name" />
-
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

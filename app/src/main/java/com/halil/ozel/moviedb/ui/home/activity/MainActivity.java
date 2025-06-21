@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String lang = getSharedPreferences("settings", MODE_PRIVATE).getString("language", "en");
+        App.instance().applyLocale(lang);
         App.instance().appComponent().inject(this);
         setContentView(R.layout.activity_main);
 

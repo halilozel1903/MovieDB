@@ -49,7 +49,7 @@ public class TvSeriesDetailActivity extends Activity {
     int id;
     ImageView ivHorizontalPoster, ivVerticalPoster;
     TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvSeasons, tvEpisodes, tvRelated;
-    android.widget.Spinner spSeason, spEpisode;
+    android.widget.AutoCompleteTextView spSeason, spEpisode;
     ExpandableTextView etvOverview;
     Button btnToggle;
     ImageButton fabFavorite;
@@ -163,20 +163,11 @@ public class TvSeriesDetailActivity extends Activity {
             for (Season s : seasonList) {
                 sNames.add(s.getName());
             }
-            android.widget.ArrayAdapter<String> sAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sNames);
-            sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            android.widget.ArrayAdapter<String> sAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sNames);
             spSeason.setAdapter(sAdapter);
-            spSeason.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                    Season season = seasonList.get(position);
-                    loadEpisodes(season.getSeason_number());
-                }
-
-                @Override
-                public void onNothingSelected(android.widget.AdapterView<?> parent) {
-
-                }
+            spSeason.setOnItemClickListener((parent, view1, position, id1) -> {
+                Season season = seasonList.get(position);
+                loadEpisodes(season.getSeason_number());
             });
             loadEpisodes(seasonList.get(0).getSeason_number());
         }
@@ -246,8 +237,7 @@ public class TvSeriesDetailActivity extends Activity {
                         for (Episode e : episodeList) {
                             eNames.add(e.getName());
                         }
-                        android.widget.ArrayAdapter<String> eAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eNames);
-                        eAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        android.widget.ArrayAdapter<String> eAdapter = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eNames);
                         spEpisode.setAdapter(eAdapter);
                     }
                 }, e -> Timber.e(e, "Error fetching season detail: %s", e.getMessage()));
