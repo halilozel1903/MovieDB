@@ -57,7 +57,15 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
     public void onBindViewHolder(@NonNull TvSeriesHolder holder, int position) {
         TvResults tv = tvList.get(position);
         holder.title.setText(tv.getName());
-        Picasso.get().load(IMAGE_BASE_URL_500 + tv.getPoster_path()).into(holder.poster);
+        if (tv.getPoster_path() != null) {
+            Picasso.get()
+                    .load(IMAGE_BASE_URL_500 + tv.getPoster_path())
+                    .into(holder.poster);
+        } else {
+            Picasso.get()
+                    .load("https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled-1150x647.png")
+                    .into(holder.poster);
+        }
 
         boolean fav = FavoritesManager.isFavorite(context, tv.getId());
         holder.btnFavorite.setImageResource(fav ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off);

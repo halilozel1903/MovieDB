@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.view.inputmethod.InputMethodManager;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,6 +49,7 @@ public class SearchFragment extends Fragment {
     private final List<TvResults> tvList = new ArrayList<>();
     private MovieCastAdapter personAdapter;
     private final List<Cast> personList = new ArrayList<>();
+    private TextView tvMoviesTitle, tvTvTitle, tvPersonsTitle;
 
     @Nullable
     @Override
@@ -54,6 +58,19 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         EditText etQuery = view.findViewById(R.id.etQuery);
+        tvMoviesTitle = view.findViewById(R.id.tvMoviesTitle);
+        tvTvTitle = view.findViewById(R.id.tvTvTitle);
+        tvPersonsTitle = view.findViewById(R.id.tvPersonsTitle);
+
+        tvMoviesTitle.setVisibility(View.GONE);
+        tvTvTitle.setVisibility(View.GONE);
+        tvPersonsTitle.setVisibility(View.GONE);
+
+        etQuery.post(() -> {
+            etQuery.requestFocus();
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.showSoftInput(etQuery, InputMethodManager.SHOW_IMPLICIT);
+        });
 
         RecyclerView rvMovies = view.findViewById(R.id.rvSearchMovies);
         rvMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -87,6 +104,9 @@ public class SearchFragment extends Fragment {
                     movieAdapter.notifyDataSetChanged();
                     tvAdapter.notifyDataSetChanged();
                     personAdapter.notifyDataSetChanged();
+                    tvMoviesTitle.setVisibility(View.GONE);
+                    tvTvTitle.setVisibility(View.GONE);
+                    tvPersonsTitle.setVisibility(View.GONE);
                     return;
                 }
 
@@ -101,6 +121,9 @@ public class SearchFragment extends Fragment {
                             if (response.getResults() != null) {
                                 movieList.addAll(response.getResults());
                                 movieAdapter.notifyDataSetChanged();
+                                tvMoviesTitle.setVisibility(movieList.isEmpty() ? View.GONE : View.VISIBLE);
+                            } else {
+                                tvMoviesTitle.setVisibility(View.GONE);
                             }
                         }, e -> Timber.e(e, "Error searching movie: %s", e.getMessage()));
 
@@ -111,6 +134,9 @@ public class SearchFragment extends Fragment {
                             if (response.getResults() != null) {
                                 tvList.addAll(response.getResults());
                                 tvAdapter.notifyDataSetChanged();
+                                tvTvTitle.setVisibility(tvList.isEmpty() ? View.GONE : View.VISIBLE);
+                            } else {
+                                tvTvTitle.setVisibility(View.GONE);
                             }
                         }, e -> Timber.e(e, "Error searching tv: %s", e.getMessage()));
 
@@ -121,6 +147,9 @@ public class SearchFragment extends Fragment {
                             if (response.getResults() != null) {
                                 personList.addAll(response.getResults());
                                 personAdapter.notifyDataSetChanged();
+                                tvPersonsTitle.setVisibility(personList.isEmpty() ? View.GONE : View.VISIBLE);
+                            } else {
+                                tvPersonsTitle.setVisibility(View.GONE);
                             }
                         }, e -> Timber.e(e, "Error searching person: %s", e.getMessage()));
             }

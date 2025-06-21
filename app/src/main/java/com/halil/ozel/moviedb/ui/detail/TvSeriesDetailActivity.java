@@ -11,11 +11,13 @@ import android.view.animation.OvershootInterpolator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import com.halil.ozel.moviedb.App;
 import com.halil.ozel.moviedb.R;
@@ -47,7 +49,8 @@ public class TvSeriesDetailActivity extends Activity {
     TextView tvTitle, tvGenres, tvPopularity, tvReleaseDate, tvRelated;
     ExpandableTextView etvOverview;
     Button btnToggle;
-    com.google.android.material.floatingactionbutton.FloatingActionButton fabFavorite;
+    ImageButton fabFavorite;
+    MaterialToolbar detailToolbar;
 
     @Inject
     TMDbAPI tmDbAPI;
@@ -75,6 +78,7 @@ public class TvSeriesDetailActivity extends Activity {
         etvOverview = findViewById(R.id.etvOverview);
         btnToggle = findViewById(R.id.btnToggle);
         fabFavorite = findViewById(R.id.fabFavorite);
+        detailToolbar = findViewById(R.id.detailToolbar);
 
         castDataList = new ArrayList<>();
         castAdapter = new MovieCastAdapter(castDataList, this);
@@ -112,6 +116,7 @@ public class TvSeriesDetailActivity extends Activity {
         title = getIntent().getStringExtra("title");
         id = getIntent().getIntExtra("id", 0);
         tvTitle.setText(title);
+        detailToolbar.setTitle(title);
         etvOverview.setText(getIntent().getStringExtra("overview"));
         tvPopularity.setText(getString(R.string.popularity_format,
                 getIntent().getDoubleExtra("popularity", 0)));
@@ -155,7 +160,6 @@ public class TvSeriesDetailActivity extends Activity {
                 fabFavorite.setImageResource(android.R.drawable.btn_star_big_on);
                 Toast.makeText(this, R.string.favorite_added, Toast.LENGTH_SHORT).show();
             }
-            updateFab();
         });
     }
 
