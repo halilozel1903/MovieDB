@@ -7,6 +7,8 @@ import com.halil.ozel.moviedb.data.models.ResponseMovieDetail;
 import com.halil.ozel.moviedb.data.models.ResponseNowPlaying;
 import com.halil.ozel.moviedb.data.models.PersonDetail;
 import com.halil.ozel.moviedb.data.models.ResponseTvSeries;
+import com.halil.ozel.moviedb.data.models.ResponseGenreList;
+import com.halil.ozel.moviedb.data.models.ResponseKeyword;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -65,6 +67,23 @@ public interface TMDbAPI {
     @GET(HttpClientModule.TV_ON_THE_AIR)
     Observable<ResponseTvSeries> getTvOnTheAir(
             @Query("api_key") String api_key,
+            @Query("page") int page
+    );
+
+    @GET(HttpClientModule.GENRE_MOVIE)
+    Observable<ResponseGenreList> getMovieGenres(
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.GENRE_TV)
+    Observable<ResponseGenreList> getTvGenres(
+            @Query("api_key") String api_key
+    );
+
+    @GET(HttpClientModule.SEARCH_KEYWORD)
+    Observable<ResponseKeyword> searchKeyword(
+            @Query("api_key") String api_key,
+            @Query("query") String query,
             @Query("page") int page
     );
 

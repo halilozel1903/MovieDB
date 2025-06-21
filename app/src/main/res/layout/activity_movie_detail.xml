@@ -228,7 +228,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        android:src="@android:drawable/btn_star_big_on" />
+        android:src="@android:drawable/btn_star_big_off" />
 
 
 

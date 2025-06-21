@@ -21,6 +21,7 @@ import com.halil.ozel.moviedb.data.Api.TMDbAPI;
 import com.halil.ozel.moviedb.data.models.Cast;
 import com.halil.ozel.moviedb.data.models.Genres;
 import com.halil.ozel.moviedb.data.models.Results;
+import com.halil.ozel.moviedb.data.FavoritesManager;
 import com.halil.ozel.moviedb.ui.detail.adapters.MovieCastAdapter;
 import com.halil.ozel.moviedb.ui.home.adapters.MovieAdapter;
 import com.squareup.picasso.Picasso;
@@ -139,16 +140,22 @@ public class MovieDetailActivity extends Activity {
         getCastInfo();
         getRecommendMovie();
 
+        updateFab();
         fabFavorite.setOnClickListener(v -> {
-            Results r = new Results();
-            r.setId(id);
-            r.setTitle(title);
-            r.setPoster_path(getIntent().getStringExtra("poster"));
-            r.setBackdrop_path(getIntent().getStringExtra("backdrop"));
-            r.setOverview(getIntent().getStringExtra("overview"));
-            r.setPopularity(getIntent().getDoubleExtra("popularity", 0));
-            r.setRelease_date(getIntent().getStringExtra("release_date"));
-            com.halil.ozel.moviedb.data.FavoritesManager.add(this, r);
+            if (FavoritesManager.isFavorite(this, id)) {
+                FavoritesManager.remove(this, id);
+            } else {
+                Results r = new Results();
+                r.setId(id);
+                r.setTitle(title);
+                r.setPoster_path(getIntent().getStringExtra("poster"));
+                r.setBackdrop_path(getIntent().getStringExtra("backdrop"));
+                r.setOverview(getIntent().getStringExtra("overview"));
+                r.setPopularity(getIntent().getDoubleExtra("popularity", 0));
+                r.setRelease_date(getIntent().getStringExtra("release_date"));
+                FavoritesManager.add(this, r);
+            }
+            updateFab();
         });
     }
 
@@ -169,5 +176,13 @@ public class MovieDetailActivity extends Activity {
             recommendAdapter.notifyDataSetChanged();
 
         }, e -> Timber.e(e, "Error fetching now popular movies: %s", e.getMessage()));
+    }
+
+    private void updateFab() {
+        if (FavoritesManager.isFavorite(this, id)) {
+            fabFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+        } else {
+            fabFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+        }
     }
 }
