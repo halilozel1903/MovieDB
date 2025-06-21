@@ -5,7 +5,7 @@ import static com.halil.ozel.moviedb.data.Api.TMDbAPI.IMAGE_BASE_URL_500;
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.OvershootInterpolator;
 import android.view.View;
@@ -43,7 +43,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class TvSeriesDetailActivity extends Activity {
+public class TvSeriesDetailActivity extends AppCompatActivity {
 
     String title;
     int id;

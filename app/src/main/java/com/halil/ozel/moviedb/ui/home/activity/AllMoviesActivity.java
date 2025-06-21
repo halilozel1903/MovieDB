@@ -1,6 +1,6 @@
 package com.halil.ozel.moviedb.ui.home.activity;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,7 +27,7 @@ import timber.log.Timber;
 
 import static com.halil.ozel.moviedb.data.Api.TMDbAPI.TMDb_API_KEY;
 
-public class AllMoviesActivity extends Activity {
+public class AllMoviesActivity extends AppCompatActivity {
 
     public static final String EXTRA_CATEGORY = "category";
     public static final String EXTRA_TITLE = "title";

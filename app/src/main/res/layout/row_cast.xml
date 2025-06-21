@@ -10,8 +10,8 @@
 
     <com.google.android.material.card.MaterialCardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="170dp"
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="4dp"
         android:foreground="?attr/selectableItemBackground"
@@ -25,8 +25,8 @@
             <ImageView
                 android:scaleType="centerCrop"
                 android:id="@+id/ivCastPoster"
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
