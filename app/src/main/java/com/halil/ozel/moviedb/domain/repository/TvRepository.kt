@@ -4,6 +4,8 @@ import com.halil.ozel.moviedb.domain.model.Cast
 import com.halil.ozel.moviedb.domain.model.Genre
 import com.halil.ozel.moviedb.domain.model.Season
 import com.halil.ozel.moviedb.domain.model.TvSeries
+import com.halil.ozel.moviedb.domain.model.Video
+import com.halil.ozel.moviedb.domain.model.WatchProvider
 
 interface TvRepository {
     suspend fun getPopularTv(page: Int = 1): Result<List<TvSeries>>
@@ -15,4 +17,6 @@ interface TvRepository {
     suspend fun getRecommendedTv(tvId: Int): Result<List<TvSeries>>
     suspend fun getTvGenres(): Result<List<Genre>>
     suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Result<Season>
+    suspend fun getTvVideos(tvId: Int): Result<List<Video>>
+    suspend fun getTvWatchProviders(tvId: Int): Result<List<WatchProvider>>
 }

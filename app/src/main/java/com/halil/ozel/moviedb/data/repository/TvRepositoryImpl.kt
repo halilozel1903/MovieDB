@@ -6,6 +6,8 @@ import com.halil.ozel.moviedb.domain.model.Cast
 import com.halil.ozel.moviedb.domain.model.Genre
 import com.halil.ozel.moviedb.domain.model.Season
 import com.halil.ozel.moviedb.domain.model.TvSeries
+import com.halil.ozel.moviedb.domain.model.Video
+import com.halil.ozel.moviedb.domain.model.WatchProvider
 import com.halil.ozel.moviedb.domain.repository.TvRepository
 import javax.inject.Inject
 
@@ -49,5 +51,15 @@ class TvRepositoryImpl @Inject constructor(
 
     override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Result<Season> = runCatching {
         apiService.getSeasonDetails(tvId, seasonNumber, apiKey).toDomain()
+    }
+
+    override suspend fun getTvVideos(tvId: Int): Result<List<Video>> = runCatching {
+        apiService.getTvVideos(tvId, apiKey).results.map { it.toDomain() }
+    }
+
+    override suspend fun getTvWatchProviders(tvId: Int): Result<List<WatchProvider>> = runCatching {
+        val response = apiService.getTvWatchProviders(tvId, apiKey)
+        val countryData = response.results["TR"] ?: response.results["US"] ?: response.results.values.firstOrNull()
+        countryData?.flatrate?.take(5)?.map { it.toDomain() } ?: emptyList()
     }
 }

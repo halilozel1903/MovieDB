@@ -32,7 +32,7 @@ fun TvCard(
     onClick: (Int) -> Unit,
     isFavorite: Boolean = false,
     onFavoriteToggle: ((TvSeries) -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.width(130.dp)   // default for horizontal rows
 ) {
     var favoriteAnimating by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
@@ -43,9 +43,7 @@ fun TvCard(
     )
 
     Card(
-        modifier = modifier
-            .width(130.dp)
-            .clickable { onClick(tvSeries.id) },
+        modifier = modifier.clickable { onClick(tvSeries.id) },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -57,13 +55,13 @@ fun TvCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(195.dp)
+                    .aspectRatio(2f / 3f)
                     .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
             )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(195.dp)
+                    .aspectRatio(2f / 3f)
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(Color.Transparent, CardGradientEnd),
@@ -113,7 +111,9 @@ fun TvCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .height(58.dp)
+                .padding(horizontal = 8.dp, vertical = 6.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = tvSeries.name,
@@ -121,15 +121,14 @@ fun TvCard(
                 color = OnBackground,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                lineHeight = MaterialTheme.typography.bodySmall.fontSize * 1.3
             )
-            if (tvSeries.firstAirDate.length >= 4) {
-                Text(
-                    text = tvSeries.firstAirDate.take(4),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = OnSurface
-                )
-            }
+            Text(
+                text = if (tvSeries.firstAirDate.length >= 4) tvSeries.firstAirDate.take(4) else "",
+                style = MaterialTheme.typography.labelSmall,
+                color = OnSurface
+            )
         }
     }
 }
