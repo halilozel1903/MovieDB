@@ -11,5 +11,7 @@ data class TvSeries(
     val voteAverage: Double,
     val voteCount: Int,
     val genres: List<Genre> = emptyList(),
-    val numberOfSeasons: Int = 0
+    val numberOfSeasons: Int = 0,
+    val numberOfEpisodes: Int = 0,
+    val originalLanguage: String = ""
 )

@@ -24,7 +24,9 @@ data class TvSeriesDto(
     @Json(name = "vote_count") val voteCount: Int = 0,
     @Json(name = "genre_ids") val genreIds: List<Int> = emptyList(),
     @Json(name = "genres") val genres: List<GenreDto>? = null,
-    @Json(name = "number_of_seasons") val numberOfSeasons: Int = 0
+    @Json(name = "number_of_seasons") val numberOfSeasons: Int = 0,
+    @Json(name = "number_of_episodes") val numberOfEpisodes: Int = 0,
+    @Json(name = "original_language") val originalLanguage: String = ""
 ) {
     fun toDomain(): TvSeries = TvSeries(
         id = id,
@@ -37,6 +39,8 @@ data class TvSeriesDto(
         voteAverage = voteAverage,
         voteCount = voteCount,
         genres = genres?.map { it.toDomain() } ?: emptyList(),
-        numberOfSeasons = numberOfSeasons
+        numberOfSeasons = numberOfSeasons,
+        numberOfEpisodes = numberOfEpisodes,
+        originalLanguage = originalLanguage
     )
 }
