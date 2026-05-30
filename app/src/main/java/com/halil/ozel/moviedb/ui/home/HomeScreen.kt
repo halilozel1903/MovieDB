@@ -26,6 +26,7 @@ import com.halil.ozel.moviedb.ui.theme.*
 @Composable
 fun HomeScreen(
     onMovieClick: (Int) -> Unit,
+    onTvClick: (Int) -> Unit = {},
     showTv: Boolean = false,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -238,7 +239,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.popularTv) { tv ->
-                        TvCard(tvSeries = tv, onClick = onMovieClick)
+                        TvCard(tvSeries = tv, onClick = onTvClick)
                     }
                 }
             }
@@ -253,7 +254,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.topRatedTv) { tv ->
-                        TvCard(tvSeries = tv, onClick = onMovieClick)
+                        TvCard(tvSeries = tv, onClick = onTvClick)
                     }
                 }
             }
@@ -268,7 +269,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.airingTodayTv) { tv ->
-                        TvCard(tvSeries = tv, onClick = onMovieClick)
+                        TvCard(tvSeries = tv, onClick = onTvClick)
                     }
                 }
             }
