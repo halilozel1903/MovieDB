@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#05151b</color>
-    <color name="primary_dark">#05151b</color>
-    <color name="primary_transparent">#05151b</color>
-    <color name="primary_dark_transparent">#05151b</color>
+    <color name="splash_bg">#0D0D1A</color>
+    <color name="primary">#F5C518</color>
+    <color name="background">#0D0D1A</color>
+    <color name="surface">#1A1A2E</color>
+    <color name="on_primary">#0D0D1A</color>
+    <color name="on_background">#FFFFFF</color>
+    <color name="on_surface">#FFFFFF</color>
 </resources>
