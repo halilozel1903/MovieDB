@@ -4,6 +4,7 @@ import com.halil.ozel.moviedb.BuildConfig
 import com.halil.ozel.moviedb.data.remote.api.TMDbApiService
 import com.halil.ozel.moviedb.domain.model.Cast
 import com.halil.ozel.moviedb.domain.model.Genre
+import com.halil.ozel.moviedb.domain.model.Season
 import com.halil.ozel.moviedb.domain.model.TvSeries
 import com.halil.ozel.moviedb.domain.repository.TvRepository
 import javax.inject.Inject
@@ -44,5 +45,9 @@ class TvRepositoryImpl @Inject constructor(
 
     override suspend fun getTvGenres(): Result<List<Genre>> = runCatching {
         apiService.getTvGenres(apiKey).genres.map { it.toDomain() }
+    }
+
+    override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Result<Season> = runCatching {
+        apiService.getSeasonDetails(tvId, seasonNumber, apiKey).toDomain()
     }
 }

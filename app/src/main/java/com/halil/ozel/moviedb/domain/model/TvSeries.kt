@@ -13,5 +13,6 @@ data class TvSeries(
     val genres: List<Genre> = emptyList(),
     val numberOfSeasons: Int = 0,
     val numberOfEpisodes: Int = 0,
-    val originalLanguage: String = ""
+    val originalLanguage: String = "",
+    val seasons: List<Season> = emptyList()
 )
