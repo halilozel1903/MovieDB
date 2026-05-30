@@ -1,11 +1,19 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file
 buildscript {
+    ext {
+        kotlin_version = '1.9.24'
+        ksp_version = '1.9.24-1.0.20'
+        hilt_version = '2.51.1'
+    }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.0'
+        classpath 'com.android.tools.build:gradle:9.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$ksp_version"
     }
 }
 
@@ -13,6 +21,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
