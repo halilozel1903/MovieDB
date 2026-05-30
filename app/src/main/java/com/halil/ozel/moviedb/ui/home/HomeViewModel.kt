@@ -34,7 +34,9 @@ class HomeViewModel @Inject constructor(
     private val getTopRatedTvUseCase: GetTopRatedTvUseCase,
     private val getAiringTodayTvUseCase: GetAiringTodayTvUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
-    private val getFavoritesUseCase: GetFavoritesUseCase
+    private val getFavoritesUseCase: GetFavoritesUseCase,
+    private val toggleTvFavoriteUseCase: ToggleTvFavoriteUseCase,
+    private val getTvFavoritesUseCase: GetTvFavoritesUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
@@ -43,46 +45,48 @@ class HomeViewModel @Inject constructor(
     private val _favoriteIds = MutableStateFlow<Set<Int>>(emptySet())
     val favoriteIds: StateFlow<Set<Int>> = _favoriteIds.asStateFlow()
 
+    private val _tvFavoriteIds = MutableStateFlow<Set<Int>>(emptySet())
+    val tvFavoriteIds: StateFlow<Set<Int>> = _tvFavoriteIds.asStateFlow()
+
     init {
         loadAll()
         observeFavorites()
+        observeTvFavorites()
     }
 
     private fun observeFavorites() {
         viewModelScope.launch {
-            getFavoritesUseCase().collect { favorites ->
-                _favoriteIds.value = favorites.map { it.id }.toSet()
-            }
+            getFavoritesUseCase().collect { _favoriteIds.value = it.map { m -> m.id }.toSet() }
+        }
+    }
+
+    private fun observeTvFavorites() {
+        viewModelScope.launch {
+            getTvFavoritesUseCase().collect { _tvFavoriteIds.value = it.map { t -> t.id }.toSet() }
         }
     }
 
     fun loadAll() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            val popularResult = getPopularMoviesUseCase()
-            val nowPlayingResult = getNowPlayingMoviesUseCase()
-            val topRatedResult = getTopRatedMoviesUseCase()
-            val upcomingResult = getUpcomingMoviesUseCase()
-            val popularTvResult = getPopularTvUseCase()
-            val topRatedTvResult = getTopRatedTvUseCase()
-            val airingTodayTvResult = getAiringTodayTvUseCase()
-
             _uiState.value = _uiState.value.copy(
-                popularMovies = popularResult.getOrDefault(emptyList()),
-                nowPlayingMovies = nowPlayingResult.getOrDefault(emptyList()),
-                topRatedMovies = topRatedResult.getOrDefault(emptyList()),
-                upcomingMovies = upcomingResult.getOrDefault(emptyList()),
-                popularTv = popularTvResult.getOrDefault(emptyList()),
-                topRatedTv = topRatedTvResult.getOrDefault(emptyList()),
-                airingTodayTv = airingTodayTvResult.getOrDefault(emptyList()),
+                popularMovies = getPopularMoviesUseCase().getOrDefault(emptyList()),
+                nowPlayingMovies = getNowPlayingMoviesUseCase().getOrDefault(emptyList()),
+                topRatedMovies = getTopRatedMoviesUseCase().getOrDefault(emptyList()),
+                upcomingMovies = getUpcomingMoviesUseCase().getOrDefault(emptyList()),
+                popularTv = getPopularTvUseCase().getOrDefault(emptyList()),
+                topRatedTv = getTopRatedTvUseCase().getOrDefault(emptyList()),
+                airingTodayTv = getAiringTodayTvUseCase().getOrDefault(emptyList()),
                 isLoading = false
             )
         }
     }
 
     fun toggleFavorite(movie: Movie) {
-        viewModelScope.launch {
-            toggleFavoriteUseCase(movie)
-        }
+        viewModelScope.launch { toggleFavoriteUseCase(movie) }
+    }
+
+    fun toggleTvFavorite(tvSeries: TvSeries) {
+        viewModelScope.launch { toggleTvFavoriteUseCase(tvSeries) }
     }
 }

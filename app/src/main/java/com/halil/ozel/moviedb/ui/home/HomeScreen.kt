@@ -1,17 +1,21 @@
 package com.halil.ozel.moviedb.ui.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +26,9 @@ import coil.compose.AsyncImage
 import com.halil.ozel.moviedb.data.remote.api.ApiConstants
 import com.halil.ozel.moviedb.ui.components.*
 import com.halil.ozel.moviedb.ui.theme.*
+import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     onMovieClick: (Int) -> Unit,
@@ -32,6 +38,7 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val favoriteIds by viewModel.favoriteIds.collectAsState()
+    val tvFavoriteIds by viewModel.tvFavoriteIds.collectAsState()
 
     Column(
         modifier = Modifier
@@ -39,55 +46,10 @@ fun HomeScreen(
             .background(Background)
             .verticalScroll(rememberScrollState())
     ) {
-        // Hero Banner
+        // Auto-scrolling Hero Banner
         if (!showTv) {
-            val featuredMovie = uiState.nowPlayingMovies.firstOrNull()
-            featuredMovie?.let { movie ->
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(260.dp)
-                ) {
-                    AsyncImage(
-                        model = ApiConstants.IMAGE_BASE_URL_1280 + movie.backdropPath,
-                        contentDescription = movie.title,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        Background.copy(alpha = 0.1f),
-                                        Background.copy(alpha = 0.7f),
-                                        Background
-                                    )
-                                )
-                            )
-                    )
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = movie.title,
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = OnBackground,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        RatingBar(
-                            rating = movie.voteAverage,
-                            starSize = 14.dp
-                        )
-                    }
-                }
-            } ?: run {
+            val bannerItems = uiState.nowPlayingMovies.take(5)
+            if (bannerItems.isEmpty()) {
                 if (uiState.isLoading) {
                     Box(
                         modifier = Modifier
@@ -96,50 +58,172 @@ fun HomeScreen(
                             .background(shimmerBrush())
                     )
                 }
-            }
-        } else {
-            // TV Hero
-            val featuredTv = uiState.popularTv.firstOrNull()
-            featuredTv?.let { tv ->
+            } else {
+                val pagerState = rememberPagerState(pageCount = { bannerItems.size })
+                LaunchedEffect(pagerState) {
+                    while (true) {
+                        delay(3500)
+                        val next = (pagerState.currentPage + 1) % bannerItems.size
+                        pagerState.animateScrollToPage(next)
+                    }
+                }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(260.dp)
                 ) {
-                    AsyncImage(
-                        model = ApiConstants.IMAGE_BASE_URL_1280 + tv.backdropPath,
-                        contentDescription = tv.name,
-                        contentScale = ContentScale.Crop,
+                    HorizontalPager(
+                        state = pagerState,
                         modifier = Modifier.fillMaxSize()
-                    )
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        Background.copy(alpha = 0.1f),
-                                        Background.copy(alpha = 0.7f),
-                                        Background
-                                    )
-                                )
+                    ) { page ->
+                        val movie = bannerItems[page]
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clickable { onMovieClick(movie.id) }
+                        ) {
+                            AsyncImage(
+                                model = ApiConstants.IMAGE_BASE_URL_1280 + movie.backdropPath,
+                                contentDescription = movie.title,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
                             )
-                    )
-                    Column(
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        Brush.verticalGradient(
+                                            colors = listOf(
+                                                Background.copy(alpha = 0.1f),
+                                                Background.copy(alpha = 0.7f),
+                                                Background
+                                            )
+                                        )
+                                    )
+                            )
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.BottomStart)
+                                    .padding(start = 16.dp, end = 16.dp, bottom = 28.dp)
+                            ) {
+                                Text(
+                                    text = movie.title,
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = OnBackground,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                RatingBar(rating = movie.voteAverage, starSize = 14.dp)
+                            }
+                        }
+                    }
+                    // Dot indicators
+                    Row(
                         modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(16.dp)
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = tv.name,
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = OnBackground,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        RatingBar(rating = tv.voteAverage, starSize = 14.dp)
+                        repeat(bannerItems.size) { index ->
+                            Box(
+                                modifier = Modifier
+                                    .size(if (index == pagerState.currentPage) 8.dp else 5.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (index == pagerState.currentPage) Primary
+                                        else OnSurface.copy(alpha = 0.4f)
+                                    )
+                            )
+                        }
+                    }
+                }
+            }
+        } else {
+            // TV Hero Banner
+            val bannerItems = uiState.popularTv.take(5)
+            if (bannerItems.isNotEmpty()) {
+                val pagerState = rememberPagerState(pageCount = { bannerItems.size })
+                LaunchedEffect(pagerState) {
+                    while (true) {
+                        delay(3500)
+                        val next = (pagerState.currentPage + 1) % bannerItems.size
+                        pagerState.animateScrollToPage(next)
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(260.dp)
+                ) {
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier.fillMaxSize()
+                    ) { page ->
+                        val tv = bannerItems[page]
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clickable { onTvClick(tv.id) }
+                        ) {
+                            AsyncImage(
+                                model = ApiConstants.IMAGE_BASE_URL_1280 + tv.backdropPath,
+                                contentDescription = tv.name,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        Brush.verticalGradient(
+                                            colors = listOf(
+                                                Background.copy(alpha = 0.1f),
+                                                Background.copy(alpha = 0.7f),
+                                                Background
+                                            )
+                                        )
+                                    )
+                            )
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.BottomStart)
+                                    .padding(start = 16.dp, end = 16.dp, bottom = 28.dp)
+                            ) {
+                                Text(
+                                    text = tv.name,
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = OnBackground,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                RatingBar(rating = tv.voteAverage, starSize = 14.dp)
+                            }
+                        }
+                    }
+                    // Dot indicators
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        repeat(bannerItems.size) { index ->
+                            Box(
+                                modifier = Modifier
+                                    .size(if (index == pagerState.currentPage) 8.dp else 5.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (index == pagerState.currentPage) Primary
+                                        else OnSurface.copy(alpha = 0.4f)
+                                    )
+                            )
+                        }
                     }
                 }
             }
@@ -239,7 +323,12 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.popularTv) { tv ->
-                        TvCard(tvSeries = tv, onClick = onTvClick)
+                        TvCard(
+                            tvSeries = tv,
+                            onClick = onTvClick,
+                            isFavorite = tvFavoriteIds.contains(tv.id),
+                            onFavoriteToggle = viewModel::toggleTvFavorite
+                        )
                     }
                 }
             }
@@ -254,7 +343,12 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.topRatedTv) { tv ->
-                        TvCard(tvSeries = tv, onClick = onTvClick)
+                        TvCard(
+                            tvSeries = tv,
+                            onClick = onTvClick,
+                            isFavorite = tvFavoriteIds.contains(tv.id),
+                            onFavoriteToggle = viewModel::toggleTvFavorite
+                        )
                     }
                 }
             }
@@ -269,7 +363,12 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.airingTodayTv) { tv ->
-                        TvCard(tvSeries = tv, onClick = onTvClick)
+                        TvCard(
+                            tvSeries = tv,
+                            onClick = onTvClick,
+                            isFavorite = tvFavoriteIds.contains(tv.id),
+                            onFavoriteToggle = viewModel::toggleTvFavorite
+                        )
                     }
                 }
             }
