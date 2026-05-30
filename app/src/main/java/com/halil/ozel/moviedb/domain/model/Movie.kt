@@ -10,5 +10,7 @@ data class Movie(
     val popularity: Double,
     val voteAverage: Double,
     val voteCount: Int,
-    val genres: List<Genre> = emptyList()
+    val genres: List<Genre> = emptyList(),
+    val runtime: Int = 0,
+    val originalLanguage: String = ""
 )

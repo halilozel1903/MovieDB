@@ -158,7 +158,7 @@ fun MovieDetailScreen(
                                         color = SurfaceVariant
                                     ) {
                                         Text(
-                                            text = genre,
+                                            text = genre.name,
                                             style = MaterialTheme.typography.labelSmall,
                                             color = Secondary,
                                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
