@@ -465,37 +465,50 @@ private fun RankedItem(
     rank: Int,
     card: @Composable BoxScope.(Modifier) -> Unit
 ) {
-    // fontSize: single digit bigger than double digit
     val fontSize = if (rank < 10) 130.sp else 96.sp
 
     Box(
         modifier = Modifier
             .width(RANKED_ITEM_W)
-            .height(RANKED_CARD_H)   // sabit yükseklik — tüm kartlar eşit
+            .height(RANKED_CARD_H)
     ) {
-        // ── Large rank number — anchored bottom-start, behind everything ──
+        // ── Stroke (outline) number — behind, slightly offset ────────────
         Text(
-            text     = "$rank",
-            fontSize = fontSize,
+            text       = "$rank",
+            fontSize   = fontSize,
             fontWeight = FontWeight.Black,
-            lineHeight = fontSize,          // no extra line-height padding
-            color = androidx.compose.ui.graphics.Color(0xFF252540),
-            style = MaterialTheme.typography.displayLarge.copy(
-                fontSize   = fontSize,
-                lineHeight = fontSize,
-                fontWeight = FontWeight.Black,
-                shadow = androidx.compose.ui.graphics.Shadow(
-                    color      = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.6f),
-                    offset     = androidx.compose.ui.geometry.Offset(3f, 3f),
-                    blurRadius = 2f
+            lineHeight = fontSize,
+            color      = androidx.compose.ui.graphics.Color(0xFF4A4A70),
+            style      = MaterialTheme.typography.displayLarge.copy(
+                fontSize     = fontSize,
+                lineHeight   = fontSize,
+                fontWeight   = FontWeight.Black,
+                drawStyle    = androidx.compose.ui.graphics.drawscope.Stroke(
+                    width = 6f
                 )
             ),
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(bottom = 2.dp)
         )
+        // ── Fill number — same position, darker center ───────────────────
+        Text(
+            text       = "$rank",
+            fontSize   = fontSize,
+            fontWeight = FontWeight.Black,
+            lineHeight = fontSize,
+            color      = androidx.compose.ui.graphics.Color(0xFF151528),
+            style      = MaterialTheme.typography.displayLarge.copy(
+                fontSize   = fontSize,
+                lineHeight = fontSize,
+                fontWeight = FontWeight.Black
+            ),
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(bottom = 2.dp)
+        )
 
-        // ── Poster card — right-aligned, sits in front of number ──────────
+        // ── Poster card — right-aligned, sits in front of number ─────────
         card(
             Modifier
                 .align(Alignment.BottomEnd)
