@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -197,33 +198,28 @@ fun SearchScreen(
                             Spacer(Modifier.height(12.dp))
                         }
 
-                        // Trending movies
+                        // Top 10 movies
                         if (uiState.trendingMovies.isNotEmpty()) {
                             SectionHeader(title = stringResource(R.string.trending_movies_week))
                             LazyRow(
                                 contentPadding = PaddingValues(horizontal = 16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                horizontalArrangement = Arrangement.spacedBy(0.dp)
                             ) {
-                                items(uiState.trendingMovies.take(10)) { movie ->
-                                    MovieCard(
-                                        movie            = movie,
-                                        isFavorite       = false,
-                                        onFavoriteToggle = {},
-                                        onClick          = onMovieClick
-                                    )
+                                itemsIndexed(uiState.trendingMovies.take(10)) { idx, movie ->
+                                    RankedMovieCard(rank = idx + 1, movie = movie, onClick = onMovieClick)
                                 }
                             }
                             Spacer(Modifier.height(16.dp))
                         }
-                        // Trending TV
+                        // Top 10 TV
                         if (uiState.trendingTv.isNotEmpty()) {
                             SectionHeader(title = stringResource(R.string.trending_tv_week))
                             LazyRow(
                                 contentPadding = PaddingValues(horizontal = 16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                horizontalArrangement = Arrangement.spacedBy(0.dp)
                             ) {
-                                items(uiState.trendingTv.take(10)) { tv ->
-                                    TvCard(tvSeries = tv, onClick = onTvClick)
+                                itemsIndexed(uiState.trendingTv.take(10)) { idx, tv ->
+                                    RankedTvCard(rank = idx + 1, tv = tv, onClick = onTvClick)
                                 }
                             }
                         }
@@ -426,6 +422,52 @@ private fun TypeBadge(text: String, color: androidx.compose.ui.graphics.Color) {
         Text(text, color = color, fontSize = 9.sp, fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp))
     }
+}
+
+// ── Ranked cards (Top 10) ─────────────────────────────────────────────────────
+
+@Composable
+private fun RankedMovieCard(rank: Int, movie: Movie, onClick: (Int) -> Unit) {
+    Box(modifier = Modifier.width(150.dp)) {
+        MovieCard(
+            movie            = movie,
+            isFavorite       = false,
+            onFavoriteToggle = {},
+            onClick          = onClick,
+            modifier         = Modifier.fillMaxWidth().padding(start = if (rank == 1) 0.dp else 8.dp)
+        )
+        RankBadge(rank = rank, modifier = Modifier.align(Alignment.BottomStart).offset(x = 2.dp, y = 8.dp))
+    }
+}
+
+@Composable
+private fun RankedTvCard(rank: Int, tv: TvSeries, onClick: (Int) -> Unit) {
+    Box(modifier = Modifier.width(150.dp)) {
+        TvCard(
+            tvSeries = tv,
+            onClick  = onClick,
+            modifier = Modifier.fillMaxWidth().padding(start = if (rank == 1) 0.dp else 8.dp)
+        )
+        RankBadge(rank = rank, modifier = Modifier.align(Alignment.BottomStart).offset(x = 2.dp, y = 8.dp))
+    }
+}
+
+@Composable
+private fun RankBadge(rank: Int, modifier: Modifier = Modifier) {
+    Text(
+        text       = "$rank",
+        fontSize   = if (rank < 10) 44.sp else 38.sp,
+        fontWeight = FontWeight.Black,
+        color      = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.92f),
+        modifier   = modifier,
+        style      = MaterialTheme.typography.displayMedium.copy(
+            shadow = androidx.compose.ui.graphics.Shadow(
+                color      = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.85f),
+                offset     = androidx.compose.ui.geometry.Offset(2f, 2f),
+                blurRadius = 6f
+            )
+        )
+    )
 }
 
 // ── Trending person pill ──────────────────────────────────────────────────────

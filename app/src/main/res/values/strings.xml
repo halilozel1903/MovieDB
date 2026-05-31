@@ -79,8 +79,8 @@
     <string name="badge_movie">MOVIE</string>
     <string name="badge_tv">TV</string>
     <string name="badge_actor">ACTOR</string>
-    <string name="trending_movies_week">🔥 Trending Movies</string>
-    <string name="trending_tv_week">📺 Trending TV Shows</string>
+    <string name="trending_movies_week">🎬 Top 10 Movies This Week</string>
+    <string name="trending_tv_week">📺 Top 10 TV Shows This Week</string>
     <string name="trending_people">⭐ Trending People</string>
 
     <!-- Episode states -->

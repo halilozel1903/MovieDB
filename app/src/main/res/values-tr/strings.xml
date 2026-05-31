@@ -80,8 +80,8 @@
     <string name="badge_movie">FİLM</string>
     <string name="badge_tv">DİZİ</string>
     <string name="badge_actor">OYUNCU</string>
-    <string name="trending_movies_week">🔥 Trend Filmler</string>
-    <string name="trending_tv_week">📺 Trend Diziler</string>
+    <string name="trending_movies_week">🎬 Bu Haftanın Top 10 Filmi</string>
+    <string name="trending_tv_week">📺 Bu Haftanın Top 10 Dizisi</string>
     <string name="trending_people">⭐ Trend Oyuncular</string>
 
     <!-- Episode states -->
