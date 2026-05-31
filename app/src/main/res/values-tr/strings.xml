@@ -82,6 +82,7 @@
     <string name="badge_actor">OYUNCU</string>
     <string name="trending_movies_week">🔥 Trend Filmler</string>
     <string name="trending_tv_week">📺 Trend Diziler</string>
+    <string name="trending_people">⭐ Trend Oyuncular</string>
 
     <!-- Episode states -->
     <string name="episodes_not_loaded">Bölümler yüklenemedi</string>

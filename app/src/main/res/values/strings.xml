@@ -81,6 +81,7 @@
     <string name="badge_actor">ACTOR</string>
     <string name="trending_movies_week">🔥 Trending Movies</string>
     <string name="trending_tv_week">📺 Trending TV Shows</string>
+    <string name="trending_people">⭐ Trending People</string>
 
     <!-- Episode states -->
     <string name="episodes_not_loaded">Episodes could not be loaded</string>

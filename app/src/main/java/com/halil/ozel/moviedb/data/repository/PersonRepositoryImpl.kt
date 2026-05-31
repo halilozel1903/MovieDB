@@ -29,4 +29,8 @@ class PersonRepositoryImpl @Inject constructor(
     override suspend fun searchPersons(query: String, page: Int): Result<List<PersonSearchResult>> = runCatching {
         apiService.searchPersons(apiKey, query, page).results.map { it.toDomain() }
     }
+
+    override suspend fun getTrendingPeople(): Result<List<PersonSearchResult>> = runCatching {
+        apiService.getTrendingPeople(apiKey).results.map { it.toDomain() }
+    }
 }

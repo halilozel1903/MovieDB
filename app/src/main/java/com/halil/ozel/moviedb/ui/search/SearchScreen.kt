@@ -180,6 +180,23 @@ fun SearchScreen(
                             .verticalScroll(rememberScrollState())
                             .padding(bottom = 24.dp)
                     ) {
+                        // ── Trending people pills (tıklayınca isimle arama) ─
+                        if (uiState.trendingPeople.isNotEmpty()) {
+                            SectionHeader(title = stringResource(R.string.trending_people))
+                            LazyRow(
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                items(uiState.trendingPeople.take(12)) { person ->
+                                    TrendingPersonPill(
+                                        person  = person,
+                                        onClick = { viewModel.onQueryChanged(person.name) }
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.height(12.dp))
+                        }
+
                         // Trending movies
                         if (uiState.trendingMovies.isNotEmpty()) {
                             SectionHeader(title = stringResource(R.string.trending_movies_week))
@@ -408,5 +425,54 @@ private fun TypeBadge(text: String, color: androidx.compose.ui.graphics.Color) {
         modifier = Modifier.padding(bottom = 4.dp)) {
         Text(text, color = color, fontSize = 9.sp, fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp))
+    }
+}
+
+// ── Trending person pill ──────────────────────────────────────────────────────
+
+@Composable
+private fun TrendingPersonPill(
+    person: PersonSearchResult,
+    onClick: () -> Unit
+) {
+    Surface(
+        shape  = RoundedCornerShape(40.dp),
+        color  = SurfaceVariant,
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
+        Row(
+            modifier = Modifier.padding(end = 12.dp, top = 6.dp, bottom = 6.dp, start = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Profile photo
+            AsyncImage(
+                model = ApiConstants.IMAGE_BASE_URL_500 + person.profilePath,
+                contentDescription = person.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(Background)
+            )
+            Column {
+                Text(
+                    text       = person.name,
+                    style      = MaterialTheme.typography.labelMedium,
+                    color      = OnBackground,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines   = 1,
+                    overflow   = TextOverflow.Ellipsis
+                )
+                if (person.knownForDepartment.isNotBlank()) {
+                    Text(
+                        text  = person.knownForDepartment,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = OnSurface.copy(alpha = 0.7f),
+                        maxLines = 1
+                    )
+                }
+            }
+        }
     }
 }

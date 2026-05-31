@@ -8,4 +8,5 @@ interface PersonRepository {
     suspend fun getCombinedCredits(personId: Int): Result<List<PersonCredit>>
     suspend fun getPersonInfo(personId: Int): Result<PersonInfo>
     suspend fun searchPersons(query: String, page: Int = 1): Result<List<PersonSearchResult>>
+    suspend fun getTrendingPeople(): Result<List<PersonSearchResult>>
 }
