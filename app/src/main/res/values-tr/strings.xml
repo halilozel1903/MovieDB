@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Film Veritabanı</string>
+    <string name="app_name">TV Heaven</string>
     <string name="error_loading_data">Veri yüklenemedi</string>
     <string name="birthday_format">🎂 Doğum günü : %1$s</string>
     <string name="popularity_format">🔥 Popülerlik : %1$.1f</string>
