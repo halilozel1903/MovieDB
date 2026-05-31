@@ -82,7 +82,7 @@ class FavoritesRepositoryImpl @Inject constructor(
     override fun getFavorites(): Flow<List<Movie>> = dataStore.data.map { prefs ->
         val json = prefs[favoritesKey] ?: return@map emptyList()
         try { movieAdapter.fromJson(json)?.map { it.toDomain() } ?: emptyList() }
-        catch (e: Exception) { emptyList() }
+        catch (_: Exception) { emptyList() }
     }
 
     override suspend fun addFavorite(movie: Movie) {
@@ -115,7 +115,7 @@ class FavoritesRepositoryImpl @Inject constructor(
     override fun getTvFavorites(): Flow<List<TvSeries>> = dataStore.data.map { prefs ->
         val json = prefs[tvFavoritesKey] ?: return@map emptyList()
         try { tvAdapter.fromJson(json)?.map { it.toDomain() } ?: emptyList() }
-        catch (e: Exception) { emptyList() }
+        catch (_: Exception) { emptyList() }
     }
 
     override suspend fun addTvFavorite(tvSeries: TvSeries) {
