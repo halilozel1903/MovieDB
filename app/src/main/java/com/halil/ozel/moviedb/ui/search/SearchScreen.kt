@@ -202,21 +202,19 @@ fun SearchScreen(
                         if (uiState.trendingMovies.isNotEmpty()) {
                             SectionHeader(title = stringResource(R.string.trending_movies_week))
                             LazyRow(
-                                contentPadding = PaddingValues(start = 16.dp, end = 8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                contentPadding = PaddingValues(start = 8.dp, end = 16.dp)
                             ) {
                                 itemsIndexed(uiState.trendingMovies.take(10)) { idx, movie ->
                                     RankedMovieCard(rank = idx + 1, movie = movie, onClick = onMovieClick)
                                 }
                             }
-                            Spacer(Modifier.height(16.dp))
+                            Spacer(Modifier.height(20.dp))
                         }
                         // Top 10 TV
                         if (uiState.trendingTv.isNotEmpty()) {
                             SectionHeader(title = stringResource(R.string.trending_tv_week))
                             LazyRow(
-                                contentPadding = PaddingValues(start = 16.dp, end = 8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                contentPadding = PaddingValues(start = 8.dp, end = 16.dp)
                             ) {
                                 itemsIndexed(uiState.trendingTv.take(10)) { idx, tv ->
                                     RankedTvCard(rank = idx + 1, tv = tv, onClick = onTvClick)
@@ -425,38 +423,24 @@ private fun TypeBadge(text: String, color: androidx.compose.ui.graphics.Color) {
 }
 
 // ── Netflix-style Top 10 ranked cards ────────────────────────────────────────
-//
-// Layout per item (width = CARD_W + NUMBER_PEEK):
-//
-//   ┌──────────────────────────────┐
-//   │  NUMBER (behind)  │  POSTER  │
-//   │  (big, dark)      │ (front)  │
-//   └──────────────────────────────┘
-//
-//  Only NUMBER_PEEK dp of the number is visible; rest is hidden behind poster.
 
-private val RANKED_CARD_W  = 108.dp          // poster width
-private val RANKED_CARD_H  = RANKED_CARD_W * 3f / 2f  // 162dp (2:3 ratio)
-private val NUMBER_PEEK    = 36.dp           // visible number strip on the left
-private val RANKED_ITEM_W  = RANKED_CARD_W + NUMBER_PEEK
+private val RANKED_CARD_W = 130.dp
+private val RANKED_CARD_H = 195.dp
 
 @Composable
 private fun RankedMovieCard(rank: Int, movie: Movie, onClick: (Int) -> Unit) {
-    RankedItem(rank = rank) { cardMod ->
+    RankedItem(rank = rank) {
         MovieCard(
-            movie            = movie,
-            isFavorite       = false,
-            onFavoriteToggle = {},
-            onClick          = onClick,
-            modifier         = cardMod
+            movie = movie, isFavorite = false, onFavoriteToggle = {},
+            onClick = onClick, modifier = it
         )
     }
 }
 
 @Composable
 private fun RankedTvCard(rank: Int, tv: TvSeries, onClick: (Int) -> Unit) {
-    RankedItem(rank = rank) { cardMod ->
-        TvCard(tvSeries = tv, onClick = onClick, modifier = cardMod)
+    RankedItem(rank = rank) {
+        TvCard(tvSeries = tv, onClick = onClick, modifier = it)
     }
 }
 
@@ -465,55 +449,60 @@ private fun RankedItem(
     rank: Int,
     card: @Composable BoxScope.(Modifier) -> Unit
 ) {
-    val fontSize = if (rank < 10) 130.sp else 96.sp
+    val density = androidx.compose.ui.platform.LocalDensity.current
 
-    Box(
-        modifier = Modifier
-            .width(RANKED_ITEM_W)
-            .height(RANKED_CARD_H)
+    val numFontSize  = with(density) { (RANKED_CARD_H * 0.85f).toSp() }
+    val letterSp     = if (rank >= 10) (-6).sp else 0.sp
+    val strokeColor  = androidx.compose.ui.graphics.Color(0xFFB0B0C8)
+    val fillColor    = Background
+    val strokeWidth  = with(density) { 3.dp.toPx() }
+
+    Row(
+        modifier = Modifier.height(RANKED_CARD_H),
+        verticalAlignment = Alignment.Bottom
     ) {
-        // ── Stroke (outline) number — behind, slightly offset ────────────
-        Text(
-            text       = "$rank",
-            fontSize   = fontSize,
-            fontWeight = FontWeight.Black,
-            lineHeight = fontSize,
-            color      = androidx.compose.ui.graphics.Color(0xFF4A4A70),
-            style      = MaterialTheme.typography.displayLarge.copy(
-                fontSize     = fontSize,
-                lineHeight   = fontSize,
-                fontWeight   = FontWeight.Black,
-                drawStyle    = androidx.compose.ui.graphics.drawscope.Stroke(
-                    width = 6f
+        // ── Number ───────────────────────────────────────────────────────
+        Box(
+            contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .offset(x = 8.dp, y = 10.dp)
+                .wrapContentWidth(unbounded = true)
+        ) {
+            // Stroke outline
+            Text(
+                text = "$rank",
+                letterSpacing = letterSp,
+                color = strokeColor,
+                style = MaterialTheme.typography.displayLarge.copy(
+                    fontSize = numFontSize,
+                    lineHeight = numFontSize,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = letterSp,
+                    drawStyle = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeWidth)
                 )
-            ),
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(bottom = 2.dp)
-        )
-        // ── Fill number — same position, darker center ───────────────────
-        Text(
-            text       = "$rank",
-            fontSize   = fontSize,
-            fontWeight = FontWeight.Black,
-            lineHeight = fontSize,
-            color      = androidx.compose.ui.graphics.Color(0xFF151528),
-            style      = MaterialTheme.typography.displayLarge.copy(
-                fontSize   = fontSize,
-                lineHeight = fontSize,
-                fontWeight = FontWeight.Black
-            ),
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(bottom = 2.dp)
-        )
+            )
+            // Dark fill
+            Text(
+                text = "$rank",
+                letterSpacing = letterSp,
+                color = fillColor,
+                style = MaterialTheme.typography.displayLarge.copy(
+                    fontSize = numFontSize,
+                    lineHeight = numFontSize,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = letterSp
+                )
+            )
+        }
 
-        // ── Poster card — right-aligned, sits in front of number ─────────
-        card(
-            Modifier
-                .align(Alignment.BottomEnd)
-                .width(RANKED_CARD_W)
-        )
+        // ── Poster card ──────────────────────────────────────────────────
+        Box(modifier = Modifier.offset(x = (-20).dp)) {
+            card(
+                Modifier
+                    .width(RANKED_CARD_W)
+                    .height(RANKED_CARD_H)
+            )
+        }
     }
 }
 
