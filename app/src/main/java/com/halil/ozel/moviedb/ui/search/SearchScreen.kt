@@ -425,30 +425,16 @@ private fun TypeBadge(text: String, color: androidx.compose.ui.graphics.Color) {
 }
 
 // ── Netflix-style Top 10 ranked cards ────────────────────────────────────────
-//
-// Layout per item (width = CARD_W + NUMBER_PEEK):
-//
-//   ┌──────────────────────────────┐
-//   │  NUMBER (behind)  │  POSTER  │
-//   │  (big, dark)      │ (front)  │
-//   └──────────────────────────────┘
-//
-//  Only NUMBER_PEEK dp of the number is visible; rest is hidden behind poster.
 
-private val RANKED_CARD_W  = 108.dp
-private val RANKED_CARD_H  = RANKED_CARD_W * 3f / 2f   // 162dp (2:3)
-private val PEEK_SINGLE    = 36.dp     // 1–9 arası: tek rakam peek
-private val PEEK_DOUBLE    = 62.dp     // 10: iki rakam, daha geniş peek
+private val RANKED_CARD_W = 120.dp
+private val RANKED_CARD_H = 180.dp
 
 @Composable
 private fun RankedMovieCard(rank: Int, movie: Movie, onClick: (Int) -> Unit) {
     RankedItem(rank = rank) { cardMod ->
         MovieCard(
-            movie            = movie,
-            isFavorite       = false,
-            onFavoriteToggle = {},
-            onClick          = onClick,
-            modifier         = cardMod
+            movie = movie, isFavorite = false, onFavoriteToggle = {},
+            onClick = onClick, modifier = cardMod
         )
     }
 }
@@ -465,60 +451,55 @@ private fun RankedItem(
     rank: Int,
     card: @Composable BoxScope.(Modifier) -> Unit
 ) {
-    val isDouble  = rank >= 10
-    val peek      = if (isDouble) PEEK_DOUBLE else PEEK_SINGLE
-    val itemW     = RANKED_CARD_W + peek
-    val fontSize  = if (isDouble) 110.sp else 130.sp
-    val letterSp  = if (isDouble) (-8).sp else 0.sp
+    val isDouble = rank >= 10
+    val numW     = if (isDouble) 80.dp else 48.dp
+    val itemW    = RANKED_CARD_W + numW * 0.55f   // %55 numara görünür
+    val fontSize = if (isDouble) 150.sp else 180.sp
+    val letterSp = if (isDouble) (-12).sp else 0.sp
+    val strokeW  = if (isDouble) 5f else 4.5f
+    val strokeClr = androidx.compose.ui.graphics.Color(0xFF808098)
+    val fillClr   = androidx.compose.ui.graphics.Color(0xFF0D0D1A)
 
     Box(
         modifier = Modifier
             .width(itemW)
-            .height(RANKED_CARD_H)
+            .height(RANKED_CARD_H),
+        contentAlignment = Alignment.BottomStart
     ) {
-        // ── Stroke outline — visible edge of the number ──────────────────
+        // ── Number: stroke outline (gri kenar) ───────────────────────────
         Text(
-            text       = "$rank",
-            fontSize   = fontSize,
-            fontWeight = FontWeight.Black,
-            lineHeight = fontSize,
+            text          = "$rank",
             letterSpacing = letterSp,
-            color      = androidx.compose.ui.graphics.Color(0xFF4A4A70),
-            style      = MaterialTheme.typography.displayLarge.copy(
+            color         = strokeClr,
+            style         = MaterialTheme.typography.displayLarge.copy(
                 fontSize     = fontSize,
                 lineHeight   = fontSize,
                 fontWeight   = FontWeight.Black,
                 letterSpacing = letterSp,
-                drawStyle    = androidx.compose.ui.graphics.drawscope.Stroke(width = 6f)
+                drawStyle    = androidx.compose.ui.graphics.drawscope.Stroke(width = strokeW)
             ),
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(bottom = 2.dp)
+            modifier = Modifier.offset(y = 16.dp)
         )
-        // ── Fill — dark center ───────────────────────────────────────────
+        // ── Number: dark fill (arka planla aynı renk → "oyuk" efekti) ────
         Text(
-            text       = "$rank",
-            fontSize   = fontSize,
-            fontWeight = FontWeight.Black,
-            lineHeight = fontSize,
+            text          = "$rank",
             letterSpacing = letterSp,
-            color      = androidx.compose.ui.graphics.Color(0xFF151528),
-            style      = MaterialTheme.typography.displayLarge.copy(
-                fontSize   = fontSize,
-                lineHeight = fontSize,
-                fontWeight = FontWeight.Black,
+            color         = fillClr,
+            style         = MaterialTheme.typography.displayLarge.copy(
+                fontSize     = fontSize,
+                lineHeight   = fontSize,
+                fontWeight   = FontWeight.Black,
                 letterSpacing = letterSp
             ),
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(bottom = 2.dp)
+            modifier = Modifier.offset(y = 16.dp)
         )
 
-        // ── Poster card — right-aligned, sits in front of number ─────────
+        // ── Poster: sağa yaslanmış, numaranın üstüne biniyor ────────────
         card(
             Modifier
                 .align(Alignment.BottomEnd)
                 .width(RANKED_CARD_W)
+                .height(RANKED_CARD_H)
         )
     }
 }
