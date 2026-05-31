@@ -2,48 +2,6 @@
 
 A modern Android app for browsing movies, TV shows and actors — powered by **TMDb** and **OMDb** APIs. Built entirely with **Kotlin** and **Jetpack Compose**.
 
-## Screenshots
-
-### Home & Discovery
-
-<p align="center">
-  <img src="screenshots/home_movies.png" width="230" alt="Home Movies" />
-  <img src="screenshots/home_tv.png" width="230" alt="Home TV" />
-  <img src="screenshots/onboarding.png" width="230" alt="Onboarding" />
-</p>
-
-### Search — Top 10 & Filters
-
-<p align="center">
-  <img src="screenshots/search_top10.png" width="230" alt="Search Top 10" />
-  <img src="screenshots/search_movies.png" width="230" alt="Search Movies" />
-  <img src="screenshots/search_tv.png" width="230" alt="Search TV" />
-</p>
-
-<p align="center">
-  <img src="screenshots/search_actors.png" width="230" alt="Search Actors" />
-</p>
-
-### Movie & TV Detail
-
-<p align="center">
-  <img src="screenshots/movie_detail.png" width="230" alt="Movie Detail" />
-  <img src="screenshots/movie_detail_scroll.png" width="230" alt="Movie Detail Scrolled" />
-  <img src="screenshots/tv_detail.png" width="230" alt="TV Detail" />
-</p>
-
-### Seasons, Person & Favorites
-
-<p align="center">
-  <img src="screenshots/tv_seasons.png" width="230" alt="TV Seasons" />
-  <img src="screenshots/person_detail.png" width="230" alt="Person Detail" />
-  <img src="screenshots/favorites_movies.png" width="230" alt="Favorites Movies" />
-</p>
-
-<p align="center">
-  <img src="screenshots/favorites_tv.png" width="230" alt="Favorites TV" />
-</p>
-
 ## Features
 
 - **Home** — Auto-scrolling hero banner, horizontal movie rails (Now Playing, Popular, Top Rated, Upcoming)
