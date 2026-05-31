@@ -58,6 +58,7 @@ fun TvDetailScreen(
     onBack: () -> Unit,
     onTvClick: (Int) -> Unit,
     onCastClick: (Int, String) -> Unit = { _, _ -> },
+    onGenreClick: (Int, String) -> Unit = { _, _ -> },
     viewModel: TvDetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(tvId) { viewModel.load(tvId) }
@@ -156,7 +157,11 @@ fun TvDetailScreen(
                             Spacer(modifier = Modifier.height(6.dp))
                             LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 items(tv.genres) { genre ->
-                                    Surface(shape = RoundedCornerShape(20.dp), color = SurfaceVariant) {
+                                    Surface(
+                                        shape = RoundedCornerShape(20.dp),
+                                        color = SurfaceVariant,
+                                        modifier = Modifier.clickable { onGenreClick(genre.id, genre.name) }
+                                    ) {
                                         Text(
                                             text = genre.name,
                                             style = MaterialTheme.typography.labelSmall,

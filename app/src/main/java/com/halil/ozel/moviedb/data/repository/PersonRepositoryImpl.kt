@@ -3,6 +3,8 @@ package com.halil.ozel.moviedb.data.repository
 import com.halil.ozel.moviedb.BuildConfig
 import com.halil.ozel.moviedb.data.remote.api.TMDbApiService
 import com.halil.ozel.moviedb.domain.model.PersonCredit
+import com.halil.ozel.moviedb.domain.model.PersonInfo
+import com.halil.ozel.moviedb.domain.model.PersonSearchResult
 import com.halil.ozel.moviedb.domain.repository.PersonRepository
 import javax.inject.Inject
 
@@ -18,5 +20,13 @@ class PersonRepositoryImpl @Inject constructor(
             .sortedByDescending { it.voteAverage }
             .take(40)
             .map { it.toDomain() }
+    }
+
+    override suspend fun getPersonInfo(personId: Int): Result<PersonInfo> = runCatching {
+        apiService.getPersonInfo(personId, apiKey).toDomain()
+    }
+
+    override suspend fun searchPersons(query: String, page: Int): Result<List<PersonSearchResult>> = runCatching {
+        apiService.searchPersons(apiKey, query, page).results.map { it.toDomain() }
     }
 }

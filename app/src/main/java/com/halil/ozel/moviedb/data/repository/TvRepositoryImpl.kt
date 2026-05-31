@@ -49,6 +49,10 @@ class TvRepositoryImpl @Inject constructor(
         apiService.getTvGenres(apiKey).genres.map { it.toDomain() }
     }
 
+    override suspend fun discoverTvByGenre(genreId: Int, page: Int): Result<List<TvSeries>> = runCatching {
+        apiService.discoverTvByGenre(apiKey, genreId, page).results.map { it.toDomain() }
+    }
+
     override suspend fun getSeasonDetails(tvId: Int, seasonNumber: Int): Result<Season> = runCatching {
         apiService.getSeasonDetails(tvId, seasonNumber, apiKey).toDomain()
     }

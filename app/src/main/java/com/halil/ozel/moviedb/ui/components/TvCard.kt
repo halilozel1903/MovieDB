@@ -69,42 +69,49 @@ fun TvCard(
                         )
                     )
             )
-            Surface(
+            // Rating and Favorite button in a Row at TopStart
+            Row(
                 modifier = Modifier
                     .align(Alignment.TopStart)
+                    .fillMaxWidth()
                     .padding(6.dp),
-                shape = RoundedCornerShape(6.dp),
-                color = Background.copy(alpha = 0.75f)
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp)
+                // Rating chip (left)
+                Surface(
+                    shape = RoundedCornerShape(6.dp),
+                    color = Background.copy(alpha = 0.75f)
                 ) {
-                    Text(text = "⭐", style = MaterialTheme.typography.labelSmall)
-                    Spacer(modifier = Modifier.width(2.dp))
-                    Text(
-                        text = String.format("%.1f", tvSeries.voteAverage),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = StarColor
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp)
+                    ) {
+                        Text(text = "⭐", style = MaterialTheme.typography.labelSmall)
+                        Spacer(modifier = Modifier.width(2.dp))
+                        Text(
+                            text = String.format("%.1f", tvSeries.voteAverage),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = StarColor
+                        )
+                    }
                 }
-            }
-            if (onFavoriteToggle != null) {
-                IconButton(
-                    onClick = {
-                        favoriteAnimating = true
-                        onFavoriteToggle(tvSeries)
-                    },
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .scale(scale)
-                ) {
-                    Icon(
-                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = if (isFavorite) Error else Color.White,
-                        modifier = Modifier.size(20.dp)
-                    )
+                // Favorite button (right)
+                if (onFavoriteToggle != null) {
+                    IconButton(
+                        onClick = {
+                            favoriteAnimating = true
+                            onFavoriteToggle(tvSeries)
+                        },
+                        modifier = Modifier.scale(scale)
+                    ) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Favorite",
+                            tint = if (isFavorite) Error else Color.White,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         }
