@@ -435,10 +435,10 @@ private fun TypeBadge(text: String, color: androidx.compose.ui.graphics.Color) {
 //
 //  Only NUMBER_PEEK dp of the number is visible; rest is hidden behind poster.
 
-private val RANKED_CARD_W  = 108.dp          // poster width
-private val RANKED_CARD_H  = RANKED_CARD_W * 3f / 2f  // 162dp (2:3 ratio)
-private val NUMBER_PEEK    = 36.dp           // visible number strip on the left
-private val RANKED_ITEM_W  = RANKED_CARD_W + NUMBER_PEEK
+private val RANKED_CARD_W  = 108.dp
+private val RANKED_CARD_H  = RANKED_CARD_W * 3f / 2f   // 162dp (2:3)
+private val PEEK_SINGLE    = 36.dp     // 1–9 arası: tek rakam peek
+private val PEEK_DOUBLE    = 62.dp     // 10: iki rakam, daha geniş peek
 
 @Composable
 private fun RankedMovieCard(rank: Int, movie: Movie, onClick: (Int) -> Unit) {
@@ -465,43 +465,49 @@ private fun RankedItem(
     rank: Int,
     card: @Composable BoxScope.(Modifier) -> Unit
 ) {
-    val fontSize = if (rank < 10) 130.sp else 96.sp
+    val isDouble  = rank >= 10
+    val peek      = if (isDouble) PEEK_DOUBLE else PEEK_SINGLE
+    val itemW     = RANKED_CARD_W + peek
+    val fontSize  = if (isDouble) 110.sp else 130.sp
+    val letterSp  = if (isDouble) (-8).sp else 0.sp
 
     Box(
         modifier = Modifier
-            .width(RANKED_ITEM_W)
+            .width(itemW)
             .height(RANKED_CARD_H)
     ) {
-        // ── Stroke (outline) number — behind, slightly offset ────────────
+        // ── Stroke outline — visible edge of the number ──────────────────
         Text(
             text       = "$rank",
             fontSize   = fontSize,
             fontWeight = FontWeight.Black,
             lineHeight = fontSize,
+            letterSpacing = letterSp,
             color      = androidx.compose.ui.graphics.Color(0xFF4A4A70),
             style      = MaterialTheme.typography.displayLarge.copy(
                 fontSize     = fontSize,
                 lineHeight   = fontSize,
                 fontWeight   = FontWeight.Black,
-                drawStyle    = androidx.compose.ui.graphics.drawscope.Stroke(
-                    width = 6f
-                )
+                letterSpacing = letterSp,
+                drawStyle    = androidx.compose.ui.graphics.drawscope.Stroke(width = 6f)
             ),
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(bottom = 2.dp)
         )
-        // ── Fill number — same position, darker center ───────────────────
+        // ── Fill — dark center ───────────────────────────────────────────
         Text(
             text       = "$rank",
             fontSize   = fontSize,
             fontWeight = FontWeight.Black,
             lineHeight = fontSize,
+            letterSpacing = letterSp,
             color      = androidx.compose.ui.graphics.Color(0xFF151528),
             style      = MaterialTheme.typography.displayLarge.copy(
                 fontSize   = fontSize,
                 lineHeight = fontSize,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Black,
+                letterSpacing = letterSp
             ),
             modifier = Modifier
                 .align(Alignment.BottomStart)
