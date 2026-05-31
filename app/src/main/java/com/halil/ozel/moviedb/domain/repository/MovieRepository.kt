@@ -18,4 +18,5 @@ interface MovieRepository {
     suspend fun getMovieVideos(movieId: Int): Result<List<Video>>
     suspend fun getMovieWatchProviders(movieId: Int): Result<List<WatchProvider>>
     suspend fun discoverMoviesByGenre(genreId: Int, page: Int = 1): Result<List<Movie>>
+    suspend fun getTrendingMovies(): Result<List<Movie>>
 }

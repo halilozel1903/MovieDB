@@ -74,6 +74,16 @@ interface TMDbApiService {
         @Query("api_key") apiKey: String
     ): WatchProvidersResponseDto
 
+    @GET("trending/movie/week")
+    suspend fun getTrendingMovies(
+        @Query("api_key") apiKey: String
+    ): MovieListResponseDto
+
+    @GET("trending/tv/week")
+    suspend fun getTrendingTv(
+        @Query("api_key") apiKey: String
+    ): TvListResponseDto
+
     @GET("tv/popular")
     suspend fun getPopularTv(
         @Query("api_key") apiKey: String,

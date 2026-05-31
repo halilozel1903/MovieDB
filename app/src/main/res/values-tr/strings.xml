@@ -56,6 +56,33 @@
     <string name="see_all_similar">Tümüne Bak</string>
     <string name="min_suffix">dk</string>
 
+    <!-- Favorites screen -->
+    <string name="favorites_tab_movies">🎬 Filmler</string>
+    <string name="favorites_tab_tv">📺 Diziler</string>
+    <string name="no_movie_favorites">Henüz film favorisi yok</string>
+    <string name="no_movie_favorites_sub">Herhangi bir filmde kalp ikonuna dokun</string>
+    <string name="no_tv_favorites">Henüz dizi favorisi yok</string>
+    <string name="no_tv_favorites_sub">Herhangi bir dizide kalp ikonuna dokun</string>
+
+    <!-- Search screen -->
+    <string name="search_placeholder">Film, dizi veya oyuncu ara…</string>
+    <string name="search_filter_all">Tümü</string>
+    <string name="search_filter_movies">Film</string>
+    <string name="search_filter_tv">Dizi</string>
+    <string name="search_filter_people">Oyuncu</string>
+    <string name="search_empty_title">Bir şeyler keşfet</string>
+    <string name="search_empty_subtitle">Film, dizi veya oyuncu adı yazın</string>
+    <string name="search_no_results">Sonuç bulunamadı</string>
+    <string name="search_no_results_sub">"%1$s" için eşleşen içerik yok</string>
+    <string name="section_movies">Filmler</string>
+    <string name="section_tv_shows">Diziler</string>
+    <string name="section_actors">Oyuncular</string>
+    <string name="badge_movie">FİLM</string>
+    <string name="badge_tv">DİZİ</string>
+    <string name="badge_actor">OYUNCU</string>
+    <string name="trending_movies_week">🔥 Trend Filmler</string>
+    <string name="trending_tv_week">📺 Trend Diziler</string>
+
     <!-- Episode states -->
     <string name="episodes_not_loaded">Bölümler yüklenemedi</string>
     <string name="retry">Tekrar Dene</string>

@@ -61,4 +61,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun discoverMoviesByGenre(genreId: Int, page: Int): Result<List<Movie>> = runCatching {
         apiService.discoverMoviesByGenre(apiKey, genreId, page).results.map { it.toDomain() }
     }
+
+    override suspend fun getTrendingMovies(): Result<List<Movie>> = runCatching {
+        apiService.getTrendingMovies(apiKey).results.map { it.toDomain() }
+    }
 }

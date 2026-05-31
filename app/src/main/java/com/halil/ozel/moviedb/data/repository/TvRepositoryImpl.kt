@@ -67,6 +67,10 @@ class TvRepositoryImpl @Inject constructor(
         countryData?.allProviders()?.map { it.toDomain() } ?: emptyList()
     }
 
+    override suspend fun getTrendingTv(): Result<List<TvSeries>> = runCatching {
+        apiService.getTrendingTv(apiKey).results.map { it.toDomain() }
+    }
+
     override suspend fun getTvExternalIds(tvId: Int): Result<String?> = runCatching {
         apiService.getTvExternalIds(tvId, apiKey).imdbId
     }

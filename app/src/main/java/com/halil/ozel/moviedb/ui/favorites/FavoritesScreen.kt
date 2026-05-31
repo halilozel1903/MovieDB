@@ -11,9 +11,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.halil.ozel.moviedb.R
 import com.halil.ozel.moviedb.ui.components.EmptyState
 import com.halil.ozel.moviedb.ui.components.MovieCard
 import com.halil.ozel.moviedb.ui.components.TvCard
@@ -30,8 +32,11 @@ fun FavoritesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedTab by remember { mutableIntStateOf(0) }
-    val tabs = listOf("🎬 Films", "📺 Diziler")
     val context = LocalContext.current
+
+    val tabMovies = stringResource(R.string.favorites_tab_movies)
+    val tabTv     = stringResource(R.string.favorites_tab_tv)
+    val tabs      = listOf(tabMovies, tabTv)
 
     LaunchedEffect(uiState.toastMessage) {
         uiState.toastMessage?.let {
@@ -49,11 +54,12 @@ fun FavoritesScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .statusBarsPadding()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "❤️ Favorites",
+                text = "❤️ ${stringResource(R.string.favorites_title)}",
                 style = MaterialTheme.typography.headlineMedium,
                 color = OnBackground,
                 fontWeight = FontWeight.Bold
@@ -84,10 +90,10 @@ fun FavoritesScreen(
             tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTab == index,
-                    onClick = { selectedTab = index },
+                    onClick  = { selectedTab = index },
                     text = {
                         Text(
-                            text = title,
+                            text  = title,
                             color = if (selectedTab == index) Primary else OnBackground.copy(alpha = 0.6f)
                         )
                     }
@@ -96,52 +102,52 @@ fun FavoritesScreen(
         }
 
         if (uiState.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = Primary)
             }
         } else when (selectedTab) {
             0 -> if (uiState.favorites.isEmpty()) {
                 EmptyState(
-                    title = "No movie favorites",
-                    subtitle = "Tap the heart on any movie"
+                    title    = stringResource(R.string.no_movie_favorites),
+                    subtitle = stringResource(R.string.no_movie_favorites_sub)
                 )
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement   = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.favorites, key = { it.id }) { movie ->
                         MovieCard(
-                            movie = movie,
-                            isFavorite = true,
+                            movie           = movie,
+                            isFavorite      = true,
                             onFavoriteToggle = viewModel::toggleFavorite,
-                            onClick = onMovieClick,
-                            modifier = Modifier.fillMaxWidth()
+                            onClick         = onMovieClick,
+                            modifier        = Modifier.fillMaxWidth()
                         )
                     }
                 }
             }
             1 -> if (uiState.tvFavorites.isEmpty()) {
                 EmptyState(
-                    title = "No TV favorites",
-                    subtitle = "Tap the heart on any TV show"
+                    title    = stringResource(R.string.no_tv_favorites),
+                    subtitle = stringResource(R.string.no_tv_favorites_sub)
                 )
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement   = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.tvFavorites, key = { it.id }) { tv ->
                         TvCard(
-                            tvSeries = tv,
-                            isFavorite = true,
+                            tvSeries        = tv,
+                            isFavorite      = true,
                             onFavoriteToggle = viewModel::toggleTvFavorite,
-                            onClick = onTvClick,
-                            modifier = Modifier.fillMaxWidth()
+                            onClick         = onTvClick,
+                            modifier        = Modifier.fillMaxWidth()
                         )
                     }
                 }

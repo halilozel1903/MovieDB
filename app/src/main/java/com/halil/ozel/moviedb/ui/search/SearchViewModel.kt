@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.halil.ozel.moviedb.domain.model.Movie
 import com.halil.ozel.moviedb.domain.model.PersonSearchResult
 import com.halil.ozel.moviedb.domain.model.TvSeries
+import com.halil.ozel.moviedb.domain.usecase.GetTrendingMoviesUseCase
+import com.halil.ozel.moviedb.domain.usecase.GetTrendingTvUseCase
 import com.halil.ozel.moviedb.domain.usecase.SearchMoviesUseCase
 import com.halil.ozel.moviedb.domain.usecase.SearchPersonsUseCase
 import com.halil.ozel.moviedb.domain.usecase.SearchTvUseCase
@@ -28,7 +30,11 @@ data class SearchUiState(
     val persons: List<PersonSearchResult> = emptyList(),
     val selectedFilter: SearchFilter = SearchFilter.ALL,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    // Trending (shown when query is blank)
+    val trendingMovies: List<Movie> = emptyList(),
+    val trendingTv: List<TvSeries> = emptyList(),
+    val isTrendingLoading: Boolean = false
 )
 
 @OptIn(FlowPreview::class)
@@ -36,7 +42,9 @@ data class SearchUiState(
 class SearchViewModel @Inject constructor(
     private val searchMoviesUseCase: SearchMoviesUseCase,
     private val searchTvUseCase: SearchTvUseCase,
-    private val searchPersonsUseCase: SearchPersonsUseCase
+    private val searchPersonsUseCase: SearchPersonsUseCase,
+    private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
+    private val getTrendingTvUseCase: GetTrendingTvUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
@@ -45,12 +53,26 @@ class SearchViewModel @Inject constructor(
     private val _queryFlow = MutableStateFlow("")
 
     init {
+        loadTrending()
         viewModelScope.launch {
             _queryFlow
                 .debounce(400)
                 .distinctUntilChanged()
                 .filter { it.length >= 2 }
                 .collect { query -> performSearch(query) }
+        }
+    }
+
+    private fun loadTrending() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isTrendingLoading = true)
+            val movies = getTrendingMoviesUseCase().getOrDefault(emptyList())
+            val tv     = getTrendingTvUseCase().getOrDefault(emptyList())
+            _uiState.value = _uiState.value.copy(
+                trendingMovies   = movies,
+                trendingTv       = tv,
+                isTrendingLoading = false
+            )
         }
     }
 
@@ -62,7 +84,7 @@ class SearchViewModel @Inject constructor(
         _queryFlow.value = query
         if (query.isBlank()) {
             _uiState.value = _uiState.value.copy(
-                movies = emptyList(),
+                movies  = emptyList(),
                 tvSeries = emptyList(),
                 persons = emptyList()
             )
@@ -76,13 +98,13 @@ class SearchViewModel @Inject constructor(
     private fun performSearch(query: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            val moviesResult = searchMoviesUseCase(query)
-            val tvResult = searchTvUseCase(query)
+            val moviesResult  = searchMoviesUseCase(query)
+            val tvResult      = searchTvUseCase(query)
             val personsResult = searchPersonsUseCase(query)
             _uiState.value = _uiState.value.copy(
-                movies = moviesResult.getOrDefault(emptyList()),
+                movies   = moviesResult.getOrDefault(emptyList()),
                 tvSeries = tvResult.getOrDefault(emptyList()),
-                persons = personsResult.getOrDefault(emptyList()),
+                persons  = personsResult.getOrDefault(emptyList()),
                 isLoading = false
             )
         }

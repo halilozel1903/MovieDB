@@ -55,6 +55,33 @@
     <string name="see_all_similar">See All Similar</string>
     <string name="min_suffix">min</string>
 
+    <!-- Favorites screen -->
+    <string name="favorites_tab_movies">🎬 Movies</string>
+    <string name="favorites_tab_tv">📺 TV Shows</string>
+    <string name="no_movie_favorites">No movie favorites yet</string>
+    <string name="no_movie_favorites_sub">Tap the heart icon on any movie</string>
+    <string name="no_tv_favorites">No TV favorites yet</string>
+    <string name="no_tv_favorites_sub">Tap the heart icon on any TV show</string>
+
+    <!-- Search screen -->
+    <string name="search_placeholder">Search movies, TV shows or actors…</string>
+    <string name="search_filter_all">All</string>
+    <string name="search_filter_movies">Movies</string>
+    <string name="search_filter_tv">TV</string>
+    <string name="search_filter_people">Actors</string>
+    <string name="search_empty_title">Discover something new</string>
+    <string name="search_empty_subtitle">Type a movie, TV show or actor name</string>
+    <string name="search_no_results">No results found</string>
+    <string name="search_no_results_sub">No content matching "%1$s"</string>
+    <string name="section_movies">Movies</string>
+    <string name="section_tv_shows">TV Shows</string>
+    <string name="section_actors">Actors</string>
+    <string name="badge_movie">MOVIE</string>
+    <string name="badge_tv">TV</string>
+    <string name="badge_actor">ACTOR</string>
+    <string name="trending_movies_week">🔥 Trending Movies</string>
+    <string name="trending_tv_week">📺 Trending TV Shows</string>
+
     <!-- Episode states -->
     <string name="episodes_not_loaded">Episodes could not be loaded</string>
     <string name="retry">Retry</string>

@@ -20,5 +20,6 @@ interface TvRepository {
     suspend fun getTvVideos(tvId: Int): Result<List<Video>>
     suspend fun getTvWatchProviders(tvId: Int): Result<List<WatchProvider>>
     suspend fun discoverTvByGenre(genreId: Int, page: Int = 1): Result<List<TvSeries>>
+    suspend fun getTrendingTv(): Result<List<TvSeries>>
     suspend fun getTvExternalIds(tvId: Int): Result<String?>
 }
