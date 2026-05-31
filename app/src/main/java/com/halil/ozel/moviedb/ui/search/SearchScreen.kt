@@ -202,8 +202,8 @@ fun SearchScreen(
                         if (uiState.trendingMovies.isNotEmpty()) {
                             SectionHeader(title = stringResource(R.string.trending_movies_week))
                             LazyRow(
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(0.dp)
+                                contentPadding = PaddingValues(start = 16.dp, end = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
                             ) {
                                 itemsIndexed(uiState.trendingMovies.take(10)) { idx, movie ->
                                     RankedMovieCard(rank = idx + 1, movie = movie, onClick = onMovieClick)
@@ -215,8 +215,8 @@ fun SearchScreen(
                         if (uiState.trendingTv.isNotEmpty()) {
                             SectionHeader(title = stringResource(R.string.trending_tv_week))
                             LazyRow(
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(0.dp)
+                                contentPadding = PaddingValues(start = 16.dp, end = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
                             ) {
                                 itemsIndexed(uiState.trendingTv.take(10)) { idx, tv ->
                                     RankedTvCard(rank = idx + 1, tv = tv, onClick = onTvClick)
@@ -424,50 +424,83 @@ private fun TypeBadge(text: String, color: androidx.compose.ui.graphics.Color) {
     }
 }
 
-// ── Ranked cards (Top 10) ─────────────────────────────────────────────────────
+// ── Netflix-style Top 10 ranked cards ────────────────────────────────────────
+//
+// Layout per item (width = CARD_W + NUMBER_PEEK):
+//
+//   ┌──────────────────────────────┐
+//   │  NUMBER (behind)  │  POSTER  │
+//   │  (big, dark)      │ (front)  │
+//   └──────────────────────────────┘
+//
+//  Only NUMBER_PEEK dp of the number is visible; rest is hidden behind poster.
+
+private val RANKED_CARD_W = 108.dp          // poster width
+private val NUMBER_PEEK   = 38.dp           // visible number strip on the left
+private val RANKED_ITEM_W = RANKED_CARD_W + NUMBER_PEEK
 
 @Composable
 private fun RankedMovieCard(rank: Int, movie: Movie, onClick: (Int) -> Unit) {
-    Box(modifier = Modifier.width(150.dp)) {
+    RankedItem(rank = rank) { cardMod ->
         MovieCard(
             movie            = movie,
             isFavorite       = false,
             onFavoriteToggle = {},
             onClick          = onClick,
-            modifier         = Modifier.fillMaxWidth().padding(start = if (rank == 1) 0.dp else 8.dp)
+            modifier         = cardMod
         )
-        RankBadge(rank = rank, modifier = Modifier.align(Alignment.BottomStart).offset(x = 2.dp, y = 8.dp))
     }
 }
 
 @Composable
 private fun RankedTvCard(rank: Int, tv: TvSeries, onClick: (Int) -> Unit) {
-    Box(modifier = Modifier.width(150.dp)) {
-        TvCard(
-            tvSeries = tv,
-            onClick  = onClick,
-            modifier = Modifier.fillMaxWidth().padding(start = if (rank == 1) 0.dp else 8.dp)
-        )
-        RankBadge(rank = rank, modifier = Modifier.align(Alignment.BottomStart).offset(x = 2.dp, y = 8.dp))
+    RankedItem(rank = rank) { cardMod ->
+        TvCard(tvSeries = tv, onClick = onClick, modifier = cardMod)
     }
 }
 
 @Composable
-private fun RankBadge(rank: Int, modifier: Modifier = Modifier) {
-    Text(
-        text       = "$rank",
-        fontSize   = if (rank < 10) 44.sp else 38.sp,
-        fontWeight = FontWeight.Black,
-        color      = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.92f),
-        modifier   = modifier,
-        style      = MaterialTheme.typography.displayMedium.copy(
-            shadow = androidx.compose.ui.graphics.Shadow(
-                color      = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.85f),
-                offset     = androidx.compose.ui.geometry.Offset(2f, 2f),
-                blurRadius = 6f
-            )
+private fun RankedItem(
+    rank: Int,
+    card: @Composable BoxScope.(Modifier) -> Unit
+) {
+    // fontSize: single digit bigger than double digit
+    val fontSize = if (rank < 10) 130.sp else 96.sp
+
+    Box(
+        modifier = Modifier
+            .width(RANKED_ITEM_W)
+            .aspectRatio(RANKED_CARD_W / (RANKED_CARD_W * 1.5f))  // keep card's 2:3 ratio
+    ) {
+        // ── Large rank number — anchored bottom-start, behind everything ──
+        Text(
+            text     = "$rank",
+            fontSize = fontSize,
+            fontWeight = FontWeight.Black,
+            lineHeight = fontSize,          // no extra line-height padding
+            color = androidx.compose.ui.graphics.Color(0xFF252540),
+            style = MaterialTheme.typography.displayLarge.copy(
+                fontSize   = fontSize,
+                lineHeight = fontSize,
+                fontWeight = FontWeight.Black,
+                shadow = androidx.compose.ui.graphics.Shadow(
+                    color      = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.6f),
+                    offset     = androidx.compose.ui.geometry.Offset(3f, 3f),
+                    blurRadius = 2f
+                )
+            ),
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(bottom = 2.dp)
         )
-    )
+
+        // ── Poster card — right-aligned, sits in front of number ──────────
+        card(
+            Modifier
+                .align(Alignment.BottomEnd)
+                .width(RANKED_CARD_W)
+        )
+    }
 }
 
 // ── Trending person pill ──────────────────────────────────────────────────────
