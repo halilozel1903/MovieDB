@@ -98,7 +98,7 @@ class FavoritesRepositoryImpl @Inject constructor(
     override fun isFavoriteFlow(movieId: Int): Flow<Boolean> = dataStore.data.map { prefs ->
         val json = prefs[favoritesKey] ?: return@map false
         try { movieAdapter.fromJson(json)?.any { it.id == movieId } ?: false }
-        catch (e: Exception) { false }
+        catch (_: Exception) { false }
     }
 
     // ── TV ──────────────────────────────────────────────────────────────────
@@ -131,6 +131,6 @@ class FavoritesRepositoryImpl @Inject constructor(
     override fun isTvFavoriteFlow(tvId: Int): Flow<Boolean> = dataStore.data.map { prefs ->
         val json = prefs[tvFavoritesKey] ?: return@map false
         try { tvAdapter.fromJson(json)?.any { it.id == tvId } ?: false }
-        catch (e: Exception) { false }
+        catch (_: Exception) { false }
     }
 }
