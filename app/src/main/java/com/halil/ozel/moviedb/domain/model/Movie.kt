@@ -12,5 +12,6 @@ data class Movie(
     val voteCount: Int,
     val genres: List<Genre> = emptyList(),
     val runtime: Int = 0,
-    val originalLanguage: String = ""
+    val originalLanguage: String = "",
+    val imdbId: String? = null
 )

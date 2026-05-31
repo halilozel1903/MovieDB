@@ -46,7 +46,10 @@ import com.halil.ozel.moviedb.domain.model.Cast
 import com.halil.ozel.moviedb.domain.model.Episode
 import com.halil.ozel.moviedb.domain.model.Season
 import com.halil.ozel.moviedb.domain.model.WatchProvider
+import androidx.compose.ui.res.stringResource
+import com.halil.ozel.moviedb.R
 import com.halil.ozel.moviedb.ui.components.RatingBar
+import com.halil.ozel.moviedb.ui.components.RatingBadgesRow
 import com.halil.ozel.moviedb.ui.components.SectionHeader
 import com.halil.ozel.moviedb.ui.components.TvCard
 import com.halil.ozel.moviedb.ui.components.shimmerBrush
@@ -59,6 +62,7 @@ fun TvDetailScreen(
     onTvClick: (Int) -> Unit,
     onCastClick: (Int, String) -> Unit = { _, _ -> },
     onGenreClick: (Int, String) -> Unit = { _, _ -> },
+    onSeeAllSimilar: (Int) -> Unit = {},
     viewModel: TvDetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(tvId) { viewModel.load(tvId) }
@@ -152,11 +156,20 @@ fun TvDetailScreen(
                             if (tv.firstAirDate.length >= 4) {
                                 Text(tv.firstAirDate.take(4), style = MaterialTheme.typography.bodyMedium, color = OnSurface)
                             }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            RatingBadgesRow(
+                                voteAverage = tv.voteAverage,
+                                voteCount = tv.voteCount,
+                                imdbId = uiState.imdbId,
+                                externalRatings = uiState.externalRatings
+                            )
                             Spacer(modifier = Modifier.height(6.dp))
-                            RatingBar(rating = tv.voteAverage)
-                            Spacer(modifier = Modifier.height(6.dp))
-                            LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                items(tv.genres) { genre ->
+                            @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                tv.genres.forEach { genre ->
                                     Surface(
                                         shape = RoundedCornerShape(20.dp),
                                         color = SurfaceVariant,
@@ -166,7 +179,7 @@ fun TvDetailScreen(
                                             text = genre.name,
                                             style = MaterialTheme.typography.labelSmall,
                                             color = Secondary,
-                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                                         )
                                     }
                                 }
@@ -178,7 +191,7 @@ fun TvDetailScreen(
                     Column(
                         modifier = Modifier.fillMaxWidth().offset(y = (-50).dp).padding(horizontal = 16.dp)
                     ) {
-                        Text("Overview", style = MaterialTheme.typography.titleLarge, color = OnBackground, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.overview_label), style = MaterialTheme.typography.titleLarge, color = OnBackground, fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(tv.overview, style = MaterialTheme.typography.bodyMedium, color = OnSurface)
 
@@ -186,13 +199,17 @@ fun TvDetailScreen(
                         if (uiState.watchProviders.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                text = "Where to Watch",
+                                text = stringResource(R.string.where_to_watch_label),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = OnBackground,
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
                                 uiState.watchProviders.forEach { provider ->
                                     TvWatchProviderItem(provider = provider)
                                 }
@@ -201,16 +218,16 @@ fun TvDetailScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            TvStatChip("Seasons", "${tv.numberOfSeasons}")
-                            TvStatChip("Episodes", "${tv.numberOfEpisodes}")
-                            TvStatChip("Language", tv.originalLanguage.uppercase())
+                            TvStatChip(stringResource(R.string.season), "${tv.numberOfSeasons}")
+                            TvStatChip(stringResource(R.string.episode), "${tv.numberOfEpisodes}")
+                            TvStatChip(stringResource(R.string.language_label), tv.originalLanguage.uppercase())
                         }
 
                         // Seasons & Episodes
                         if (tv.seasons.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(20.dp))
                             Text(
-                                "Seasons & Episodes",
+                                stringResource(R.string.seasons_episodes_label),
                                 style = MaterialTheme.typography.titleLarge,
                                 color = OnBackground, fontWeight = FontWeight.Bold
                             )
@@ -221,7 +238,9 @@ fun TvDetailScreen(
                                     isExpanded = uiState.expandedSeasonNumber == season.seasonNumber,
                                     episodes = uiState.seasonEpisodes[season.seasonNumber] ?: emptyList(),
                                     episodesLoading = uiState.episodesLoading && uiState.expandedSeasonNumber == season.seasonNumber,
-                                    onToggle = { viewModel.toggleSeasonExpanded(season.seasonNumber) }
+                                    hasError = uiState.episodesError[season.seasonNumber] == true,
+                                    onToggle = { viewModel.toggleSeasonExpanded(season.seasonNumber) },
+                                    onRetry = { viewModel.retryEpisodes(season.seasonNumber) }
                                 )
                             }
                         }
@@ -229,7 +248,7 @@ fun TvDetailScreen(
                         // Cast
                         if (uiState.cast.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(16.dp))
-                            SectionHeader(title = "Cast")
+                            SectionHeader(title = stringResource(R.string.cast_label))
                         }
                     }
 
@@ -249,7 +268,7 @@ fun TvDetailScreen(
                     }
 
                     if (uiState.recommended.isNotEmpty()) {
-                        SectionHeader(title = "Recommended", modifier = Modifier.offset(y = (-40).dp))
+                        SectionHeader(title = stringResource(R.string.recommended_label), onSeeAllClick = { onSeeAllSimilar(tvId) }, modifier = Modifier.offset(y = (-40).dp))
                         LazyRow(
                             contentPadding = PaddingValues(horizontal = 16.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -316,7 +335,9 @@ private fun SeasonRow(
     isExpanded: Boolean,
     episodes: List<Episode>,
     episodesLoading: Boolean,
-    onToggle: () -> Unit
+    hasError: Boolean = false,
+    onToggle: () -> Unit,
+    onRetry: () -> Unit = {}
 ) {
     val arrowAngle by animateFloatAsState(targetValue = if (isExpanded) 180f else 0f, label = "arrow")
 
@@ -370,16 +391,47 @@ private fun SeasonRow(
             exit = shrinkVertically()
         ) {
             Column(modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
-                if (episodesLoading) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().height(60.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = Primary, modifier = Modifier.size(24.dp))
+                when {
+                    episodesLoading -> {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().height(72.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(color = Primary, modifier = Modifier.size(28.dp))
+                        }
                     }
-                } else {
-                    episodes.forEach { episode ->
-                        EpisodeItem(episode = episode)
+                    hasError -> {
+                        Column(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = stringResource(R.string.episodes_not_loaded),
+                                color = OnSurface,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(modifier = Modifier.height(6.dp))
+                            TextButton(onClick = onRetry) {
+                                Text(stringResource(R.string.retry), color = Primary)
+                            }
+                        }
+                    }
+                    episodes.isEmpty() -> {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.no_episodes_yet),
+                                color = OnSurface,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
+                    else -> {
+                        episodes.forEach { episode ->
+                            EpisodeItem(episode = episode)
+                        }
                     }
                 }
             }

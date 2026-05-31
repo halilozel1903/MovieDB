@@ -20,8 +20,19 @@ data class WatchProviderItemDto(
 }
 
 data class WatchProviderCountryDto(
-    @Json(name = "flatrate") val flatrate: List<WatchProviderItemDto>? = null
-)
+    @Json(name = "flatrate") val flatrate: List<WatchProviderItemDto>? = null,
+    @Json(name = "rent")     val rent:     List<WatchProviderItemDto>? = null,
+    @Json(name = "buy")      val buy:      List<WatchProviderItemDto>? = null,
+    @Json(name = "free")     val free:     List<WatchProviderItemDto>? = null
+) {
+    /** All providers, deduplicated by id, sorted by displayPriority */
+    fun allProviders(): List<WatchProviderItemDto> =
+        ((flatrate ?: emptyList()) + (free ?: emptyList()) +
+         (rent ?: emptyList()) + (buy ?: emptyList()))
+            .distinctBy { it.providerId }
+            .sortedBy { it.displayPriority }
+            .take(8)
+}
 
 data class WatchProvidersResponseDto(
     @Json(name = "results") val results: Map<String, WatchProviderCountryDto> = emptyMap()

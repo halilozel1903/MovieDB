@@ -36,8 +36,8 @@ private data class OnboardingPage(
 
 private val pages = listOf(
     OnboardingPage(
-        emoji = "🎬",
-        title = "MovieDB'ye\nHoş Geldiniz",
+        emoji = "📺",
+        title = "TV Heaven'a\nHoş Geldiniz",
         description = "Sinema dünyasının tüm içeriklerine tek bir yerden ulaşın.",
         accentColor = Color(0xFFF5C518),
         features = listOf(

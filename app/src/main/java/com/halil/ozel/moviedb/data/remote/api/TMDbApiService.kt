@@ -1,6 +1,7 @@
 package com.halil.ozel.moviedb.data.remote.api
 
 import com.halil.ozel.moviedb.data.remote.dto.CombinedCreditsResponseDto
+import com.halil.ozel.moviedb.data.remote.dto.ExternalIdsDto
 import com.halil.ozel.moviedb.data.remote.dto.CreditResponseDto
 import com.halil.ozel.moviedb.data.remote.dto.GenreListResponseDto
 import com.halil.ozel.moviedb.data.remote.dto.MovieDto
@@ -57,7 +58,8 @@ interface TMDbApiService {
     @GET("movie/{movie_id}/recommendations")
     suspend fun getMovieRecommendations(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int = 1
     ): MovieListResponseDto
 
     @GET("movie/{movie_id}/videos")
@@ -111,7 +113,8 @@ interface TMDbApiService {
     @GET("tv/{tv_id}/recommendations")
     suspend fun getTvRecommendations(
         @Path("tv_id") tvId: Int,
-        @Query("api_key") apiKey: String
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int = 1
     ): TvListResponseDto
 
     @GET("tv/{tv_id}/videos")
@@ -125,6 +128,12 @@ interface TMDbApiService {
         @Path("tv_id") tvId: Int,
         @Query("api_key") apiKey: String
     ): WatchProvidersResponseDto
+
+    @GET("tv/{tv_id}/external_ids")
+    suspend fun getTvExternalIds(
+        @Path("tv_id") tvId: Int,
+        @Query("api_key") apiKey: String
+    ): ExternalIdsDto
 
     @GET("search/movie")
     suspend fun searchMovies(

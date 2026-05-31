@@ -41,4 +41,22 @@
     <string name="movie_name">Movie Name</string>
     <string name="series_name">Series Name</string>
     <string name="rating_suffix">/10</string>
+
+    <!-- Detail screen labels -->
+    <string name="overview_label">Overview</string>
+    <string name="where_to_watch_label">Where to Watch</string>
+    <string name="cast_label">Cast</string>
+    <string name="recommended_label">Recommended</string>
+    <string name="runtime_label">Runtime</string>
+    <string name="language_label">Language</string>
+    <string name="votes_label">Votes</string>
+    <string name="seasons_episodes_label">Seasons &amp; Episodes</string>
+    <string name="see_on_imdb">View on IMDb</string>
+    <string name="see_all_similar">See All Similar</string>
+    <string name="min_suffix">min</string>
+
+    <!-- Episode states -->
+    <string name="episodes_not_loaded">Episodes could not be loaded</string>
+    <string name="retry">Retry</string>
+    <string name="no_episodes_yet">No episode info yet</string>
 </resources>

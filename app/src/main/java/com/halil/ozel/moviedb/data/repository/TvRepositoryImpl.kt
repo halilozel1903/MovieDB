@@ -41,8 +41,8 @@ class TvRepositoryImpl @Inject constructor(
         apiService.getTvCredits(tvId, apiKey).cast.map { it.toDomain() }
     }
 
-    override suspend fun getRecommendedTv(tvId: Int): Result<List<TvSeries>> = runCatching {
-        apiService.getTvRecommendations(tvId, apiKey).results.map { it.toDomain() }
+    override suspend fun getRecommendedTv(tvId: Int, page: Int): Result<List<TvSeries>> = runCatching {
+        apiService.getTvRecommendations(tvId, apiKey, page).results.map { it.toDomain() }
     }
 
     override suspend fun getTvGenres(): Result<List<Genre>> = runCatching {
@@ -64,6 +64,10 @@ class TvRepositoryImpl @Inject constructor(
     override suspend fun getTvWatchProviders(tvId: Int): Result<List<WatchProvider>> = runCatching {
         val response = apiService.getTvWatchProviders(tvId, apiKey)
         val countryData = response.results["TR"] ?: response.results["US"] ?: response.results.values.firstOrNull()
-        countryData?.flatrate?.take(5)?.map { it.toDomain() } ?: emptyList()
+        countryData?.allProviders()?.map { it.toDomain() } ?: emptyList()
+    }
+
+    override suspend fun getTvExternalIds(tvId: Int): Result<String?> = runCatching {
+        apiService.getTvExternalIds(tvId, apiKey).imdbId
     }
 }

@@ -18,6 +18,7 @@ android {
         versionName "2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "TMDB_API_KEY", '"45dfdbd49fa1f1da1f5b75fd60217433"'
+        buildConfigField "String", "OMDB_API_KEY", '"a4448f2"'
     }
 
     buildTypes {

@@ -1,5 +1,6 @@
 package com.halil.ozel.moviedb.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,13 +19,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.halil.ozel.moviedb.data.remote.api.ApiConstants
-import com.halil.ozel.moviedb.ui.components.*
+import com.halil.ozel.moviedb.navigation.MediaCategory
+import com.halil.ozel.moviedb.ui.components.MovieCard
+import com.halil.ozel.moviedb.ui.components.RatingBar
+import com.halil.ozel.moviedb.ui.components.SectionHeader
+import com.halil.ozel.moviedb.ui.components.ShimmerMovieRow
+import com.halil.ozel.moviedb.ui.components.TvCard
+import com.halil.ozel.moviedb.ui.components.shimmerBrush
 import com.halil.ozel.moviedb.ui.theme.*
 import kotlinx.coroutines.delay
 
@@ -33,12 +41,22 @@ import kotlinx.coroutines.delay
 fun HomeScreen(
     onMovieClick: (Int) -> Unit,
     onTvClick: (Int) -> Unit = {},
+    onSeeAllClick: ((MediaCategory) -> Unit)? = null,
     showTv: Boolean = false,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val favoriteIds by viewModel.favoriteIds.collectAsState()
     val tvFavoriteIds by viewModel.tvFavoriteIds.collectAsState()
+    val toastMessage by viewModel.toastMessage.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(toastMessage) {
+        toastMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearToastMessage()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -233,14 +251,17 @@ fun HomeScreen(
 
         if (!showTv) {
             // Now Playing
-            SectionHeader(title = "🎬 Now Playing")
+            SectionHeader(
+                title = "🎬 Now Playing",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.MOVIE_NOW_PLAYING) } }
+            )
             if (uiState.isLoading) ShimmerMovieRow()
             else {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(uiState.nowPlayingMovies) { movie ->
+                    items(uiState.nowPlayingMovies.take(6)) { movie ->
                         MovieCard(
                             movie = movie,
                             isFavorite = favoriteIds.contains(movie.id),
@@ -254,14 +275,17 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Popular
-            SectionHeader(title = "🔥 Popular")
+            SectionHeader(
+                title = "🔥 Popular",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.MOVIE_POPULAR) } }
+            )
             if (uiState.isLoading) ShimmerMovieRow()
             else {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(uiState.popularMovies) { movie ->
+                    items(uiState.popularMovies.take(6)) { movie ->
                         MovieCard(
                             movie = movie,
                             isFavorite = favoriteIds.contains(movie.id),
@@ -275,14 +299,17 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Top Rated
-            SectionHeader(title = "⭐ Top Rated")
+            SectionHeader(
+                title = "⭐ Top Rated",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.MOVIE_TOP_RATED) } }
+            )
             if (uiState.isLoading) ShimmerMovieRow()
             else {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(uiState.topRatedMovies) { movie ->
+                    items(uiState.topRatedMovies.take(6)) { movie ->
                         MovieCard(
                             movie = movie,
                             isFavorite = favoriteIds.contains(movie.id),
@@ -296,14 +323,17 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Upcoming
-            SectionHeader(title = "🗓 Upcoming")
+            SectionHeader(
+                title = "🗓 Upcoming",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.MOVIE_UPCOMING) } }
+            )
             if (uiState.isLoading) ShimmerMovieRow()
             else {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(uiState.upcomingMovies) { movie ->
+                    items(uiState.upcomingMovies.take(6)) { movie ->
                         MovieCard(
                             movie = movie,
                             isFavorite = favoriteIds.contains(movie.id),
@@ -315,14 +345,17 @@ fun HomeScreen(
             }
         } else {
             // TV sections
-            SectionHeader(title = "🔥 Popular TV")
+            SectionHeader(
+                title = "🔥 Popular TV",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.TV_POPULAR) } }
+            )
             if (uiState.isLoading) ShimmerMovieRow()
             else {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(uiState.popularTv) { tv ->
+                    items(uiState.popularTv.take(6)) { tv ->
                         TvCard(
                             tvSeries = tv,
                             onClick = onTvClick,
@@ -335,14 +368,17 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SectionHeader(title = "⭐ Top Rated TV")
+            SectionHeader(
+                title = "⭐ Top Rated TV",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.TV_TOP_RATED) } }
+            )
             if (uiState.isLoading) ShimmerMovieRow()
             else {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(uiState.topRatedTv) { tv ->
+                    items(uiState.topRatedTv.take(6)) { tv ->
                         TvCard(
                             tvSeries = tv,
                             onClick = onTvClick,
@@ -355,14 +391,40 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            SectionHeader(title = "📺 Airing Today")
+            SectionHeader(
+                title = "📺 Airing Today",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.TV_AIRING_TODAY) } }
+            )
             if (uiState.isLoading) ShimmerMovieRow()
             else {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(uiState.airingTodayTv) { tv ->
+                    items(uiState.airingTodayTv.take(6)) { tv ->
+                        TvCard(
+                            tvSeries = tv,
+                            onClick = onTvClick,
+                            isFavorite = tvFavoriteIds.contains(tv.id),
+                            onFavoriteToggle = viewModel::toggleTvFavorite
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            SectionHeader(
+                title = "📡 On The Air",
+                onSeeAllClick = onSeeAllClick?.let { { it(MediaCategory.TV_ON_THE_AIR) } }
+            )
+            if (uiState.isLoading) ShimmerMovieRow()
+            else {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(uiState.onTheAirTv.take(6)) { tv ->
                         TvCard(
                             tvSeries = tv,
                             onClick = onTvClick,

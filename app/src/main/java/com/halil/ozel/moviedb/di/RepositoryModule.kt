@@ -2,11 +2,13 @@ package com.halil.ozel.moviedb.di
 
 import com.halil.ozel.moviedb.data.repository.FavoritesRepositoryImpl
 import com.halil.ozel.moviedb.data.repository.MovieRepositoryImpl
+import com.halil.ozel.moviedb.data.repository.OmdbRepositoryImpl
 import com.halil.ozel.moviedb.data.repository.PersonRepositoryImpl
 import com.halil.ozel.moviedb.data.repository.SearchRepositoryImpl
 import com.halil.ozel.moviedb.data.repository.TvRepositoryImpl
 import com.halil.ozel.moviedb.domain.repository.FavoritesRepository
 import com.halil.ozel.moviedb.domain.repository.MovieRepository
+import com.halil.ozel.moviedb.domain.repository.OmdbRepository
 import com.halil.ozel.moviedb.domain.repository.PersonRepository
 import com.halil.ozel.moviedb.domain.repository.SearchRepository
 import com.halil.ozel.moviedb.domain.repository.TvRepository
@@ -39,4 +41,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindPersonRepository(impl: PersonRepositoryImpl): PersonRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindOmdbRepository(impl: OmdbRepositoryImpl): OmdbRepository
 }

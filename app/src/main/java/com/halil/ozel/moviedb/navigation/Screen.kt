@@ -16,6 +16,10 @@ sealed class Screen(val route: String) {
     object MediaList : Screen("media_list/{category}") {
         fun createRoute(category: MediaCategory) = "media_list/${category.name}"
     }
+    object SimilarList : Screen("similar_list/{contentId}/{mediaType}") {
+        fun createRoute(contentId: Int, isMovie: Boolean) =
+            "similar_list/$contentId/${if (isMovie) "movie" else "tv"}"
+    }
     object GenreList : Screen("genre_list/{genreId}/{mediaType}/{genreName}") {
         fun createRoute(genreId: Int, isMovie: Boolean, genreName: String) =
             "genre_list/$genreId/${if (isMovie) "movie" else "tv"}/${android.net.Uri.encode(genreName)}"

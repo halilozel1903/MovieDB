@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.halil.ozel.moviedb.domain.model.Cast
 import com.halil.ozel.moviedb.domain.model.Episode
+import com.halil.ozel.moviedb.domain.model.ExternalRatings
 import com.halil.ozel.moviedb.domain.model.TvSeries
 import com.halil.ozel.moviedb.domain.model.Video
 import com.halil.ozel.moviedb.domain.model.WatchProvider
+import com.halil.ozel.moviedb.domain.repository.OmdbRepository
 import com.halil.ozel.moviedb.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +27,11 @@ data class TvDetailUiState(
     val expandedSeasonNumber: Int? = null,
     val seasonEpisodes: Map<Int, List<Episode>> = emptyMap(),
     val episodesLoading: Boolean = false,
+    val episodesError: Map<Int, Boolean> = emptyMap(),
     val trailer: Video? = null,
-    val watchProviders: List<WatchProvider> = emptyList()
+    val watchProviders: List<WatchProvider> = emptyList(),
+    val imdbId: String? = null,
+    val externalRatings: ExternalRatings? = null
 )
 
 @HiltViewModel
@@ -38,7 +43,9 @@ class TvDetailViewModel @Inject constructor(
     private val toggleTvFavoriteUseCase: ToggleTvFavoriteUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val getTvVideosUseCase: GetTvVideosUseCase,
-    private val getTvWatchProvidersUseCase: GetTvWatchProvidersUseCase
+    private val getTvWatchProvidersUseCase: GetTvWatchProvidersUseCase,
+    private val tvRepository: com.halil.ozel.moviedb.domain.repository.TvRepository,
+    private val omdbRepository: OmdbRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TvDetailUiState(isLoading = true))
@@ -61,6 +68,9 @@ class TvDetailViewModel @Inject constructor(
                         ?: videos.firstOrNull()
                 }
 
+            val externalImdbId = tvRepository.getTvExternalIds(tvId).getOrNull()
+            val externalRatings = externalImdbId?.let { omdbRepository.getRatings(it).getOrNull() }
+
             _uiState.value = _uiState.value.copy(
                 tvSeries = tvResult.getOrNull(),
                 cast = castResult.getOrDefault(emptyList()).take(20),
@@ -68,7 +78,9 @@ class TvDetailViewModel @Inject constructor(
                 isLoading = false,
                 error = tvResult.exceptionOrNull()?.message,
                 trailer = trailer,
-                watchProviders = watchProvidersResult.getOrDefault(emptyList())
+                watchProviders = watchProvidersResult.getOrDefault(emptyList()),
+                imdbId = externalImdbId,
+                externalRatings = externalRatings
             )
         }
         viewModelScope.launch {
@@ -90,25 +102,33 @@ class TvDetailViewModel @Inject constructor(
             return
         }
         _uiState.value = _uiState.value.copy(expandedSeasonNumber = seasonNumber)
-        if (!_uiState.value.seasonEpisodes.containsKey(seasonNumber)) {
+        // Load if not already cached or if previous attempt errored
+        val hasError = _uiState.value.episodesError[seasonNumber] == true
+        if (!_uiState.value.seasonEpisodes.containsKey(seasonNumber) || hasError) {
             loadEpisodes(seasonNumber)
         }
     }
 
+    fun retryEpisodes(seasonNumber: Int) = loadEpisodes(seasonNumber)
+
     private fun loadEpisodes(seasonNumber: Int) {
         val tvId = _uiState.value.tvSeries?.id ?: return
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(episodesLoading = true)
+            // Clear error flag and start loading
+            val errorsCleared = _uiState.value.episodesError.toMutableMap().also { it.remove(seasonNumber) }
+            _uiState.value = _uiState.value.copy(episodesLoading = true, episodesError = errorsCleared)
             val result = getSeasonDetailsUseCase(tvId, seasonNumber)
-            result.getOrNull()?.let { season ->
+            val season = result.getOrNull()
+            if (season != null) {
                 val updated = _uiState.value.seasonEpisodes.toMutableMap()
                 updated[seasonNumber] = season.episodes
                 _uiState.value = _uiState.value.copy(
                     seasonEpisodes = updated,
                     episodesLoading = false
                 )
-            } ?: run {
-                _uiState.value = _uiState.value.copy(episodesLoading = false)
+            } else {
+                val errors = _uiState.value.episodesError.toMutableMap().also { it[seasonNumber] = true }
+                _uiState.value = _uiState.value.copy(episodesLoading = false, episodesError = errors)
             }
         }
     }

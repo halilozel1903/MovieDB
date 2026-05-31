@@ -14,5 +14,6 @@ data class TvSeries(
     val numberOfSeasons: Int = 0,
     val numberOfEpisodes: Int = 0,
     val originalLanguage: String = "",
-    val seasons: List<Season> = emptyList()
+    val seasons: List<Season> = emptyList(),
+    val imdbId: String? = null
 )

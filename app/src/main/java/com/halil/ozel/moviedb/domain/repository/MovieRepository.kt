@@ -13,7 +13,7 @@ interface MovieRepository {
     suspend fun getUpcomingMovies(page: Int = 1): Result<List<Movie>>
     suspend fun getMovieDetail(movieId: Int): Result<Movie>
     suspend fun getMovieCast(movieId: Int): Result<List<Cast>>
-    suspend fun getRecommendedMovies(movieId: Int): Result<List<Movie>>
+    suspend fun getRecommendedMovies(movieId: Int, page: Int = 1): Result<List<Movie>>
     suspend fun getMovieGenres(): Result<List<Genre>>
     suspend fun getMovieVideos(movieId: Int): Result<List<Video>>
     suspend fun getMovieWatchProviders(movieId: Int): Result<List<WatchProvider>>

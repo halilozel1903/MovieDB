@@ -42,4 +42,22 @@
     <string name="movie_name">Film Adı</string>
     <string name="series_name">Dizi Adı</string>
     <string name="rating_suffix">/10</string>
+
+    <!-- Detail screen labels -->
+    <string name="overview_label">Özet</string>
+    <string name="where_to_watch_label">Nerede İzlenir</string>
+    <string name="cast_label">Oyuncular</string>
+    <string name="recommended_label">Benzer İçerikler</string>
+    <string name="runtime_label">Süre</string>
+    <string name="language_label">Dil</string>
+    <string name="votes_label">Oy</string>
+    <string name="seasons_episodes_label">Sezonlar ve Bölümler</string>
+    <string name="see_on_imdb">IMDb\'de gör</string>
+    <string name="see_all_similar">Tümüne Bak</string>
+    <string name="min_suffix">dk</string>
+
+    <!-- Episode states -->
+    <string name="episodes_not_loaded">Bölümler yüklenemedi</string>
+    <string name="retry">Tekrar Dene</string>
+    <string name="no_episodes_yet">Henüz bölüm bilgisi yok</string>
 </resources>

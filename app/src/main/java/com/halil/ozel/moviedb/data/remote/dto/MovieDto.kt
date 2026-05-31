@@ -25,7 +25,8 @@ data class MovieDto(
     @Json(name = "genre_ids") val genreIds: List<Int> = emptyList(),
     @Json(name = "genres") val genres: List<GenreDto>? = null,
     @Json(name = "runtime") val runtime: Int = 0,
-    @Json(name = "original_language") val originalLanguage: String = ""
+    @Json(name = "original_language") val originalLanguage: String = "",
+    @Json(name = "imdb_id") val imdbId: String? = null
 ) {
     fun toDomain(): Movie = Movie(
         id = id,
@@ -39,6 +40,7 @@ data class MovieDto(
         voteCount = voteCount,
         genres = genres?.map { it.toDomain() } ?: emptyList(),
         runtime = runtime,
-        originalLanguage = originalLanguage
+        originalLanguage = originalLanguage,
+        imdbId = imdbId
     )
 }

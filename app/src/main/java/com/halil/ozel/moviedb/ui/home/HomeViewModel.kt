@@ -2,6 +2,7 @@ package com.halil.ozel.moviedb.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.halil.ozel.moviedb.domain.model.Genre
 import com.halil.ozel.moviedb.domain.model.Movie
 import com.halil.ozel.moviedb.domain.model.TvSeries
 import com.halil.ozel.moviedb.domain.usecase.*
@@ -20,8 +21,11 @@ data class HomeUiState(
     val popularTv: List<TvSeries> = emptyList(),
     val topRatedTv: List<TvSeries> = emptyList(),
     val airingTodayTv: List<TvSeries> = emptyList(),
+    val onTheAirTv: List<TvSeries> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val toastMessage: String? = null,
+    val genres: List<Genre> = emptyList()
 )
 
 @HiltViewModel
@@ -33,10 +37,13 @@ class HomeViewModel @Inject constructor(
     private val getPopularTvUseCase: GetPopularTvUseCase,
     private val getTopRatedTvUseCase: GetTopRatedTvUseCase,
     private val getAiringTodayTvUseCase: GetAiringTodayTvUseCase,
+    private val getOnTheAirTvUseCase: GetOnTheAirTvUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     private val getFavoritesUseCase: GetFavoritesUseCase,
     private val toggleTvFavoriteUseCase: ToggleTvFavoriteUseCase,
-    private val getTvFavoritesUseCase: GetTvFavoritesUseCase
+    private val getTvFavoritesUseCase: GetTvFavoritesUseCase,
+    private val getMovieGenresUseCase: GetMovieGenresUseCase,
+    private val getTvGenresUseCase: GetTvGenresUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState(isLoading = true))
@@ -47,6 +54,9 @@ class HomeViewModel @Inject constructor(
 
     private val _tvFavoriteIds = MutableStateFlow<Set<Int>>(emptySet())
     val tvFavoriteIds: StateFlow<Set<Int>> = _tvFavoriteIds.asStateFlow()
+
+    private val _toastMessage = MutableStateFlow<String?>(null)
+    val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
 
     init {
         loadAll()
@@ -69,6 +79,7 @@ class HomeViewModel @Inject constructor(
     fun loadAll() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            val genres = getMovieGenresUseCase().getOrDefault(emptyList())
             _uiState.value = _uiState.value.copy(
                 popularMovies = getPopularMoviesUseCase().getOrDefault(emptyList()),
                 nowPlayingMovies = getNowPlayingMoviesUseCase().getOrDefault(emptyList()),
@@ -77,16 +88,30 @@ class HomeViewModel @Inject constructor(
                 popularTv = getPopularTvUseCase().getOrDefault(emptyList()),
                 topRatedTv = getTopRatedTvUseCase().getOrDefault(emptyList()),
                 airingTodayTv = getAiringTodayTvUseCase().getOrDefault(emptyList()),
+                onTheAirTv = getOnTheAirTvUseCase().getOrDefault(emptyList()),
+                genres = genres,
                 isLoading = false
             )
         }
     }
 
     fun toggleFavorite(movie: Movie) {
-        viewModelScope.launch { toggleFavoriteUseCase(movie) }
+        viewModelScope.launch {
+            toggleFavoriteUseCase(movie)
+            val isFavorite = favoriteIds.value.contains(movie.id)
+            _toastMessage.value = if (isFavorite) "Removed from favorites" else "Added to favorites"
+        }
     }
 
     fun toggleTvFavorite(tvSeries: TvSeries) {
-        viewModelScope.launch { toggleTvFavoriteUseCase(tvSeries) }
+        viewModelScope.launch {
+            toggleTvFavoriteUseCase(tvSeries)
+            val isFavorite = tvFavoriteIds.value.contains(tvSeries.id)
+            _toastMessage.value = if (isFavorite) "Removed from favorites" else "Added to favorites"
+        }
+    }
+
+    fun clearToastMessage() {
+        _toastMessage.value = null
     }
 }

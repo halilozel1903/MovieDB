@@ -40,8 +40,8 @@ class MovieRepositoryImpl @Inject constructor(
         apiService.getMovieCredits(movieId, apiKey).cast.map { it.toDomain() }
     }
 
-    override suspend fun getRecommendedMovies(movieId: Int): Result<List<Movie>> = runCatching {
-        apiService.getMovieRecommendations(movieId, apiKey).results.map { it.toDomain() }
+    override suspend fun getRecommendedMovies(movieId: Int, page: Int): Result<List<Movie>> = runCatching {
+        apiService.getMovieRecommendations(movieId, apiKey, page).results.map { it.toDomain() }
     }
 
     override suspend fun getMovieGenres(): Result<List<Genre>> = runCatching {
@@ -55,7 +55,7 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovieWatchProviders(movieId: Int): Result<List<WatchProvider>> = runCatching {
         val response = apiService.getMovieWatchProviders(movieId, apiKey)
         val countryData = response.results["TR"] ?: response.results["US"] ?: response.results.values.firstOrNull()
-        countryData?.flatrate?.take(5)?.map { it.toDomain() } ?: emptyList()
+        countryData?.allProviders()?.map { it.toDomain() } ?: emptyList()
     }
 
     override suspend fun discoverMoviesByGenre(genreId: Int, page: Int): Result<List<Movie>> = runCatching {

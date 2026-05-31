@@ -1,12 +1,17 @@
 package com.halil.ozel.moviedb.ui.detail.movie
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.res.stringResource
+import com.halil.ozel.moviedb.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,6 +30,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,8 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.halil.ozel.moviedb.data.remote.api.ApiConstants
+import com.halil.ozel.moviedb.domain.model.WatchProvider
 import com.halil.ozel.moviedb.ui.components.MovieCard
 import com.halil.ozel.moviedb.ui.components.RatingBar
+import com.halil.ozel.moviedb.ui.components.RatingBadgesRow
 import com.halil.ozel.moviedb.ui.components.SectionHeader
 import com.halil.ozel.moviedb.ui.components.shimmerBrush
 import com.halil.ozel.moviedb.ui.theme.*
@@ -42,6 +51,9 @@ fun MovieDetailScreen(
     movieId: Int,
     onBack: () -> Unit,
     onMovieClick: (Int) -> Unit,
+    onCastClick: (Int, String) -> Unit = { _, _ -> },
+    onGenreClick: (Int, String) -> Unit = { _, _ -> },
+    onSeeAllSimilar: (Int) -> Unit = {},
     viewModel: MovieDetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(movieId) {
@@ -49,6 +61,7 @@ fun MovieDetailScreen(
     }
 
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     var favAnimating by remember { mutableStateOf(false) }
     val favScale by animateFloatAsState(
@@ -88,7 +101,10 @@ fun MovieDetailScreen(
                             .height(300.dp)
                     ) {
                         AsyncImage(
-                            model = ApiConstants.IMAGE_BASE_URL_1280 + movie.backdropPath,
+                            model = if (movie.backdropPath != null)
+                                ApiConstants.IMAGE_BASE_URL_1280 + movie.backdropPath
+                            else
+                                ApiConstants.IMAGE_BASE_URL_500 + movie.posterPath,
                             contentDescription = movie.title,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
@@ -106,6 +122,29 @@ fun MovieDetailScreen(
                                     )
                                 )
                         )
+                        // Play button for trailer
+                        if (uiState.trailer != null) {
+                            IconButton(
+                                onClick = {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("https://www.youtube.com/watch?v=${uiState.trailer!!.key}")
+                                    )
+                                    context.startActivity(intent)
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .size(56.dp)
+                                    .background(Primary, CircleShape)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.PlayArrow,
+                                    contentDescription = "Play Trailer",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                        }
                     }
 
                     // Poster + Info row
@@ -147,21 +186,31 @@ fun MovieDetailScreen(
                                     color = OnSurface
                                 )
                             }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            RatingBadgesRow(
+                                voteAverage = movie.voteAverage,
+                                voteCount = movie.voteCount,
+                                imdbId = movie.imdbId,
+                                externalRatings = uiState.externalRatings
+                            )
                             Spacer(modifier = Modifier.height(6.dp))
-                            RatingBar(rating = movie.voteAverage)
-                            Spacer(modifier = Modifier.height(6.dp))
-                            // Genre chips
-                            LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                items(movie.genres) { genre ->
+                            // Genre chips — FlowRow fills available width
+                            @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                movie.genres.forEach { genre ->
                                     Surface(
                                         shape = RoundedCornerShape(20.dp),
-                                        color = SurfaceVariant
+                                        color = SurfaceVariant,
+                                        modifier = Modifier.clickable { onGenreClick(genre.id, genre.name) }
                                     ) {
                                         Text(
                                             text = genre.name,
                                             style = MaterialTheme.typography.labelSmall,
                                             color = Secondary,
-                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                                         )
                                     }
                                 }
@@ -177,7 +226,7 @@ fun MovieDetailScreen(
                             .padding(horizontal = 16.dp)
                     ) {
                         Text(
-                            text = "Overview",
+                            text = stringResource(R.string.overview_label),
                             style = MaterialTheme.typography.titleLarge,
                             color = OnBackground,
                             fontWeight = FontWeight.Bold
@@ -190,6 +239,27 @@ fun MovieDetailScreen(
                             lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
                         )
 
+                        // Watch Providers
+                        if (uiState.watchProviders.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = stringResource(R.string.where_to_watch_label),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = OnBackground,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                uiState.watchProviders.forEach { provider ->
+                                    WatchProviderItem(provider = provider)
+                                }
+                            }
+                        }
+
                         Spacer(modifier = Modifier.height(16.dp))
 
                         // Stats row
@@ -197,15 +267,15 @@ fun MovieDetailScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            StatChip(label = "Runtime", value = if (movie.runtime > 0) "${movie.runtime} min" else "N/A")
-                            StatChip(label = "Language", value = movie.originalLanguage.uppercase())
-                            StatChip(label = "Votes", value = "${movie.voteCount}")
+                            StatChip(label = stringResource(R.string.runtime_label), value = if (movie.runtime > 0) "${movie.runtime} ${stringResource(R.string.min_suffix)}" else "N/A")
+                            StatChip(label = stringResource(R.string.language_label), value = movie.originalLanguage.uppercase())
+                            StatChip(label = stringResource(R.string.votes_label), value = "${movie.voteCount}")
                         }
 
                         // Cast
                         if (uiState.cast.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(16.dp))
-                            SectionHeader(title = "Cast")
+                            SectionHeader(title = stringResource(R.string.cast_label))
                         }
                     }
 
@@ -216,7 +286,10 @@ fun MovieDetailScreen(
                             modifier = Modifier.offset(y = (-50).dp)
                         ) {
                             items(uiState.cast) { castMember ->
-                                CastCard(cast = castMember)
+                                CastCard(
+                                    cast = castMember,
+                                    onClick = { onCastClick(castMember.id, castMember.name) }
+                                )
                             }
                         }
                     }
@@ -224,7 +297,8 @@ fun MovieDetailScreen(
                     // Recommended
                     if (uiState.recommended.isNotEmpty()) {
                         SectionHeader(
-                            title = "Recommended",
+                            title = stringResource(R.string.recommended_label),
+                            onSeeAllClick = { onSeeAllSimilar(movieId) },
                             modifier = Modifier.offset(y = (-40).dp)
                         )
                         LazyRow(
@@ -303,6 +377,18 @@ fun MovieDetailScreen(
 }
 
 @Composable
+private fun WatchProviderItem(provider: WatchProvider) {
+    AsyncImage(
+        model = "https://image.tmdb.org/t/p/w92" + provider.logoPath,
+        contentDescription = provider.name,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(36.dp)
+            .clip(RoundedCornerShape(8.dp))
+    )
+}
+
+@Composable
 private fun StatChip(label: String, value: String) {
     Surface(
         shape = RoundedCornerShape(10.dp),
@@ -328,10 +414,10 @@ private fun StatChip(label: String, value: String) {
 }
 
 @Composable
-private fun CastCard(cast: com.halil.ozel.moviedb.domain.model.Cast) {
+private fun CastCard(cast: com.halil.ozel.moviedb.domain.model.Cast, onClick: () -> Unit = {}) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(80.dp)
+        modifier = Modifier.width(80.dp).clickable(onClick = onClick)
     ) {
         AsyncImage(
             model = ApiConstants.IMAGE_BASE_URL_500 + cast.profilePath,
