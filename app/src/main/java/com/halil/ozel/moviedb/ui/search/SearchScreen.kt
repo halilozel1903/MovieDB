@@ -435,9 +435,10 @@ private fun TypeBadge(text: String, color: androidx.compose.ui.graphics.Color) {
 //
 //  Only NUMBER_PEEK dp of the number is visible; rest is hidden behind poster.
 
-private val RANKED_CARD_W = 108.dp          // poster width
-private val NUMBER_PEEK   = 38.dp           // visible number strip on the left
-private val RANKED_ITEM_W = RANKED_CARD_W + NUMBER_PEEK
+private val RANKED_CARD_W  = 108.dp          // poster width
+private val RANKED_CARD_H  = RANKED_CARD_W * 3f / 2f  // 162dp (2:3 ratio)
+private val NUMBER_PEEK    = 36.dp           // visible number strip on the left
+private val RANKED_ITEM_W  = RANKED_CARD_W + NUMBER_PEEK
 
 @Composable
 private fun RankedMovieCard(rank: Int, movie: Movie, onClick: (Int) -> Unit) {
@@ -470,7 +471,7 @@ private fun RankedItem(
     Box(
         modifier = Modifier
             .width(RANKED_ITEM_W)
-            .aspectRatio(RANKED_CARD_W / (RANKED_CARD_W * 1.5f))  // keep card's 2:3 ratio
+            .height(RANKED_CARD_H)   // sabit yükseklik — tüm kartlar eşit
     ) {
         // ── Large rank number — anchored bottom-start, behind everything ──
         Text(
