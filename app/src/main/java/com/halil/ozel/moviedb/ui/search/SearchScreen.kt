@@ -496,7 +496,7 @@ private fun RankedItem(
         }
 
         // ── Poster card ──────────────────────────────────────────────────
-        Box(modifier = Modifier.offset(x = (-12).dp)) {
+        Box(modifier = Modifier.offset(x = (-20).dp)) {
             card(
                 Modifier
                     .width(RANKED_CARD_W)
