@@ -1,30 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
+
+    <!-- Halo ring outer (gold gradient) -->
+    <path
+        android:pathData="M35,26 A19,7 0 0,1 73,26 A19,7 0 0,1 35,26 Z">
         <aapt:attr name="android:fillColor">
             <gradient
-                android:endX="85.84757"
-                android:endY="92.4963"
-                android:startX="42.9492"
-                android:startY="49.59793"
-                android:type="linear">
-                <item
-                    android:color="#44000000"
-                    android:offset="0.0" />
-                <item
-                    android:color="#00000000"
-                    android:offset="1.0" />
+                android:type="linear"
+                android:startX="35"
+                android:startY="26"
+                android:endX="73"
+                android:endY="26">
+                <item android:offset="0.0" android:color="#FFCA28"/>
+                <item android:offset="0.5" android:color="#FFC107"/>
+                <item android:offset="1.0" android:color="#FFB300"/>
             </gradient>
         </aapt:attr>
     </path>
+    <!-- Halo ring inner cutout -->
+    <path
+        android:fillColor="#0D0D1A"
+        android:pathData="M40,26 A14,5 0 0,1 68,26 A14,5 0 0,1 40,26 Z"/>
+
+    <!-- TV body (gradient: lighter top to darker bottom) -->
+    <path
+        android:pathData="M22,34 L86,34 Q92,34 92,40 L92,74 Q92,80 86,80 L22,80 Q16,80 16,74 L16,40 Q16,34 22,34 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54"
+                android:startY="34"
+                android:endX="54"
+                android:endY="80">
+                <item android:offset="0.0" android:color="#2A4D8A"/>
+                <item android:offset="1.0" android:color="#162D56"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- TV screen (very dark) -->
+    <path
+        android:fillColor="#05101E"
+        android:pathData="M23,41 L85,41 L85,73 L23,73 Z"/>
+
+    <!-- TV legs -->
+    <path
+        android:fillColor="#162D56"
+        android:pathData="M36,80 L44,80 L42,92 L34,92 Z"/>
+    <path
+        android:fillColor="#162D56"
+        android:pathData="M64,80 L72,80 L74,92 L66,92 Z"/>
+    <!-- TV base bar -->
+    <path
+        android:fillColor="#0F2040"
+        android:pathData="M30,90 L78,90 L78,94 L30,94 Z"/>
+
+    <!-- Golden star (with gradient glow) -->
+    <path
+        android:pathData="M54,45 L56.94,52.95 L65.41,53.29 L58.76,58.55 L61.05,66.71 L54,62 L46.95,66.71 L49.24,58.55 L42.59,53.29 L51.06,52.95 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="54"
+                android:centerY="57"
+                android:gradientRadius="14">
+                <item android:offset="0.0" android:color="#FFEE58"/>
+                <item android:offset="1.0" android:color="#FF8F00"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Screen glint -->
     <path
         android:fillColor="#FFFFFF"
-        android:fillType="nonZero"
-        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
-        android:strokeWidth="1"
-        android:strokeColor="#00000000" />
+        android:fillAlpha="0.10"
+        android:pathData="M23,41 L46,41 L36,53 L23,53 Z"/>
+
+    <!-- Shadow overlay on TV bottom -->
+    <path
+        android:pathData="M23,60 L85,60 L85,73 L23,73 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54"
+                android:startY="60"
+                android:endX="54"
+                android:endY="73">
+                <item android:offset="0.0" android:color="#00000000"/>
+                <item android:offset="1.0" android:color="#44000000"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+
 </vector>

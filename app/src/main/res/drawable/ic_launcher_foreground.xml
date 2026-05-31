@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Halo ring outer (gold) -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M35,26 A19,7 0 0,1 73,26 A19,7 0 0,1 35,26 Z"/>
+    <!-- Halo ring inner cutout (background color) -->
+    <path
+        android:fillColor="#0D0D1A"
+        android:pathData="M40,26 A14,5 0 0,1 68,26 A14,5 0 0,1 40,26 Z"/>
+
+    <!-- TV body (dark navy blue, rounded) -->
+    <path
+        android:fillColor="#1F3A6B"
+        android:pathData="M22,34 L86,34 Q92,34 92,40 L92,74 Q92,80 86,80 L22,80 Q16,80 16,74 L16,40 Q16,34 22,34 Z"/>
+
+    <!-- TV screen (very dark) -->
+    <path
+        android:fillColor="#05101E"
+        android:pathData="M23,41 L85,41 L85,73 L23,73 Z"/>
+
+    <!-- TV legs -->
+    <path
+        android:fillColor="#1F3A6B"
+        android:pathData="M36,80 L44,80 L42,92 L34,92 Z"/>
+    <path
+        android:fillColor="#1F3A6B"
+        android:pathData="M64,80 L72,80 L74,92 L66,92 Z"/>
+    <!-- TV base bar -->
+    <path
+        android:fillColor="#162D56"
+        android:pathData="M30,90 L78,90 L78,94 L30,94 Z"/>
+
+    <!-- Golden star on screen -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M54,45 L56.94,52.95 L65.41,53.29 L58.76,58.55 L61.05,66.71 L54,62 L46.95,66.71 L49.24,58.55 L42.59,53.29 L51.06,52.95 Z"/>
+
+    <!-- Screen glint -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.08"
+        android:pathData="M23,41 L46,41 L36,53 L23,53 Z"/>
+
+</vector>
