@@ -1,97 +1,145 @@
-# MovieDB 🎬 🌺
+# TV Heaven
 
-MovieDB is an Android showcase app built around **The Movie Database (TMDb)** API. Browse movies and TV series, search, and view detailed pages.
+A modern Android app for browsing movies, TV shows and actors — powered by **TMDb** and **OMDb** APIs. Built entirely with **Kotlin** and **Jetpack Compose**.
 
-![TheMovieDB](https://www.themoviedb.org/assets/2/v4/marketing/deadpool-06f2a06d7a418ec887300397b6861383bf1e3b72f604ddd5f75bce170e81dce9.png)
+## Screenshots
 
-## Features 📊
+### Home & Discovery
 
-MovieDB demonstrates a typical **MVVM** Android application. Below are some of
-the libraries and components used in the project.
+<p align="center">
+  <img src="screenshots/home_movies.png" width="230" alt="Home Movies" />
+  <img src="screenshots/home_tv.png" width="230" alt="Home TV" />
+  <img src="screenshots/onboarding.png" width="230" alt="Onboarding" />
+</p>
 
-- 🔗 **Retrofit** with **RxJava3**, Moshi and OkHttp for networking
-- 💻 **Dagger 2** for dependency injection
-- 📺 **RecyclerView** based screens for movies and TV shows
-- 🎬 **Search** and detailed pages with cast, seasons and episodes
-- ❤️ **Favorites** stored locally
-- 🌗 **Dark mode** and multiple **language** support
-- 💡 **ExpandableTextView** for long descriptions
-- 📷 **Picasso** and **Glide** for image loading
-- 💥 Material Components
+### Search — Top 10 & Filters
 
-## Technologies Used 🛠
+<p align="center">
+  <img src="screenshots/search_top10.png" width="230" alt="Search Top 10" />
+  <img src="screenshots/search_movies.png" width="230" alt="Search Movies" />
+  <img src="screenshots/search_tv.png" width="230" alt="Search TV" />
+</p>
 
-This project is written in **Kotlin** and uses **AndroidX** libraries. Core
-dependencies include Dagger 2 for dependency injection, Retrofit with OkHttp and
-Moshi for network requests, and RxJava3 for reactive operations. Images are
-loaded with Picasso and Glide while Timber is used for logging.
+<p align="center">
+  <img src="screenshots/search_actors.png" width="230" alt="Search Actors" />
+</p>
 
-## Screenshots 📸
+### Movie & TV Detail
 
-Below are sample screens from the application. Each image is scaled to 300&nbsp;px
-wide for readability.
+<p align="center">
+  <img src="screenshots/movie_detail.png" width="230" alt="Movie Detail" />
+  <img src="screenshots/movie_detail_scroll.png" width="230" alt="Movie Detail Scrolled" />
+  <img src="screenshots/tv_detail.png" width="230" alt="TV Detail" />
+</p>
 
-### Home Screen
-Shows trending movies and TV series.
+### Seasons, Person & Favorites
 
-<img src="screen_1.jpg" width="300" alt="Home Screen" />
+<p align="center">
+  <img src="screenshots/tv_seasons.png" width="230" alt="TV Seasons" />
+  <img src="screenshots/person_detail.png" width="230" alt="Person Detail" />
+  <img src="screenshots/favorites_movies.png" width="230" alt="Favorites Movies" />
+</p>
 
-### Movie Detail
-Detailed view with cast and overview information.
+<p align="center">
+  <img src="screenshots/favorites_tv.png" width="230" alt="Favorites TV" />
+</p>
 
-<img src="screen_2.jpg" width="300" alt="Movie Detail" />
+## Features
 
-### Search Results
-Quickly find movies and shows.
+- **Home** — Auto-scrolling hero banner, horizontal movie rails (Now Playing, Popular, Top Rated, Upcoming)
+- **TV** — Popular, Top Rated, Airing Today and On The Air rails with full-bleed poster cards
+- **Search** — Netflix-style Top 10 weekly trending movies & TV shows with large outlined rank numbers, trending people pills, real-time search with category filters (Movies / TV / Actors)
+- **Movie Detail** — Backdrop, poster, genre chips (FlowRow), trailer playback (YouTube), multi-source ratings (TMDb + IMDb + Rotten Tomatoes + Metacritic via OMDb), watch providers, cast carousel, paged recommendations with "See All" grid
+- **TV Detail** — Same richness as movies plus expandable seasons & episodes with thumbnails, episode ratings and runtime
+- **Person Detail** — Biography, filmography grid with movie/TV type badges, tap to navigate
+- **Favorites** — Separate tabs for movies and TV shows, persisted via DataStore
+- **Onboarding** — Multi-page pager with animations, shown only on first launch
+- **Splash Screen** — Android 12+ SplashScreen API with app icon, stays until DataStore loads
+- **Localization** — Full Turkish and English support via `stringResource()`, auto-detects device language
 
-<img src="screen_3.jpg" width="300" alt="Search" />
+## Tech Stack
 
-### TV Series Listing
-Browse popular and top rated series.
+| Layer | Technology |
+|-------|-----------|
+| Language | Kotlin |
+| UI | Jetpack Compose + Material 3 |
+| Architecture | MVVM (ViewModel + StateFlow) |
+| DI | Hilt |
+| Networking | Retrofit + Moshi + OkHttp |
+| Image Loading | Coil |
+| Navigation | Jetpack Navigation Compose |
+| Local Storage | DataStore Preferences |
+| Splash | AndroidX SplashScreen |
+| Logging | Timber |
 
-<img src="screen_4.jpg" width="300" alt="TV Series" />
+## API Integrations
 
-### TV Series Detail
-Episode and season information.
+| API | Purpose |
+|-----|---------|
+| [TMDb](https://www.themoviedb.org/) | Movie/TV details, cast, recommendations, trending, search, genres, watch providers, external IDs, season & episode data |
+| [OMDb](https://www.omdbapi.com/) | IMDb rating & vote count, Rotten Tomatoes score, Metacritic score |
 
-<img src="screen_5.jpg" width="300" alt="TV Detail" />
+## Architecture
 
-### Cast Details
-See actor biography and credits.
+```
+com.halil.ozel.moviedb
+├── data
+│   ├── local          → DataStore (favorites, onboarding)
+│   ├── remote
+│   │   ├── api        → TMDbApiService, OmdbApiService, ApiConstants
+│   │   └── dto        → Data Transfer Objects with toDomain() mappers
+│   └── repository     → Repository implementations
+├── di                 → Hilt modules (Network, Repository, DataStore)
+├── domain
+│   ├── model          → Domain models (Movie, TvSeries, Episode, ExternalRatings, etc.)
+│   ├── repository     → Repository interfaces
+│   └── usecase        → Use cases
+├── navigation         → Screen routes, MediaCategory, NavGraph
+└── ui
+    ├── components     → MovieCard, TvCard, RatingBadges, SectionHeader, etc.
+    ├── detail         → Movie / TV / Person detail screens + ViewModels
+    ├── favorites      → Favorites screen + ViewModel
+    ├── home           → Home screen + ViewModel
+    ├── list           → MediaList, GenreList, SimilarList screens + ViewModels
+    ├── onboarding     → Onboarding pager
+    ├── search         → Search screen + ViewModel (trending + search)
+    └── theme          → Colors, Typography, Theme
+```
 
-<img src="screen_6.jpg" width="300" alt="Cast Detail" />
+## Screens
 
-### Favorites
-Your saved movies and series.
+| Screen | Description |
+|--------|-------------|
+| Home (Movies) | Hero banner with auto-scroll, Now Playing / Popular / Top Rated / Upcoming rails |
+| Home (TV) | Popular / Top Rated / Airing Today / On The Air TV rails |
+| Search | Top 10 Movies & TV (Netflix-style ranked cards), trending people pills, multi-category search results |
+| Movie Detail | Backdrop + poster, rating badges (TMDb/IMDb/RT/Metacritic), genre chips, trailer, watch providers, cast, recommendations |
+| TV Detail | Same as movie + seasons & episodes (expandable, with thumbnails and per-episode ratings) |
+| Person Detail | Photo, biography, filmography grid with movie/TV badges |
+| Favorites | Tabbed grid (Movies / TV), heart toggle, persistent storage |
+| Genre List | Paged grid filtered by genre |
+| Similar List | Paged grid of recommended content |
+| Onboarding | 4-page intro with animations |
 
-<img src="screen_7.jpg" width="300" alt="Favorites" />
+## Build & Run
 
-### Settings
-Dark mode and language options.
+1. Clone the repository
+2. Open in Android Studio (Hedgehog or newer)
+3. Sync Gradle — all dependencies will download automatically
+4. Run on a device or emulator (minSdk 26)
 
-<img src="screen_8.jpg" width="300" alt="Settings" />
+## Requirements
 
-### Episode Listing
-Season episodes and air dates.
+- Android Studio Hedgehog+
+- JDK 17
+- minSdk 26 / targetSdk 36
 
-<img src="screen_9.jpg" width="300" alt="Episodes" />
+## License
 
-### Splash Screen
-Startup animation.
-
-<img src="screen_10.jpg" width="300" alt="Splash" />
-
-## Donation 💰
-
-If this project helps you, feel free to buy me a coffee!
-
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/halilozel1903)
-
-## License ℹ️
 ```
 MIT License
 
-Copyright (c) 2023 Halil OZEL
+Copyright (c) 2026 Halil OZEL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
